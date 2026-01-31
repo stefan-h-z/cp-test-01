@@ -19,6 +19,9 @@ export * from './forms';
 // I18n
 export * from './i18n';
 
+// Theme
+export * from './theme';
+
 // Re-export types and config
 export * from '@app/types';
 export * from '@app/config';

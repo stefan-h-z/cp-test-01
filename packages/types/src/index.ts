@@ -439,3 +439,17 @@ export interface ContactTranslations {
   messageError: string;
   thankYou: string;
 }
+
+// Theme Mode Types
+export type ThemeMode = 'light' | 'dark' | 'system';
+
+export interface ThemeModeState {
+  mode: ThemeMode;
+  resolvedMode: 'light' | 'dark';
+  isSystemDark: boolean;
+}
+
+export interface ThemeModeContextValue extends ThemeModeState {
+  setMode: (mode: ThemeMode) => void;
+  toggleMode: () => void;
+}
