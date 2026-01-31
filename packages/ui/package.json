@@ -1,0 +1,33 @@
+{
+  "name": "@app/ui",
+  "version": "0.1.0",
+  "private": true,
+  "sideEffects": [
+    "*.css"
+  ],
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./tamagui.config": "./src/tamagui.config.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf node_modules .turbo"
+  },
+  "dependencies": {
+    "@app/types": "workspace:*",
+    "@tamagui/config": "^1.116.0",
+    "@tamagui/core": "^1.116.0",
+    "@tamagui/lucide-icons": "^1.116.0",
+    "tamagui": "^1.116.0",
+    "react": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "typescript": "^5.3.3"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0"
+  }
+}

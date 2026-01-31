@@ -4,21 +4,68 @@ This file provides guidance for AI assistants working with this repository.
 
 ## Repository Overview
 
-**Repository:** cp-test-01
-**Status:** New/Fresh repository
-**Primary Branch:** `main` (to be established)
+**Repository:** Cross-Platform App Monorepo
+**Tech Stack:** React, React Native, Expo, Vite, Tamagui, TanStack Query
+**Primary Branch:** `main`
 
 ## Project Structure
 
 ```
 cp-test-01/
-├── CLAUDE.md          # AI assistant guidelines (this file)
-└── .git/              # Git version control
+├── apps/
+│   ├── web/                    # Web application (Vite + React)
+│   │   ├── src/
+│   │   │   ├── screens/        # Page components
+│   │   │   ├── App.tsx         # Main app component
+│   │   │   └── Layout.tsx      # Layout wrapper
+│   │   └── vite.config.ts
+│   └── mobile/                 # Mobile application (Expo + React Native)
+│       ├── app/                # Expo Router pages
+│       │   ├── (tabs)/         # Tab navigation screens
+│       │   └── details/        # Detail screens
+│       └── app.json            # Expo configuration
+├── packages/
+│   ├── ui/                     # Shared UI components (Tamagui)
+│   │   └── src/
+│   │       ├── components/     # Button, Card, Input, etc.
+│   │       └── tamagui.config.ts
+│   ├── shared/                 # Shared hooks, providers, utilities
+│   │   └── src/
+│   │       ├── hooks/          # useContent, useAppConfig, etc.
+│   │       ├── providers/      # AppProvider
+│   │       └── utils/          # API utilities
+│   ├── config/                 # App configuration
+│   │   └── src/
+│   │       └── index.ts        # defaultAppConfig, createAppConfig
+│   └── types/                  # TypeScript types
+│       └── src/
+│           └── index.ts        # All shared types
+├── package.json                # Root package.json with workspaces
+├── pnpm-workspace.yaml         # pnpm workspace configuration
+├── turbo.json                  # Turborepo configuration
+└── tsconfig.base.json          # Shared TypeScript config
 ```
 
-*This section will be updated as the project structure evolves.*
-
 ## Development Workflow
+
+### Quick Start
+
+```bash
+# Install dependencies
+pnpm install
+
+# Start web development server
+pnpm dev:web
+
+# Start mobile development server
+pnpm dev:mobile
+
+# Build all packages
+pnpm build
+
+# Type check all packages
+pnpm typecheck
+```
 
 ### Branch Naming Conventions
 
@@ -37,96 +84,65 @@ Follow conventional commit format:
 - `test:` - Adding or updating tests
 - `chore:` - Maintenance tasks
 
-Example: `feat: add user authentication module`
-
-### Pull Request Process
-
-1. Create a feature branch from main
-2. Make changes with clear, atomic commits
-3. Push to remote and create PR
-4. Ensure all checks pass before merging
-
 ## Code Conventions
 
-### General Principles
+### TypeScript
 
-- Write clean, readable, and maintainable code
-- Follow the principle of least surprise
-- Keep functions small and focused
-- Prefer explicit over implicit behavior
-- Add comments only where logic isn't self-evident
+- All code is written in TypeScript with strict mode enabled
+- Shared types are defined in `@app/types`
+- Use explicit types, avoid `any`
 
-### File Organization
+### Component Development
 
-- Group related files in logical directories
-- Use clear, descriptive file names
-- Keep configuration files in the root or a dedicated config directory
+- Use Tamagui components from `@app/ui` for cross-platform compatibility
+- Follow the existing component patterns in `packages/ui/src/components/`
+- Use styled() for creating styled variants
 
-## AI Assistant Guidelines
+### Data Fetching
 
-### When Working on This Repository
+- Use TanStack Query hooks from `@app/shared`
+- Define query keys consistently
+- Handle loading and error states
 
-1. **Read before modifying**: Always read existing files before making changes
-2. **Stay focused**: Only make changes that are directly requested
-3. **Avoid over-engineering**: Keep solutions simple and minimal
-4. **No unnecessary additions**: Don't add features, refactoring, or improvements beyond what's asked
-5. **Test changes**: Verify modifications work as expected
+### Configuration
 
-### Code Quality Checklist
-
-- [ ] Changes address the specific request
-- [ ] No introduction of security vulnerabilities
-- [ ] Code follows existing patterns and conventions
-- [ ] No extraneous files or changes included
-
-### Communication
-
-- Provide clear explanations of changes made
-- Reference specific file paths and line numbers when discussing code
-- Ask clarifying questions when requirements are ambiguous
-
-## Build and Test Commands
-
-*Commands will be added as the project tooling is established.*
-
-```bash
-# Placeholder - update with actual commands
-# npm install       # Install dependencies
-# npm run build     # Build the project
-# npm run test      # Run tests
-# npm run lint      # Run linter
-```
-
-## Environment Setup
-
-*Setup instructions will be added as the project develops.*
-
-### Prerequisites
-
-- Git
-
-### Getting Started
-
-```bash
-git clone <repository-url>
-cd cp-test-01
-# Additional setup steps to be added
-```
+- App configuration is defined in `@app/config`
+- Use `createAppConfig()` to create custom configurations
+- Access config via `useAppConfig()` hook
 
 ## Key Files Reference
 
 | File | Purpose |
 |------|---------|
-| `CLAUDE.md` | AI assistant guidelines and project documentation |
+| `packages/types/src/index.ts` | All shared TypeScript types |
+| `packages/config/src/index.ts` | App configuration |
+| `packages/ui/src/tamagui.config.ts` | Tamagui theme configuration |
+| `packages/shared/src/providers/AppProvider.tsx` | Root provider component |
+| `apps/web/src/App.tsx` | Web app entry point |
+| `apps/mobile/app/_layout.tsx` | Mobile app root layout |
 
-*This table will be expanded as key files are added.*
+## Adding New Features
 
-## Notes for Future Updates
+### Adding a New Shared Component
 
-- Add language-specific conventions when primary language is established
-- Include testing framework guidelines when tests are implemented
-- Document API patterns if applicable
-- Add deployment procedures when CI/CD is configured
+1. Create component in `packages/ui/src/components/`
+2. Export from `packages/ui/src/components/index.ts`
+3. Use in both web and mobile apps
+
+### Adding a New Screen
+
+**Web:**
+1. Create screen in `apps/web/src/screens/`
+2. Add route in `apps/web/src/App.tsx`
+
+**Mobile:**
+1. Create screen in `apps/mobile/app/`
+2. Expo Router handles routing automatically
+
+### Adding New Configuration Options
+
+1. Add types to `packages/types/src/index.ts`
+2. Update `defaultAppConfig` in `packages/config/src/index.ts`
 
 ---
 

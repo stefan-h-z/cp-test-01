@@ -1,0 +1,30 @@
+// Tamagui config
+export { config } from './tamagui.config';
+
+// Components
+export * from './components';
+
+// Re-export commonly used Tamagui components
+export {
+  TamaguiProvider,
+  Theme,
+  XStack,
+  YStack,
+  Stack,
+  Separator,
+  Spinner,
+  ScrollView,
+  Image,
+  H1,
+  H2,
+  H3,
+  H4,
+  H5,
+  H6,
+  Paragraph,
+  Text,
+  View,
+} from 'tamagui';
+
+// Re-export icons
+export * from '@tamagui/lucide-icons';
