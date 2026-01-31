@@ -9,7 +9,10 @@
   },
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "clean": "rm -rf node_modules .turbo"
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "clean": "rm -rf node_modules .turbo coverage"
   },
   "dependencies": {
     "@app/config": "workspace:*",
