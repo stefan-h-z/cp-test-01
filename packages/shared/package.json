@@ -14,8 +14,11 @@
   "dependencies": {
     "@app/config": "workspace:*",
     "@app/types": "workspace:*",
+    "@hookform/resolvers": "^3.9.0",
     "@tanstack/react-query": "^5.60.0",
-    "react": "^18.2.0"
+    "react": "^18.2.0",
+    "react-hook-form": "^7.53.0",
+    "zod": "^3.23.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.0",

@@ -199,3 +199,55 @@ export interface DataGridProps<T extends { id: string | number }> {
   hoverable?: boolean;
   compact?: boolean;
 }
+
+// Form Types
+export interface FormFieldConfig {
+  name: string;
+  label?: string;
+  placeholder?: string;
+  type?: FormFieldType;
+  required?: boolean;
+  disabled?: boolean;
+  helperText?: string;
+  options?: SelectOption[];
+}
+
+export type FormFieldType =
+  | 'text'
+  | 'email'
+  | 'password'
+  | 'number'
+  | 'tel'
+  | 'url'
+  | 'textarea'
+  | 'select'
+  | 'checkbox'
+  | 'radio'
+  | 'date';
+
+export interface SelectOption {
+  value: string;
+  label: string;
+  disabled?: boolean;
+}
+
+export interface FormState<T> {
+  values: T;
+  errors: Record<string, string>;
+  touched: Record<string, boolean>;
+  isSubmitting: boolean;
+  isValid: boolean;
+  isDirty: boolean;
+}
+
+export interface FormFieldProps {
+  name: string;
+  label?: string;
+  placeholder?: string;
+  type?: FormFieldType;
+  disabled?: boolean;
+  helperText?: string;
+  error?: string;
+  required?: boolean;
+  options?: SelectOption[];
+}
