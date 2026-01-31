@@ -43,7 +43,6 @@ export function LoginScreen() {
         width="100%"
         maxWidth={400}
         gap="$6"
-        elevate
       >
         <Section alignItems="center" gap="$2">
           <Heading level={2}>{config.name}</Heading>

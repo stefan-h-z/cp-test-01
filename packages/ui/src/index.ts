@@ -15,6 +15,7 @@ export {
   Spinner,
   ScrollView,
   Image,
+  Heading,
   H1,
   H2,
   H3,
