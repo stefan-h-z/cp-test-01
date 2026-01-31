@@ -7,6 +7,7 @@ export interface AppConfig {
   features: FeatureFlags;
   api: ApiConfig;
   auth: AuthConfig;
+  i18n: I18nAppConfig;
 }
 
 // Authentication Configuration
@@ -250,4 +251,191 @@ export interface FormFieldProps {
   error?: string;
   required?: boolean;
   options?: SelectOption[];
+}
+
+// I18n Types
+export interface I18nAppConfig {
+  defaultLocale: string;
+  fallbackLocale: string;
+  supportedLocales: string[];
+  detectBrowserLanguage?: boolean;
+  persistLocale?: boolean;
+}
+
+export interface LocaleInfo {
+  code: string;
+  name: string;
+  nativeName: string;
+  flag?: string;
+  direction?: 'ltr' | 'rtl';
+}
+
+export interface TranslationNamespace {
+  common: CommonTranslations;
+  auth: AuthTranslations;
+  validation: ValidationTranslations;
+  form: FormTranslations;
+  navigation: NavigationTranslations;
+  settings: SettingsTranslations;
+  errors: ErrorTranslations;
+  dataGrid: DataGridTranslations;
+  toast: ToastTranslations;
+  contact: ContactTranslations;
+}
+
+export interface CommonTranslations {
+  loading: string;
+  error: string;
+  retry: string;
+  cancel: string;
+  save: string;
+  delete: string;
+  edit: string;
+  view: string;
+  create: string;
+  submit: string;
+  confirm: string;
+  back: string;
+  next: string;
+  previous: string;
+  search: string;
+  filter: string;
+  sort: string;
+  clear: string;
+  reset: string;
+  close: string;
+  open: string;
+  yes: string;
+  no: string;
+  ok: string;
+  done: string;
+  noResults: string;
+  noData: string;
+  required: string;
+  optional: string;
+}
+
+export interface AuthTranslations {
+  signIn: string;
+  signOut: string;
+  signUp: string;
+  login: string;
+  logout: string;
+  register: string;
+  forgotPassword: string;
+  resetPassword: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  rememberMe: string;
+  dontHaveAccount: string;
+  alreadyHaveAccount: string;
+  signInWith: string;
+  continueWith: string;
+  orContinueWith: string;
+  welcomeBack: string;
+  createAccount: string;
+  invalidCredentials: string;
+  accountCreated: string;
+  passwordChanged: string;
+}
+
+export interface ValidationTranslations {
+  required: string;
+  email: string;
+  minLength: string;
+  maxLength: string;
+  passwordMatch: string;
+  passwordStrength: string;
+  invalidFormat: string;
+  invalidPhone: string;
+  invalidUrl: string;
+}
+
+export interface FormTranslations {
+  name: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  message: string;
+  subject: string;
+  address: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  country: string;
+  company: string;
+  website: string;
+  bio: string;
+}
+
+export interface NavigationTranslations {
+  home: string;
+  settings: string;
+  profile: string;
+  about: string;
+  contact: string;
+  help: string;
+  privacy: string;
+  terms: string;
+}
+
+export interface SettingsTranslations {
+  title: string;
+  language: string;
+  theme: string;
+  darkMode: string;
+  lightMode: string;
+  systemTheme: string;
+  notifications: string;
+  pushNotifications: string;
+  emailNotifications: string;
+  account: string;
+  security: string;
+  changePassword: string;
+  deleteAccount: string;
+}
+
+export interface ErrorTranslations {
+  generic: string;
+  network: string;
+  notFound: string;
+  unauthorized: string;
+  forbidden: string;
+  serverError: string;
+  timeout: string;
+  offline: string;
+}
+
+export interface DataGridTranslations {
+  noData: string;
+  loading: string;
+  rowsPerPage: string;
+  of: string;
+  page: string;
+  actions: string;
+  selected: string;
+  deleteSelected: string;
+  exportSelected: string;
+  filterBy: string;
+  sortBy: string;
+  ascending: string;
+  descending: string;
+}
+
+export interface ToastTranslations {
+  success: string;
+  error: string;
+  warning: string;
+  info: string;
+}
+
+export interface ContactTranslations {
+  title: string;
+  subtitle: string;
+  sendMessage: string;
+  messageSent: string;
+  messageError: string;
+  thankYou: string;
 }

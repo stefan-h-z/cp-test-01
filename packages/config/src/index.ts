@@ -1,4 +1,13 @@
-import type { AppConfig, AuthConfig } from '@app/types';
+import type { AppConfig, AuthConfig, I18nAppConfig } from '@app/types';
+
+// Default i18n configuration
+export const defaultI18nConfig: I18nAppConfig = {
+  defaultLocale: 'en',
+  fallbackLocale: 'en',
+  supportedLocales: ['en', 'de'],
+  detectBrowserLanguage: true,
+  persistLocale: true,
+};
 
 // Default auth configuration - replace with your actual client IDs
 export const defaultAuthConfig: AuthConfig = {
@@ -77,6 +86,7 @@ export const defaultAppConfig: AppConfig = {
     timeout: 30000,
   },
   auth: defaultAuthConfig,
+  i18n: defaultI18nConfig,
 };
 
 export function createAppConfig(overrides: Partial<AppConfig> = {}): AppConfig {
@@ -105,8 +115,13 @@ export function createAppConfig(overrides: Partial<AppConfig> = {}): AppConfig {
       ...overrides.auth,
       providers: overrides.auth?.providers ?? defaultAppConfig.auth.providers,
     },
+    i18n: {
+      ...defaultAppConfig.i18n,
+      ...overrides.i18n,
+      supportedLocales: overrides.i18n?.supportedLocales ?? defaultAppConfig.i18n.supportedLocales,
+    },
   };
 }
 
-export { defaultAuthConfig };
-export { type AppConfig, type AuthConfig, type AuthProviderConfig } from '@app/types';
+export { defaultAuthConfig, defaultI18nConfig };
+export { type AppConfig, type AuthConfig, type AuthProviderConfig, type I18nAppConfig } from '@app/types';
