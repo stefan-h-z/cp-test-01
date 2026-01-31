@@ -129,3 +129,73 @@ export type RootStackParamList = {
   Settings: undefined;
   Profile: undefined;
 };
+
+// DataGrid Types
+export interface DataGridColumn<T> {
+  key: keyof T | string;
+  title: string;
+  width?: number | string;
+  minWidth?: number;
+  sortable?: boolean;
+  filterable?: boolean;
+  render?: (value: unknown, row: T, index: number) => React.ReactNode;
+  align?: 'left' | 'center' | 'right';
+}
+
+export interface DataGridAction<T> {
+  id: string;
+  label: string;
+  icon?: string;
+  variant?: 'primary' | 'secondary' | 'destructive' | 'ghost';
+  onPress: (row: T, index: number) => void;
+  isVisible?: (row: T) => boolean;
+  isDisabled?: (row: T) => boolean;
+}
+
+export type SortDirection = 'asc' | 'desc' | null;
+
+export interface SortState {
+  column: string | null;
+  direction: SortDirection;
+}
+
+export interface FilterState {
+  [key: string]: string;
+}
+
+export interface PaginationState {
+  page: number;
+  pageSize: number;
+  total: number;
+}
+
+export interface DataGridProps<T extends { id: string | number }> {
+  data: T[];
+  columns: DataGridColumn<T>[];
+  actions?: DataGridAction<T>[];
+  // Sorting
+  sortable?: boolean;
+  sortState?: SortState;
+  onSortChange?: (sort: SortState) => void;
+  // Filtering
+  filterable?: boolean;
+  filterState?: FilterState;
+  onFilterChange?: (filters: FilterState) => void;
+  filterPlaceholder?: string;
+  // Pagination
+  pagination?: boolean;
+  paginationState?: PaginationState;
+  onPaginationChange?: (pagination: PaginationState) => void;
+  pageSizeOptions?: number[];
+  // Loading & Empty states
+  isLoading?: boolean;
+  emptyMessage?: string;
+  // Selection
+  selectable?: boolean;
+  selectedIds?: (string | number)[];
+  onSelectionChange?: (ids: (string | number)[]) => void;
+  // Styling
+  striped?: boolean;
+  hoverable?: boolean;
+  compact?: boolean;
+}

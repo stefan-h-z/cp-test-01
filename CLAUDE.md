@@ -98,6 +98,40 @@ Follow conventional commit format:
 - Follow the existing component patterns in `packages/ui/src/components/`
 - Use styled() for creating styled variants
 
+### DataGrid Component
+
+The `DataGrid` component provides a feature-rich data table:
+
+```typescript
+import { DataGrid } from '@app/ui';
+import { useDataGrid } from '@app/shared';
+import type { DataGridColumn, DataGridAction } from '@app/types';
+
+// Define columns
+const columns: DataGridColumn<User>[] = [
+  { key: 'name', title: 'Name', sortable: true },
+  { key: 'email', title: 'Email', filterable: true },
+  { key: 'status', title: 'Status', render: (val) => <Badge>{val}</Badge> },
+];
+
+// Define actions
+const actions: DataGridAction<User>[] = [
+  { id: 'view', label: 'View', icon: 'eye', onPress: (row) => {} },
+  { id: 'edit', label: 'Edit', icon: 'pencil', onPress: (row) => {} },
+  { id: 'delete', label: 'Delete', icon: 'trash', variant: 'destructive', onPress: (row) => {} },
+];
+
+// Use in component
+<DataGrid
+  data={users}
+  columns={columns}
+  actions={actions}
+  pagination
+  sortable
+  filterable
+/>
+```
+
 ### Data Fetching
 
 - Use TanStack Query hooks from `@app/shared`
