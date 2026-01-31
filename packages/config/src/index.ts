@@ -1,4 +1,28 @@
-import type { AppConfig } from '@app/types';
+import type { AppConfig, AuthConfig } from '@app/types';
+
+// Default auth configuration - replace with your actual client IDs
+export const defaultAuthConfig: AuthConfig = {
+  enabled: true,
+  providers: [
+    {
+      type: 'google',
+      enabled: true,
+      clientId: process.env.GOOGLE_CLIENT_ID || 'YOUR_GOOGLE_CLIENT_ID',
+      iosClientId: process.env.GOOGLE_IOS_CLIENT_ID || 'YOUR_GOOGLE_IOS_CLIENT_ID',
+      androidClientId: process.env.GOOGLE_ANDROID_CLIENT_ID || 'YOUR_GOOGLE_ANDROID_CLIENT_ID',
+      scopes: ['openid', 'profile', 'email'],
+    },
+    {
+      type: 'entra',
+      enabled: true,
+      clientId: process.env.ENTRA_CLIENT_ID || 'YOUR_ENTRA_CLIENT_ID',
+      tenantId: process.env.ENTRA_TENANT_ID || 'common', // 'common' for multi-tenant, or specific tenant ID
+      scopes: ['openid', 'profile', 'email', 'User.Read'],
+    },
+  ],
+  redirectUri: process.env.AUTH_REDIRECT_URI || 'http://localhost:5173/auth/callback',
+  postLogoutRedirectUri: process.env.AUTH_POST_LOGOUT_URI || 'http://localhost:5173',
+};
 
 export const defaultAppConfig: AppConfig = {
   name: 'Cross Platform App',
@@ -52,6 +76,7 @@ export const defaultAppConfig: AppConfig = {
     baseUrl: 'https://api.example.com',
     timeout: 30000,
   },
+  auth: defaultAuthConfig,
 };
 
 export function createAppConfig(overrides: Partial<AppConfig> = {}): AppConfig {
@@ -75,7 +100,13 @@ export function createAppConfig(overrides: Partial<AppConfig> = {}): AppConfig {
       ...defaultAppConfig.api,
       ...overrides.api,
     },
+    auth: {
+      ...defaultAppConfig.auth,
+      ...overrides.auth,
+      providers: overrides.auth?.providers ?? defaultAppConfig.auth.providers,
+    },
   };
 }
 
-export { type AppConfig } from '@app/types';
+export { defaultAuthConfig };
+export { type AppConfig, type AuthConfig, type AuthProviderConfig } from '@app/types';

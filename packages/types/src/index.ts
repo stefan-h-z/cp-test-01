@@ -6,6 +6,48 @@ export interface AppConfig {
   navigation: NavigationConfig;
   features: FeatureFlags;
   api: ApiConfig;
+  auth: AuthConfig;
+}
+
+// Authentication Configuration
+export interface AuthConfig {
+  enabled: boolean;
+  providers: AuthProviderConfig[];
+  redirectUri?: string;
+  postLogoutRedirectUri?: string;
+}
+
+export interface AuthProviderConfig {
+  type: AuthProviderType;
+  enabled: boolean;
+  clientId: string;
+  // Google-specific
+  iosClientId?: string;
+  androidClientId?: string;
+  // Entra ID (Azure AD) specific
+  tenantId?: string;
+  scopes?: string[];
+}
+
+export type AuthProviderType = 'google' | 'entra';
+
+// Auth State Types
+export interface AuthState {
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  user: AuthUser | null;
+  accessToken: string | null;
+  provider: AuthProviderType | null;
+  error: string | null;
+}
+
+export interface AuthUser {
+  id: string;
+  email: string;
+  name: string;
+  avatar?: string;
+  provider: AuthProviderType;
+  providerUserId: string;
 }
 
 export interface ThemeConfig {

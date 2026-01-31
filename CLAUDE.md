@@ -110,16 +110,36 @@ Follow conventional commit format:
 - Use `createAppConfig()` to create custom configurations
 - Access config via `useAppConfig()` hook
 
+### Authentication
+
+- Auth is configured in the `auth` section of `AppConfig`
+- Supports Google OAuth and Microsoft Entra ID
+- Use `useAuth()` hook for auth state and actions
+- Auth can be enabled/disabled via `auth.enabled` config
+- Configure providers with client IDs from `.env` file
+
+```typescript
+// Example: Check if user is authenticated
+const { isAuthenticated, user, login, logout } = useAuth();
+
+// Example: Login with a provider
+await login('google'); // or 'entra'
+```
+
 ## Key Files Reference
 
 | File | Purpose |
 |------|---------|
 | `packages/types/src/index.ts` | All shared TypeScript types |
-| `packages/config/src/index.ts` | App configuration |
+| `packages/config/src/index.ts` | App configuration (including auth) |
 | `packages/ui/src/tamagui.config.ts` | Tamagui theme configuration |
 | `packages/shared/src/providers/AppProvider.tsx` | Root provider component |
+| `packages/shared/src/auth/AuthContext.tsx` | Auth provider and hooks |
 | `apps/web/src/App.tsx` | Web app entry point |
+| `apps/web/src/auth/WebAuthProvider.tsx` | Web-specific auth implementation |
 | `apps/mobile/app/_layout.tsx` | Mobile app root layout |
+| `apps/mobile/auth/MobileAuthProvider.tsx` | Mobile-specific auth implementation |
+| `.env.example` | Environment variables template |
 
 ## Adding New Features
 
