@@ -10,3 +10,15 @@ export { OfflineBanner } from './OfflineBanner';
 export { FormField, Form, FormActions } from './FormField';
 export { LanguageSwitcher, languageFlags, type Language, type LanguageSwitcherProps } from './LanguageSwitcher';
 export { ThemeSwitcher, ThemeToggle, type ThemeSwitcherProps } from './ThemeSwitcher';
+export {
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  ModalTitle,
+  ModalDescription,
+  AlertDialog,
+  ConfirmDialog,
+  ModalContainer,
+  type ModalContainerProps,
+} from './Modal';

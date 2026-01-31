@@ -453,3 +453,59 @@ export interface ThemeModeContextValue extends ThemeModeState {
   setMode: (mode: ThemeMode) => void;
   toggleMode: () => void;
 }
+
+// Modal/Dialog Types
+export type ModalSize = 'sm' | 'md' | 'lg' | 'xl' | 'full';
+
+export interface ModalProps {
+  open: boolean;
+  onClose: () => void;
+  title?: string;
+  description?: string;
+  size?: ModalSize;
+  closeOnOverlayClick?: boolean;
+  closeOnEscape?: boolean;
+  showCloseButton?: boolean;
+  children?: React.ReactNode;
+  footer?: React.ReactNode;
+}
+
+export type AlertVariant = 'info' | 'success' | 'warning' | 'error';
+
+export interface AlertDialogProps {
+  open: boolean;
+  onClose: () => void;
+  title: string;
+  message: string;
+  variant?: AlertVariant;
+  confirmLabel?: string;
+  onConfirm?: () => void;
+}
+
+export interface ConfirmDialogProps {
+  open: boolean;
+  onClose: () => void;
+  title: string;
+  message: string;
+  variant?: 'default' | 'destructive';
+  confirmLabel?: string;
+  cancelLabel?: string;
+  onConfirm: () => void | Promise<void>;
+  onCancel?: () => void;
+  isLoading?: boolean;
+}
+
+export interface ModalState {
+  id: string;
+  type: 'alert' | 'confirm' | 'custom';
+  props: Record<string, unknown>;
+}
+
+export interface ModalContextValue {
+  modals: ModalState[];
+  openModal: (modal: Omit<ModalState, 'id'>) => string;
+  closeModal: (id: string) => void;
+  closeAllModals: () => void;
+  alert: (props: Omit<AlertDialogProps, 'open' | 'onClose'>) => Promise<void>;
+  confirm: (props: Omit<ConfirmDialogProps, 'open' | 'onClose' | 'onConfirm'>) => Promise<boolean>;
+}
