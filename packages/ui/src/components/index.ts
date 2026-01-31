@@ -22,3 +22,15 @@ export {
   ModalContainer,
   type ModalContainerProps,
 } from './Modal';
+export {
+  ProtectedRoute,
+  AuthGuard,
+  RoleGuard,
+  TabBar,
+  TabBarCompact,
+  Sidebar,
+  MenuButton,
+  Breadcrumbs,
+  type BreadcrumbItem,
+  type BreadcrumbsProps,
+} from './Navigation';

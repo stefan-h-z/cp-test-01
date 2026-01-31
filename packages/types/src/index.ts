@@ -509,3 +509,106 @@ export interface ModalContextValue {
   alert: (props: Omit<AlertDialogProps, 'open' | 'onClose'>) => Promise<void>;
   confirm: (props: Omit<ConfirmDialogProps, 'open' | 'onClose' | 'onConfirm'>) => Promise<boolean>;
 }
+
+// Navigation Types
+export interface RouteConfig {
+  path: string;
+  name: string;
+  title: string;
+  icon?: string;
+  component?: string;
+  protected?: boolean;
+  roles?: string[];
+  showInNav?: boolean;
+  showInTabs?: boolean;
+  children?: RouteConfig[];
+  params?: Record<string, string>;
+}
+
+export interface NavigationState {
+  currentRoute: string;
+  previousRoute: string | null;
+  params: Record<string, string>;
+  history: string[];
+}
+
+export interface NavigationContextValue {
+  state: NavigationState;
+  navigate: (path: string, params?: Record<string, string>) => void;
+  goBack: () => void;
+  canGoBack: boolean;
+  setParams: (params: Record<string, string>) => void;
+  getParam: <T = string>(key: string, defaultValue?: T) => T | undefined;
+}
+
+export interface TabConfig {
+  name: string;
+  title: string;
+  icon: string;
+  path: string;
+  badge?: number | string;
+  showBadge?: boolean;
+}
+
+export interface TabBarProps {
+  tabs: TabConfig[];
+  activeTab: string;
+  onTabPress: (tab: TabConfig) => void;
+  position?: 'bottom' | 'top';
+  showLabels?: boolean;
+  variant?: 'default' | 'floating' | 'minimal';
+}
+
+export interface SidebarConfig {
+  header?: {
+    title?: string;
+    logo?: string;
+    showUserInfo?: boolean;
+  };
+  items: SidebarItem[];
+  footer?: {
+    items?: SidebarItem[];
+    showVersion?: boolean;
+  };
+}
+
+export interface SidebarItem {
+  id: string;
+  title: string;
+  icon?: string;
+  path?: string;
+  badge?: number | string;
+  children?: SidebarItem[];
+  divider?: boolean;
+  action?: () => void;
+}
+
+export interface SidebarProps {
+  config: SidebarConfig;
+  isOpen: boolean;
+  onClose: () => void;
+  activeItem?: string;
+  onItemPress: (item: SidebarItem) => void;
+  variant?: 'permanent' | 'temporary' | 'persistent';
+  position?: 'left' | 'right';
+}
+
+export interface DeepLinkConfig {
+  prefixes: string[];
+  screens: Record<string, string | DeepLinkScreenConfig>;
+}
+
+export interface DeepLinkScreenConfig {
+  path: string;
+  parse?: Record<string, (value: string) => unknown>;
+  stringify?: Record<string, (value: unknown) => string>;
+  screens?: Record<string, string | DeepLinkScreenConfig>;
+}
+
+export interface ProtectedRouteProps {
+  children: React.ReactNode;
+  fallback?: React.ReactNode;
+  redirectTo?: string;
+  roles?: string[];
+  onUnauthorized?: () => void;
+}

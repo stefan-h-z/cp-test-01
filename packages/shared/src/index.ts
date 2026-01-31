@@ -22,6 +22,9 @@ export * from './i18n';
 // Theme
 export * from './theme';
 
+// Navigation
+export * from './navigation';
+
 // Re-export types and config
 export * from '@app/types';
 export * from '@app/config';
