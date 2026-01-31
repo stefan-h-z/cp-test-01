@@ -1,33 +1,62 @@
 import { ScrollView } from 'react-native';
-import { YStack, XStack, Section, Heading, BodyText, Button, Separator } from '@app/ui';
-import { useAppConfig, useFeatureFlag } from '@app/shared';
+import { useRouter } from 'expo-router';
+import { YStack, XStack, Section, Heading, BodyText, Button, Separator, Image } from '@app/ui';
+import { useAppConfig, useFeatureFlag, useAuth } from '@app/shared';
 
 export default function ProfileScreen() {
+  const router = useRouter();
   const config = useAppConfig();
   const darkModeEnabled = useFeatureFlag('darkMode');
+  const { user, isAuthenticated, logout, authConfig } = useAuth();
+
+  const handleLogout = async () => {
+    await logout();
+    router.replace('/login');
+  };
+
+  // Get display name and email (use auth user if available, otherwise defaults)
+  const displayName = user?.name || 'Guest User';
+  const displayEmail = user?.email || 'Not signed in';
+  const displayInitial = displayName.charAt(0).toUpperCase();
 
   return (
     <ScrollView style={{ flex: 1 }}>
       <YStack padding="$4" gap="$6">
         {/* Profile Header */}
         <Section alignItems="center" gap="$4">
-          <YStack
-            width={100}
-            height={100}
-            borderRadius={50}
-            backgroundColor="$blue5"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Heading level={2}>U</Heading>
-          </YStack>
+          {user?.avatar ? (
+            <Image
+              source={{ uri: user.avatar }}
+              width={100}
+              height={100}
+              borderRadius={50}
+            />
+          ) : (
+            <YStack
+              width={100}
+              height={100}
+              borderRadius={50}
+              backgroundColor="$blue5"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Heading level={2}>{displayInitial}</Heading>
+            </YStack>
+          )}
           <YStack alignItems="center" gap="$1">
-            <Heading level={3}>User Name</Heading>
-            <BodyText muted>user@example.com</BodyText>
+            <Heading level={3}>{displayName}</Heading>
+            <BodyText muted>{displayEmail}</BodyText>
+            {user?.provider && (
+              <BodyText size="sm" muted>
+                Signed in with {user.provider === 'google' ? 'Google' : 'Microsoft'}
+              </BodyText>
+            )}
           </YStack>
-          <Button variant="outline" size="sm">
-            Edit Profile
-          </Button>
+          {isAuthenticated && (
+            <Button variant="outline" size="sm">
+              Edit Profile
+            </Button>
+          )}
         </Section>
 
         <Separator />
@@ -112,9 +141,16 @@ export default function ProfileScreen() {
           <Button variant="outline" width="100%">
             Privacy Policy
           </Button>
-          <Button variant="ghost" width="100%" color="$red10">
-            Sign Out
-          </Button>
+          {authConfig.enabled && isAuthenticated && (
+            <Button
+              variant="ghost"
+              width="100%"
+              color="$red10"
+              onPress={handleLogout}
+            >
+              Sign Out
+            </Button>
+          )}
         </Section>
       </YStack>
     </ScrollView>

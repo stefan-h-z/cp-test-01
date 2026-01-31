@@ -1,12 +1,19 @@
-import { Outlet, Link, useLocation } from 'react-router-dom';
-import { XStack, YStack, Container, Button, Heading } from '@app/ui';
-import { useAppConfig } from '@app/shared';
+import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
+import { XStack, YStack, Container, Button, Heading, BodyText, Image } from '@app/ui';
+import { useAppConfig, useAuth } from '@app/shared';
 
 export function Layout() {
   const config = useAppConfig();
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, isAuthenticated, logout, authConfig } = useAuth();
 
   const navItems = config.navigation.screens.filter((s) => s.showInNav);
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/login');
+  };
 
   return (
     <YStack flex={1} minHeight="100vh">
@@ -23,17 +30,44 @@ export function Layout() {
         <Link to="/" style={{ textDecoration: 'none' }}>
           <Heading level={4}>{config.name}</Heading>
         </Link>
-        <XStack gap="$2">
-          {navItems.map((item) => (
-            <Link key={item.id} to={`/${item.id === 'home' ? '' : item.id}`} style={{ textDecoration: 'none' }}>
-              <Button
-                variant={location.pathname === (item.id === 'home' ? '/' : `/${item.id}`) ? 'primary' : 'ghost'}
-                size="sm"
-              >
-                {item.title}
+
+        <XStack gap="$3" alignItems="center">
+          {/* Navigation */}
+          <XStack gap="$2">
+            {navItems.map((item) => (
+              <Link key={item.id} to={`/${item.id === 'home' ? '' : item.id}`} style={{ textDecoration: 'none' }}>
+                <Button
+                  variant={location.pathname === (item.id === 'home' ? '/' : `/${item.id}`) ? 'primary' : 'ghost'}
+                  size="sm"
+                >
+                  {item.title}
+                </Button>
+              </Link>
+            ))}
+          </XStack>
+
+          {/* User info and logout */}
+          {authConfig.enabled && isAuthenticated && user && (
+            <XStack gap="$3" alignItems="center" borderLeftWidth={1} borderLeftColor="$borderColor" paddingLeft="$3">
+              <XStack gap="$2" alignItems="center">
+                {user.avatar && (
+                  <Image
+                    source={{ uri: user.avatar }}
+                    width={32}
+                    height={32}
+                    borderRadius={16}
+                  />
+                )}
+                <YStack>
+                  <BodyText size="sm" fontWeight="600">{user.name}</BodyText>
+                  <BodyText size="xs" muted>{user.email}</BodyText>
+                </YStack>
+              </XStack>
+              <Button variant="ghost" size="sm" onPress={handleLogout}>
+                Sign Out
               </Button>
-            </Link>
-          ))}
+            </XStack>
+          )}
         </XStack>
       </XStack>
 

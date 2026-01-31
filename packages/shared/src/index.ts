@@ -4,6 +4,9 @@ export * from './hooks';
 // Providers
 export * from './providers';
 
+// Auth
+export * from './auth';
+
 // Utils
 export * from './utils';
 
