@@ -28,3 +28,13 @@ export {
   getRouteByName,
   flattenRoutes,
 } from './routeUtils';
+
+export {
+  tabRoutes,
+  hiddenRoutes,
+  allRoutes,
+  getVisibleTabs,
+  getFabRoute,
+  getTabRouteByName,
+  getTabRouteByPath,
+} from './routes';

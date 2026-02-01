@@ -548,6 +548,8 @@ export interface TabConfig {
   path: string;
   badge?: number | string;
   showBadge?: boolean;
+  isFab?: boolean;
+  hidden?: boolean;
 }
 
 export interface TabBarProps {

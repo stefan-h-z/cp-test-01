@@ -4,6 +4,9 @@ export { config } from './tamagui.config';
 // Components
 export * from './components';
 
+// Screens (shared content components)
+export * from './screens';
+
 // Re-export commonly used Tamagui components
 // Note: Heading is exported from ./components/Typography (custom component)
 export {
