@@ -2,10 +2,22 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-route
 import { TamaguiProvider, Theme } from '@app/ui';
 import { AppProvider, AuthProvider, useAuth, useAppConfig } from '@app/shared';
 import { config } from './tamagui.config';
-import { HomeScreen, DetailsScreen, LoginScreen, AuthCallbackScreen } from './screens';
+import { HomeScreen, DetailsScreen, LoginScreen, AuthCallbackScreen, DashboardScreen } from './screens';
 import { Layout } from './Layout';
+import { DashboardLayout } from './DashboardLayout';
 import { WebAuthProvider } from './auth';
 import type { ReactNode } from 'react';
+import { YStack, Heading, BodyText } from '@app/ui';
+
+// Placeholder screen for routes not yet implemented
+function PlaceholderScreen({ title }: { title: string }) {
+  return (
+    <YStack flex={1} alignItems="center" justifyContent="center" padding="$6">
+      <Heading level={2}>{title}</Heading>
+      <BodyText color="$neutral500" marginTop="$2">Coming soon...</BodyText>
+    </YStack>
+  );
+}
 
 // Protected Route wrapper
 function ProtectedRoute({ children }: { children: ReactNode }) {
@@ -38,7 +50,24 @@ function AppRoutes() {
       <Route path="/login" element={<LoginScreen />} />
       <Route path="/auth/callback" element={<AuthCallbackScreen />} />
 
-      {/* Protected routes */}
+      {/* Protected routes with Dashboard Layout */}
+      <Route
+        element={
+          <ProtectedRoute>
+            <DashboardLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route path="/" element={<DashboardScreen />} />
+        <Route path="/dashboard" element={<DashboardScreen />} />
+        <Route path="/budget" element={<PlaceholderScreen title="Budget" />} />
+        <Route path="/transactions" element={<PlaceholderScreen title="Transactions" />} />
+        <Route path="/accounts" element={<PlaceholderScreen title="Accounts" />} />
+        <Route path="/add" element={<PlaceholderScreen title="Add Transaction" />} />
+        <Route path="/details/:id" element={<DetailsScreen />} />
+      </Route>
+
+      {/* Old layout routes (optional, can be removed) */}
       <Route
         element={
           <ProtectedRoute>
@@ -46,8 +75,7 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       >
-        <Route path="/" element={<HomeScreen />} />
-        <Route path="/details/:id" element={<DetailsScreen />} />
+        <Route path="/home" element={<HomeScreen />} />
       </Route>
 
       {/* Fallback */}
