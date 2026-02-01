@@ -1,7 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { TamaguiProvider, Theme } from '@app/ui';
 import { AppProvider, AuthProvider, useAuth, useAppConfig } from '@app/shared';
@@ -62,18 +61,18 @@ function InnerLayout() {
 }
 
 export default function RootLayout() {
-  const [fontsLoaded] = useFonts({
-    Inter: require('@tamagui/font-inter/otf/Inter-Medium.otf'),
-    InterBold: require('@tamagui/font-inter/otf/Inter-Bold.otf'),
-  });
+  const [appReady, setAppReady] = useState(false);
 
   useEffect(() => {
-    if (fontsLoaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded]);
+    // Hide splash screen after a short delay
+    const prepare = async () => {
+      await SplashScreen.hideAsync();
+      setAppReady(true);
+    };
+    prepare();
+  }, []);
 
-  if (!fontsLoaded) {
+  if (!appReady) {
     return null;
   }
 
