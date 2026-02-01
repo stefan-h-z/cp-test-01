@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { TamaguiProvider, Theme } from '@app/ui';
+import { TamaguiProvider, Theme, ErrorBoundary } from '@app/ui';
 import { AppProvider, AuthProvider, useAuth, useAppConfig } from '@app/shared';
 import { config } from './tamagui.config';
 import { HomeScreen, DetailsScreen, LoginScreen, AuthCallbackScreen, DashboardScreen } from './screens';
@@ -8,6 +8,13 @@ import { DashboardLayout } from './DashboardLayout';
 import { WebAuthProvider } from './auth';
 import type { ReactNode } from 'react';
 import { YStack, Heading, BodyText } from '@app/ui';
+
+// Global error handler for logging
+function handleGlobalError(error: Error, errorInfo: React.ErrorInfo) {
+  // In production, send to error tracking service (e.g., Sentry)
+  console.error('Global error caught:', error);
+  console.error('Component stack:', errorInfo.componentStack);
+}
 
 // Placeholder screen for routes not yet implemented
 function PlaceholderScreen({ title }: { title: string }) {
@@ -92,7 +99,10 @@ function AppWithAuth() {
     <AuthProvider config={appConfig.auth}>
       <WebAuthProvider>
         <BrowserRouter>
-          <AppRoutes />
+          {/* Route-level error boundary - catches route errors without breaking navigation */}
+          <ErrorBoundary onError={handleGlobalError}>
+            <AppRoutes />
+          </ErrorBoundary>
         </BrowserRouter>
       </WebAuthProvider>
     </AuthProvider>
@@ -101,12 +111,17 @@ function AppWithAuth() {
 
 export function App() {
   return (
-    <TamaguiProvider config={config}>
-      <Theme name="light">
-        <AppProvider>
-          <AppWithAuth />
-        </AppProvider>
-      </Theme>
-    </TamaguiProvider>
+    <ErrorBoundary
+      onError={handleGlobalError}
+      onReset={() => window.location.reload()}
+    >
+      <TamaguiProvider config={config}>
+        <Theme name="light">
+          <AppProvider>
+            <AppWithAuth />
+          </AppProvider>
+        </Theme>
+      </TamaguiProvider>
+    </ErrorBoundary>
   );
 }

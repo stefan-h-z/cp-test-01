@@ -29,6 +29,21 @@ export { ErrorBoundary, ErrorFallback } from './ErrorBoundary';
 export { ToastContainer, type ToastData, type ToastType } from './Toast';
 export { OfflineBanner } from './OfflineBanner';
 export { FormField, Form, FormActions } from './FormField';
+// New modular form fields
+export {
+  FieldWrapper,
+  TextField,
+  TextAreaField,
+  SelectField,
+  RadioGroup,
+  CheckboxField,
+  type FieldWrapperProps,
+  type TextFieldProps,
+  type TextAreaFieldProps,
+  type SelectFieldProps,
+  type RadioGroupProps,
+  type CheckboxFieldProps,
+} from './FormFields';
 export { LanguageSwitcher, languageFlags, type Language, type LanguageSwitcherProps } from './LanguageSwitcher';
 export { ThemeSwitcher, ThemeToggle, type ThemeSwitcherProps } from './ThemeSwitcher';
 export {
