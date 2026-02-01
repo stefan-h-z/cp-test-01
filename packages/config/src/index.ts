@@ -123,5 +123,4 @@ export function createAppConfig(overrides: Partial<AppConfig> = {}): AppConfig {
   };
 }
 
-export { defaultAuthConfig, defaultI18nConfig };
 export { type AppConfig, type AuthConfig, type AuthProviderConfig, type I18nAppConfig } from '@app/types';

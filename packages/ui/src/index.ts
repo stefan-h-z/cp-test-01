@@ -15,6 +15,7 @@ export {
   Spinner,
   ScrollView,
   Image,
+  Heading,
   H1,
   H2,
   H3,
@@ -27,4 +28,4 @@ export {
 } from 'tamagui';
 
 // Re-export icons
-export * from '@tamagui/lucide-icons';
+export * as Icons from '@tamagui/lucide-icons';
