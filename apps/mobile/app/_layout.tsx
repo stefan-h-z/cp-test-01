@@ -52,6 +52,14 @@ function InnerLayout() {
             <Stack.Screen name="login" options={{ headerShown: false }} />
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="details/[id]" options={{ headerShown: true, title: 'Details' }} />
+            <Stack.Screen
+              name="add"
+              options={{
+                headerShown: false,
+                presentation: 'modal',
+                animation: 'slide_from_bottom',
+              }}
+            />
           </Stack>
           <StatusBar style="auto" />
         </AuthGuard>
