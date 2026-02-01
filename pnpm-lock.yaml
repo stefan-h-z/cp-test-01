@@ -304,6 +304,9 @@ importers:
       '@app/types':
         specifier: workspace:*
         version: link:../types
+      '@tamagui/animations-css':
+        specifier: ^1.116.0
+        version: 1.144.3(react-dom@18.3.1(react@18.3.1))(react-native@0.76.9(@babel/core@7.29.0)(@babel/preset-env@7.29.0(@babel/core@7.29.0))(@types/react@18.3.27)(react@18.3.1))(react@18.3.1)
       '@tamagui/config':
         specifier: ^1.116.0
         version: 1.144.3(react-dom@18.3.1(react@18.3.1))(react-native-reanimated@3.16.7(@babel/core@7.29.0)(react-native@0.76.9(@babel/core@7.29.0)(@babel/preset-env@7.29.0(@babel/core@7.29.0))(@types/react@18.3.27)(react@18.3.1))(react@18.3.1))(react-native@0.76.9(@babel/core@7.29.0)(@babel/preset-env@7.29.0(@babel/core@7.29.0))(@types/react@18.3.27)(react@18.3.1))(react@18.3.1)

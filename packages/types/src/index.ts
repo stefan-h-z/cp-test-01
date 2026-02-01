@@ -30,7 +30,7 @@ export interface AuthProviderConfig {
   scopes?: string[];
 }
 
-export type AuthProviderType = 'google' | 'entra';
+export type AuthProviderType = 'google' | 'entra' | 'dev';
 
 // Auth State Types
 export interface AuthState {

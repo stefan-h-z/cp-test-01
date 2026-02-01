@@ -5,6 +5,7 @@ export { config } from './tamagui.config';
 export * from './components';
 
 // Re-export commonly used Tamagui components
+// Note: Heading is exported from ./components/Typography (custom component)
 export {
   TamaguiProvider,
   Theme,
@@ -15,7 +16,6 @@ export {
   Spinner,
   ScrollView,
   Image,
-  Heading,
   H1,
   H2,
   H3,

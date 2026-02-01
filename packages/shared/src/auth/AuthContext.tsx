@@ -100,7 +100,11 @@ export function AuthProvider({ children, config }: AuthProviderProps) {
 
   const login = useCallback(
     async (providerType: AuthProviderType) => {
-      const providerConfig = getProviderConfig(providerType);
+      // Dev provider bypasses configuration check
+      const providerConfig = providerType === 'dev'
+        ? { type: 'dev' as const, enabled: true, clientId: '' }
+        : getProviderConfig(providerType);
+
       if (!providerConfig) {
         dispatch({ type: 'AUTH_ERROR', payload: `Provider ${providerType} is not configured or enabled` });
         return;
