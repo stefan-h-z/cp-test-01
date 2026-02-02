@@ -1,46 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { YStack, XStack, Section, Heading, BodyText, ContentCard, Button, Spinner } from '@app/ui';
-import { useContentList, useAppConfig } from '@app/shared';
-import type { ContentItem } from '@app/types';
-
-// Demo content for development
-const demoContent: ContentItem[] = [
-  {
-    id: '1',
-    type: 'article',
-    title: 'Getting Started with Cross-Platform Development',
-    body: 'Learn how to build applications that run on iOS, Android, and the web using a shared codebase.',
-    imageUrl: 'https://picsum.photos/seed/1/400/200',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    id: '2',
-    type: 'article',
-    title: 'Building Reusable UI Components',
-    body: 'Discover best practices for creating components that work across all platforms.',
-    imageUrl: 'https://picsum.photos/seed/2/400/200',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    id: '3',
-    type: 'card',
-    title: 'Configurable Content System',
-    body: 'Explore how to make your app content easily configurable and manageable.',
-    imageUrl: 'https://picsum.photos/seed/3/400/200',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-];
+import { useHomeScreenLogic } from '@app/shared';
 
 export function HomeScreen() {
   const navigate = useNavigate();
-  const config = useAppConfig();
-  const { data, isLoading, error } = useContentList();
-
-  // Use demo content if API is not available
-  const content = data?.data ?? demoContent;
+  const { config, content, isLoading, error, features } = useHomeScreenLogic();
 
   return (
     <YStack gap="$6" paddingVertical="$4">
@@ -86,7 +50,7 @@ export function HomeScreen() {
       <Section>
         <Heading level={2}>Features</Heading>
         <XStack flexWrap="wrap" gap="$4">
-          {Object.entries(config.features).map(([key, enabled]) => (
+          {Object.entries(features).map(([key, enabled]) => (
             <YStack
               key={key}
               backgroundColor="$background"

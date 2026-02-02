@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
-import { XStack, YStack, Container, Button, Heading, BodyText, Image } from '@app/ui';
+import { XStack, YStack, Container, Button, Heading, UserProfileCard } from '@app/ui';
 import { useAppConfig, useAuth } from '@app/shared';
 
 export function Layout() {
@@ -49,20 +49,7 @@ export function Layout() {
           {/* User info and logout */}
           {authConfig.enabled && isAuthenticated && user && (
             <XStack gap="$3" alignItems="center" borderLeftWidth={1} borderLeftColor="$borderColor" paddingLeft="$3">
-              <XStack gap="$2" alignItems="center">
-                {user.avatar && (
-                  <Image
-                    source={{ uri: user.avatar }}
-                    width={32}
-                    height={32}
-                    borderRadius={16}
-                  />
-                )}
-                <YStack>
-                  <BodyText size="sm" fontWeight="600">{user.name}</BodyText>
-                  <BodyText size="xs" muted>{user.email}</BodyText>
-                </YStack>
-              </XStack>
+              <UserProfileCard user={user} size="sm" compact showProvider={false} />
               <Button variant="ghost" size="sm" onPress={handleLogout}>
                 Sign Out
               </Button>
