@@ -34,6 +34,11 @@ const StyledCard = styled(TamaguiCard, {
         padding: '$4',
       },
     },
+    padded: {
+      true: {
+        padding: '$4',
+      },
+    },
   } as const,
   defaultVariants: {
     variant: 'elevated',

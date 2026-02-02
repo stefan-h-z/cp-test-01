@@ -4,6 +4,12 @@ import { YStack, XStack, Heading, BodyText, Button, Spinner, Section } from '@ap
 import { useLoginScreenLogic } from '@app/shared';
 import type { AuthProviderType } from '@app/types';
 
+const providerLabels: Record<AuthProviderType, string> = {
+  google: 'Google',
+  entra: 'Microsoft',
+  dev: 'Developer',
+};
+
 export default function LoginScreen() {
   const router = useRouter();
   const {
@@ -77,6 +83,35 @@ export default function LoginScreen() {
           <BodyText size="sm" muted textAlign="center">
             By continuing, you agree to our Terms of Service and Privacy Policy.
           </BodyText>
+
+          {/* Developer Login */}
+          {__DEV__ && (
+            <>
+              <XStack alignItems="center" gap="$2" opacity={0.5}>
+                <YStack flex={1} height={1} backgroundColor="$gray6" />
+                <BodyText size="sm" muted>DEV</BodyText>
+                <YStack flex={1} height={1} backgroundColor="$gray6" />
+              </XStack>
+              <Button
+                variant="outline"
+                size="lg"
+                disabled={isLoading}
+                onPress={() => handleLogin('dev')}
+                backgroundColor="$background"
+                borderColor="#10B981"
+                borderStyle="dashed"
+              >
+                <XStack alignItems="center" gap="$2">
+                  {isLoading ? (
+                    <Spinner size="small" />
+                  ) : (
+                    <BodyText color="#10B981">{'</>'}</BodyText>
+                  )}
+                  <BodyText>Developer Login</BodyText>
+                </XStack>
+              </Button>
+            </>
+          )}
         </YStack>
       </YStack>
     </SafeAreaView>

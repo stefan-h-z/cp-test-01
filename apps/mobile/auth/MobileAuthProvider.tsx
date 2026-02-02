@@ -122,7 +122,18 @@ export function MobileAuthProvider({ children }: MobileAuthProviderProps) {
   // Set up login handler
   useEffect(() => {
     const loginHandler: LoginHandler = async (provider, _config) => {
-      if (provider === 'google') {
+      if (provider === 'dev') {
+        // Developer login - creates a mock user immediately
+        const user: AuthUser = {
+          id: 'dev-user-001',
+          email: 'developer@localhost',
+          name: 'Developer',
+          avatar: undefined,
+          provider: 'dev',
+          providerUserId: 'dev-user-001',
+        };
+        return { user, accessToken: 'dev-token-mock' };
+      } else if (provider === 'google') {
         return handleGoogleLogin();
       } else if (provider === 'entra') {
         return handleEntraLogin();

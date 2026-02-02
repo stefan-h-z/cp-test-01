@@ -3,6 +3,18 @@ import { YStack, XStack, Heading, BodyText, Button, Spinner, Section } from '@ap
 import { useLoginScreenLogic } from '@app/shared';
 import type { AuthProviderType } from '@app/types';
 
+const providerLabels: Record<AuthProviderType, string> = {
+  google: 'Google',
+  entra: 'Microsoft',
+  dev: 'Developer',
+};
+
+const providerColors: Record<AuthProviderType, string> = {
+  google: '#4285F4',
+  entra: '#00A4EF',
+  dev: '#10B981',
+};
+
 export function LoginScreen() {
   const navigate = useNavigate();
   const {
@@ -83,6 +95,38 @@ export function LoginScreen() {
         <BodyText size="sm" muted textAlign="center">
           By continuing, you agree to our Terms of Service and Privacy Policy.
         </BodyText>
+
+        {/* Developer Login - always visible in development */}
+        {import.meta.env.DEV && (
+          <>
+            <XStack alignItems="center" gap="$2" opacity={0.5}>
+              <YStack flex={1} height={1} backgroundColor="$gray6" />
+              <BodyText size="sm" muted>DEV</BodyText>
+              <YStack flex={1} height={1} backgroundColor="$gray6" />
+            </XStack>
+            <Button
+              variant="outline"
+              size="lg"
+              disabled={isLoading}
+              onPress={() => handleLogin('dev')}
+              backgroundColor="$background"
+              borderColor={providerColors.dev}
+              borderStyle="dashed"
+              pressStyle={{
+                backgroundColor: '$gray2',
+              }}
+            >
+              <XStack alignItems="center" gap="$2">
+                {isLoading ? (
+                  <Spinner size="small" />
+                ) : (
+                  <ProviderIcon provider="dev" />
+                )}
+                <BodyText>Developer Login</BodyText>
+              </XStack>
+            </Button>
+          </>
+        )}
       </YStack>
     </YStack>
   );
@@ -119,6 +163,14 @@ function ProviderIcon({ provider }: { provider: AuthProviderType }) {
         <path fill="#00A4EF" d="M13 1h10v10H13z" />
         <path fill="#7FBA00" d="M1 13h10v10H1z" />
         <path fill="#FFB900" d="M13 13h10v10H13z" />
+      </svg>
+    );
+  }
+
+  if (provider === 'dev') {
+    return (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10B981" strokeWidth="2">
+        <path d="M16 18l6-6-6-6M8 6l-6 6 6 6" />
       </svg>
     );
   }

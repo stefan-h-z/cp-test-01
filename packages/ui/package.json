@@ -26,6 +26,7 @@
     "@tamagui/font-inter": "^1.116.0",
     "@tamagui/shorthands": "^1.116.0",
     "@tamagui/react-native-media-driver": "^1.116.0",
+    "@tamagui/animations-css": "^1.116.0",
     "tamagui": "^1.116.0",
     "react": "^18.2.0"
   },

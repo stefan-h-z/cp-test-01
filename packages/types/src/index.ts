@@ -30,7 +30,7 @@ export interface AuthProviderConfig {
   scopes?: string[];
 }
 
-export type AuthProviderType = 'google' | 'entra';
+export type AuthProviderType = 'google' | 'entra' | 'dev';
 
 // Auth State Types
 export interface AuthState {
@@ -548,6 +548,8 @@ export interface TabConfig {
   path: string;
   badge?: number | string;
   showBadge?: boolean;
+  isFab?: boolean;
+  hidden?: boolean;
 }
 
 export interface TabBarProps {

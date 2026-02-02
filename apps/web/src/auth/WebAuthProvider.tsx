@@ -220,7 +220,18 @@ function CombinedAuthHandler() {
 
   useEffect(() => {
     const loginHandler: LoginHandler = async (provider, config) => {
-      if (provider === 'google') {
+      if (provider === 'dev') {
+        // Developer login - creates a mock user immediately
+        const user: AuthUser = {
+          id: 'dev-user-001',
+          email: 'developer@localhost',
+          name: 'Developer',
+          avatar: undefined,
+          provider: 'dev',
+          providerUserId: 'dev-user-001',
+        };
+        return { user, accessToken: 'dev-token-mock' };
+      } else if (provider === 'google') {
         const googleHandler = (window as unknown as Record<string, unknown>).__googleAuthHandler as typeof loginHandler;
         if (googleHandler) {
           return googleHandler(provider, config);
