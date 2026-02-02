@@ -78,3 +78,9 @@ export {
   SkeletonProfile,
   type SkeletonProps,
 } from './Skeleton';
+export {
+  UserProfileCard,
+  UserAvatar,
+  type UserProfileCardProps,
+  type UserAvatarProps,
+} from './UserProfileCard';

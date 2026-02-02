@@ -1,6 +1,6 @@
 import { ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
-import { YStack, XStack, Section, Heading, BodyText, Button, Separator, Image } from '@app/ui';
+import { YStack, XStack, Section, Heading, BodyText, Button, Separator, UserProfileCard } from '@app/ui';
 import { useAppConfig, useFeatureFlag, useAuth } from '@app/shared';
 
 export default function ProfileScreen() {
@@ -14,44 +14,12 @@ export default function ProfileScreen() {
     router.replace('/login');
   };
 
-  // Get display name and email (use auth user if available, otherwise defaults)
-  const displayName = user?.name || 'Guest User';
-  const displayEmail = user?.email || 'Not signed in';
-  const displayInitial = displayName.charAt(0).toUpperCase();
-
   return (
     <ScrollView style={{ flex: 1 }}>
       <YStack padding="$4" gap="$6">
         {/* Profile Header */}
         <Section alignItems="center" gap="$4">
-          {user?.avatar ? (
-            <Image
-              source={{ uri: user.avatar }}
-              width={100}
-              height={100}
-              borderRadius={50}
-            />
-          ) : (
-            <YStack
-              width={100}
-              height={100}
-              borderRadius={50}
-              backgroundColor="$blue5"
-              alignItems="center"
-              justifyContent="center"
-            >
-              <Heading level={2}>{displayInitial}</Heading>
-            </YStack>
-          )}
-          <YStack alignItems="center" gap="$1">
-            <Heading level={3}>{displayName}</Heading>
-            <BodyText muted>{displayEmail}</BodyText>
-            {user?.provider && (
-              <BodyText size="sm" muted>
-                Signed in with {user.provider === 'google' ? 'Google' : 'Microsoft'}
-              </BodyText>
-            )}
-          </YStack>
+          <UserProfileCard user={user} size="lg" showProvider />
           {isAuthenticated && (
             <Button variant="outline" size="sm">
               Edit Profile

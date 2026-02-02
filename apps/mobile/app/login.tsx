@@ -1,18 +1,20 @@
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { YStack, XStack, Heading, BodyText, Button, Spinner, Section } from '@app/ui';
-import { useAuth, useAppConfig } from '@app/shared';
+import { useLoginScreenLogic } from '@app/shared';
 import type { AuthProviderType } from '@app/types';
-
-const providerLabels: Record<AuthProviderType, string> = {
-  google: 'Google',
-  entra: 'Microsoft',
-};
 
 export default function LoginScreen() {
   const router = useRouter();
-  const config = useAppConfig();
-  const { login, isLoading, error, clearError, availableProviders, isAuthenticated } = useAuth();
+  const {
+    appName,
+    isLoading,
+    error,
+    isAuthenticated,
+    availableProviders,
+    getProviderLabel,
+    handleLogin,
+  } = useLoginScreenLogic();
 
   // Redirect if already authenticated
   if (isAuthenticated) {
@@ -20,13 +22,10 @@ export default function LoginScreen() {
     return null;
   }
 
-  const handleLogin = async (provider: AuthProviderType) => {
-    clearError();
-    try {
-      await login(provider);
+  const onLogin = async (provider: AuthProviderType) => {
+    const success = await handleLogin(provider);
+    if (success) {
       router.replace('/(tabs)');
-    } catch {
-      // Error is handled by the auth context
     }
   };
 
@@ -43,7 +42,7 @@ export default function LoginScreen() {
           elevate
         >
           <Section alignItems="center" gap="$2">
-            <Heading level={2}>{config.name}</Heading>
+            <Heading level={2}>{appName}</Heading>
             <BodyText muted textAlign="center">
               Sign in to continue
             </BodyText>
@@ -64,14 +63,12 @@ export default function LoginScreen() {
                 variant="outline"
                 size="lg"
                 disabled={isLoading}
-                onPress={() => handleLogin(provider.type)}
+                onPress={() => onLogin(provider.type)}
                 backgroundColor="$background"
               >
                 <XStack alignItems="center" gap="$2">
-                  {isLoading ? (
-                    <Spinner size="small" />
-                  ) : null}
-                  <BodyText>Continue with {providerLabels[provider.type]}</BodyText>
+                  {isLoading ? <Spinner size="small" /> : null}
+                  <BodyText>Continue with {getProviderLabel(provider.type)}</BodyText>
                 </XStack>
               </Button>
             ))}

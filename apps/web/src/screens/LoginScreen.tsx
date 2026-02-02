@@ -1,22 +1,20 @@
 import { useNavigate } from 'react-router-dom';
 import { YStack, XStack, Heading, BodyText, Button, Spinner, Section } from '@app/ui';
-import { useAuth, useAppConfig } from '@app/shared';
+import { useLoginScreenLogic } from '@app/shared';
 import type { AuthProviderType } from '@app/types';
-
-const providerLabels: Record<AuthProviderType, string> = {
-  google: 'Google',
-  entra: 'Microsoft',
-};
-
-const providerColors: Record<AuthProviderType, string> = {
-  google: '#4285F4',
-  entra: '#00A4EF',
-};
 
 export function LoginScreen() {
   const navigate = useNavigate();
-  const config = useAppConfig();
-  const { login, isLoading, error, clearError, availableProviders, isAuthenticated } = useAuth();
+  const {
+    appName,
+    isLoading,
+    error,
+    isAuthenticated,
+    availableProviders,
+    getProviderLabel,
+    getProviderColor,
+    handleLogin,
+  } = useLoginScreenLogic();
 
   // Redirect if already authenticated
   if (isAuthenticated) {
@@ -24,13 +22,10 @@ export function LoginScreen() {
     return null;
   }
 
-  const handleLogin = async (provider: AuthProviderType) => {
-    clearError();
-    try {
-      await login(provider);
+  const onLogin = async (provider: AuthProviderType) => {
+    const success = await handleLogin(provider);
+    if (success) {
       navigate('/', { replace: true });
-    } catch {
-      // Error is handled by the auth context
     }
   };
 
@@ -45,7 +40,7 @@ export function LoginScreen() {
         gap="$6"
       >
         <Section alignItems="center" gap="$2">
-          <Heading level={2}>{config.name}</Heading>
+          <Heading level={2}>{appName}</Heading>
           <BodyText muted textAlign="center">
             Sign in to continue
           </BodyText>
@@ -66,9 +61,9 @@ export function LoginScreen() {
               variant="outline"
               size="lg"
               disabled={isLoading}
-              onPress={() => handleLogin(provider.type)}
+              onPress={() => onLogin(provider.type)}
               backgroundColor="$background"
-              borderColor={providerColors[provider.type]}
+              borderColor={getProviderColor(provider.type)}
               pressStyle={{
                 backgroundColor: '$gray2',
               }}
@@ -79,7 +74,7 @@ export function LoginScreen() {
                 ) : (
                   <ProviderIcon provider={provider.type} />
                 )}
-                <BodyText>Continue with {providerLabels[provider.type]}</BodyText>
+                <BodyText>Continue with {getProviderLabel(provider.type)}</BodyText>
               </XStack>
             </Button>
           ))}
