@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# Run lint-staged
+pnpm lint-staged

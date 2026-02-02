@@ -55,3 +55,9 @@ coverage/
 
 # Tamagui
 .tamagui/
+
+# Linting
+.eslintcache
+
+# Husky
+.husky/_

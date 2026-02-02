@@ -1,0 +1,178 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+env:
+  NODE_VERSION: '20'
+  PNPM_VERSION: '9'
+
+jobs:
+  # ============================================
+  # Determine Environment
+  # ============================================
+  setup:
+    name: Setup Deployment
+    runs-on: ubuntu-latest
+    outputs:
+      environment: ${{ steps.set-env.outputs.environment }}
+    steps:
+      - name: Set environment
+        id: set-env
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "environment=${{ github.event.inputs.environment }}" >> $GITHUB_OUTPUT
+          else
+            echo "environment=staging" >> $GITHUB_OUTPUT
+          fi
+
+  # ============================================
+  # Deploy Web to Vercel/Netlify
+  # ============================================
+  deploy-web:
+    name: Deploy Web App
+    runs-on: ubuntu-latest
+    needs: setup
+    environment: ${{ needs.setup.outputs.environment }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build web app
+        run: pnpm build:web
+        env:
+          APP_ENV: ${{ needs.setup.outputs.environment }}
+          VITE_API_URL: ${{ vars.API_URL }}
+          VITE_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+
+      # Option 1: Deploy to Vercel
+      - name: Deploy to Vercel
+        if: vars.DEPLOY_TARGET == 'vercel'
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          working-directory: apps/web
+          vercel-args: ${{ needs.setup.outputs.environment == 'production' && '--prod' || '' }}
+
+      # Option 2: Deploy to Netlify
+      - name: Deploy to Netlify
+        if: vars.DEPLOY_TARGET == 'netlify'
+        uses: netlify/actions/cli@master
+        with:
+          args: deploy --dir=apps/web/dist ${{ needs.setup.outputs.environment == 'production' && '--prod' || '' }}
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+
+      # Option 3: Deploy to AWS S3/CloudFront
+      - name: Deploy to AWS S3
+        if: vars.DEPLOY_TARGET == 'aws'
+        run: |
+          aws s3 sync apps/web/dist s3://${{ vars.S3_BUCKET }} --delete
+          aws cloudfront create-invalidation --distribution-id ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ vars.AWS_REGION }}
+
+  # ============================================
+  # Deploy Mobile via EAS
+  # ============================================
+  deploy-mobile:
+    name: Deploy Mobile App (EAS)
+    runs-on: ubuntu-latest
+    needs: setup
+    environment: ${{ needs.setup.outputs.environment }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Setup Expo
+        uses: expo/expo-github-action@v8
+        with:
+          expo-version: latest
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Build and submit to app stores
+        if: needs.setup.outputs.environment == 'production'
+        run: |
+          cd apps/mobile
+          eas build --platform all --non-interactive --auto-submit
+        env:
+          APP_ENV: production
+
+      - name: Build preview
+        if: needs.setup.outputs.environment == 'staging'
+        run: |
+          cd apps/mobile
+          eas build --platform all --profile preview --non-interactive
+        env:
+          APP_ENV: staging
+
+      - name: Publish OTA update
+        if: needs.setup.outputs.environment == 'staging'
+        run: |
+          cd apps/mobile
+          eas update --branch staging --message "Deploy from CI"
+        env:
+          APP_ENV: staging
+
+  # ============================================
+  # Notify on Completion
+  # ============================================
+  notify:
+    name: Notify Deployment Status
+    runs-on: ubuntu-latest
+    needs: [setup, deploy-web, deploy-mobile]
+    if: always()
+    steps:
+      - name: Send Slack notification
+        if: vars.SLACK_WEBHOOK_URL != ''
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: repo,message,commit,author,action,eventName,ref,workflow
+        env:
+          SLACK_WEBHOOK_URL: ${{ vars.SLACK_WEBHOOK_URL }}
