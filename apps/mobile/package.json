@@ -29,6 +29,7 @@
     "@tanstack/react-query": "^5.60.0",
     "babel": "^6.23.0",
     "expo": "~52.0.0",
+    "expo-camera": "~16.0.0",
     "expo-auth-session": "~6.0.0",
     "expo-constants": "~17.0.0",
     "expo-crypto": "~14.0.0",
