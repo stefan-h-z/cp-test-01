@@ -1,6 +1,223 @@
+import { useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { XStack, YStack, BodyText } from '@app/ui';
-import { useAuth } from '@app/shared';
+import { XStack, YStack, BodyText, Heading, Button, Switch } from '@app/ui';
+import { useAuth, useThemeMode } from '@app/shared';
+
+// Menu icon component
+function MenuIcon() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <line x1="3" y1="6" x2="21" y2="6" />
+      <line x1="3" y1="12" x2="21" y2="12" />
+      <line x1="3" y1="18" x2="21" y2="18" />
+    </svg>
+  );
+}
+
+// Close icon component
+function CloseIcon() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <line x1="18" y1="6" x2="6" y2="18" />
+      <line x1="6" y1="6" x2="18" y2="18" />
+    </svg>
+  );
+}
+
+// Settings icon component
+function SettingsIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <circle cx="12" cy="12" r="3" />
+      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+    </svg>
+  );
+}
+
+// QR icon component
+function QRIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <rect x="3" y="3" width="7" height="7" />
+      <rect x="14" y="3" width="7" height="7" />
+      <rect x="3" y="14" width="7" height="7" />
+      <rect x="14" y="14" width="7" height="7" />
+    </svg>
+  );
+}
+
+// Sidebar Menu Component
+function SidebarMenu({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
+  const { resolvedMode, toggleMode } = useThemeMode();
+  const isDarkMode = resolvedMode === 'dark';
+
+  const handleNavigation = (path: string) => {
+    navigate(path);
+    onClose();
+  };
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/login');
+    onClose();
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <>
+      {/* Backdrop */}
+      <YStack
+        position="fixed"
+        top={0}
+        left={0}
+        right={0}
+        bottom={0}
+        backgroundColor="rgba(0, 0, 0, 0.5)"
+        zIndex={200}
+        onPress={onClose}
+        style={{ cursor: 'pointer' }}
+      />
+
+      {/* Sidebar */}
+      <YStack
+        position="fixed"
+        top={0}
+        right={0}
+        bottom={0}
+        width={300}
+        backgroundColor={isDarkMode ? '#1a1a1a' : 'white'}
+        zIndex={300}
+        padding="$4"
+        style={{
+          boxShadow: '-4px 0 20px rgba(0, 0, 0, 0.15)',
+          animation: 'slideIn 0.2s ease-out',
+        }}
+      >
+        {/* Header */}
+        <XStack justifyContent="space-between" alignItems="center" marginBottom="$6">
+          <Heading level={4} color={isDarkMode ? 'white' : undefined}>Menu</Heading>
+          <YStack
+            padding="$2"
+            borderRadius="$2"
+            cursor="pointer"
+            hoverStyle={{ backgroundColor: isDarkMode ? '$neutral800' : '$neutral100' }}
+            onPress={onClose}
+            color={isDarkMode ? 'white' : undefined}
+          >
+            <CloseIcon />
+          </YStack>
+        </XStack>
+
+        {/* User Info */}
+        {user && (
+          <YStack
+            backgroundColor={isDarkMode ? '$neutral800' : '$neutral100'}
+            padding="$4"
+            borderRadius="$4"
+            marginBottom="$4"
+          >
+            <BodyText fontWeight="600" color={isDarkMode ? 'white' : undefined}>{user.name}</BodyText>
+            <BodyText size="sm" color={isDarkMode ? '$neutral400' : '$neutral500'}>{user.email}</BodyText>
+          </YStack>
+        )}
+
+        {/* Dark Mode Toggle */}
+        <XStack
+          justifyContent="space-between"
+          alignItems="center"
+          padding="$3"
+          backgroundColor={isDarkMode ? '$neutral800' : '$neutral100'}
+          borderRadius="$3"
+          marginBottom="$4"
+        >
+          <BodyText color={isDarkMode ? 'white' : undefined}>Dark Mode</BodyText>
+          <Switch
+            checked={isDarkMode}
+            onCheckedChange={() => toggleMode()}
+            size="$3"
+          >
+            <Switch.Thumb animation="quick" />
+          </Switch>
+        </XStack>
+
+        {/* Menu Items */}
+        <YStack gap="$2" flex={1}>
+          <XStack
+            padding="$3"
+            borderRadius="$3"
+            cursor="pointer"
+            hoverStyle={{ backgroundColor: isDarkMode ? '$neutral800' : '$neutral100' }}
+            alignItems="center"
+            gap="$3"
+            onPress={() => handleNavigation('/qr-scanner')}
+            color={isDarkMode ? 'white' : undefined}
+          >
+            <QRIcon />
+            <BodyText color={isDarkMode ? 'white' : undefined}>QR Scanner</BodyText>
+          </XStack>
+
+          <XStack
+            padding="$3"
+            borderRadius="$3"
+            cursor="pointer"
+            hoverStyle={{ backgroundColor: isDarkMode ? '$neutral800' : '$neutral100' }}
+            alignItems="center"
+            gap="$3"
+            onPress={() => handleNavigation('/settings')}
+            color={isDarkMode ? 'white' : undefined}
+          >
+            <SettingsIcon />
+            <BodyText color={isDarkMode ? 'white' : undefined}>Settings</BodyText>
+          </XStack>
+        </YStack>
+
+        {/* Logout Button */}
+        {user && (
+          <Button
+            variant="outline"
+            onPress={handleLogout}
+            marginTop="$4"
+          >
+            Sign Out
+          </Button>
+        )}
+      </YStack>
+    </>
+  );
+}
+
+// Header Component
+function Header({ onMenuOpen }: { onMenuOpen: () => void }) {
+  const { resolvedMode } = useThemeMode();
+  const isDarkMode = resolvedMode === 'dark';
+
+  return (
+    <XStack
+      backgroundColor={isDarkMode ? '#1a1a1a' : 'white'}
+      paddingHorizontal="$4"
+      paddingVertical="$3"
+      alignItems="center"
+      justifyContent="space-between"
+      borderBottomWidth={1}
+      borderBottomColor={isDarkMode ? '$neutral700' : '$neutral200'}
+    >
+      <Heading level={4} color={isDarkMode ? 'white' : undefined}>FinanceApp</Heading>
+      <YStack
+        padding="$2"
+        borderRadius="$2"
+        cursor="pointer"
+        hoverStyle={{ backgroundColor: isDarkMode ? '$neutral800' : '$neutral100' }}
+        onPress={onMenuOpen}
+        color={isDarkMode ? 'white' : undefined}
+      >
+        <MenuIcon />
+      </YStack>
+    </XStack>
+  );
+}
 
 interface TabItem {
   id: string;
@@ -192,16 +409,18 @@ function BottomTabBar() {
 }
 
 export function DashboardLayout() {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
-
-  const handleLogout = async () => {
-    await logout();
-    navigate('/login');
-  };
+  const [menuOpen, setMenuOpen] = useState(false);
+  const { resolvedMode } = useThemeMode();
+  const isDarkMode = resolvedMode === 'dark';
 
   return (
-    <YStack flex={1} minHeight="100vh" backgroundColor="$neutral100">
+    <YStack flex={1} minHeight="100vh" backgroundColor={isDarkMode ? '#121212' : '$neutral100'}>
+      {/* Header with Menu */}
+      <Header onMenuOpen={() => setMenuOpen(true)} />
+
+      {/* Sidebar Menu */}
+      <SidebarMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
+
       {/* Main Content with padding for bottom tab */}
       <YStack flex={1} paddingBottom={80}>
         <Outlet />

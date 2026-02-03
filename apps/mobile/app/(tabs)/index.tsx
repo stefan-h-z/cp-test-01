@@ -1,6 +1,7 @@
 import { ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useRouter } from 'expo-router';
 import {
   YStack,
   XStack,
@@ -12,6 +13,11 @@ import { useAuth } from '@app/shared';
 
 export default function DashboardScreen() {
   const { user } = useAuth();
+  const router = useRouter();
+
+  const handleMenuPress = () => {
+    router.push('/settings');
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#f1f5f9' }} edges={['top']}>
@@ -29,7 +35,7 @@ export default function DashboardScreen() {
             borderBottomRightRadius: 24,
           }}
         >
-          <DashboardHeader userName={user?.name} />
+          <DashboardHeader userName={user?.name} onMenuPress={handleMenuPress} />
         </LinearGradient>
 
         {/* Stats Cards */}

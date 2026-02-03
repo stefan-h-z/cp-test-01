@@ -4,3 +4,4 @@ export { LoginScreen } from './LoginScreen';
 export { AuthCallbackScreen } from './AuthCallbackScreen';
 export { DashboardScreen } from './DashboardScreen';
 export { QRScannerScreen } from './QRScannerScreen';
+export { SettingsScreen } from './SettingsScreen';

@@ -151,9 +151,21 @@ interface DashboardHeaderProps {
   userName?: string;
   userAvatar?: string;
   balance?: string;
+  onMenuPress?: () => void;
 }
 
-export function DashboardHeader({ userName = 'Developer', balance = '$450' }: DashboardHeaderProps) {
+// Menu Icon for header
+function MenuIcon() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+      <line x1="3" y1="6" x2="21" y2="6" />
+      <line x1="3" y1="12" x2="21" y2="12" />
+      <line x1="3" y1="18" x2="21" y2="18" />
+    </svg>
+  );
+}
+
+export function DashboardHeader({ userName = 'Developer', balance = '$450', onMenuPress }: DashboardHeaderProps) {
   const currentMonth = new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
 
   return (
@@ -178,6 +190,18 @@ export function DashboardHeader({ userName = 'Developer', balance = '$450' }: Da
             <BodyText color="white" fontWeight="500">{currentMonth}</BodyText>
           </YStack>
         </XStack>
+        {onMenuPress && (
+          <YStack
+            padding="$2"
+            borderRadius="$2"
+            backgroundColor="rgba(255,255,255,0.1)"
+            cursor="pointer"
+            hoverStyle={{ backgroundColor: 'rgba(255,255,255,0.2)' }}
+            onPress={onMenuPress}
+          >
+            <MenuIcon />
+          </YStack>
+        )}
       </XStack>
 
       {/* Balance */}
