@@ -614,3 +614,47 @@ export interface ProtectedRouteProps {
   roles?: string[];
   onUnauthorized?: () => void;
 }
+
+// QR Scanner Types
+export type QRScannerStatus = 'idle' | 'scanning' | 'success' | 'error';
+
+export interface QRScanResult {
+  /** The decoded content of the QR code */
+  content: string;
+  /** Format of the barcode (QR_CODE, EAN_13, etc.) */
+  format?: string;
+  /** Timestamp when the code was scanned */
+  timestamp: number;
+  /** Raw data if available */
+  rawData?: string;
+}
+
+export interface QRScannerState {
+  /** Current scanner status */
+  status: QRScannerStatus;
+  /** The most recent scan result */
+  result: QRScanResult | null;
+  /** Error message if scanning failed */
+  error: string | null;
+  /** Whether camera permission is granted */
+  hasPermission: boolean | null;
+  /** Whether the scanner is currently active */
+  isActive: boolean;
+  /** Scan history */
+  history: QRScanResult[];
+}
+
+export interface QRScannerOptions {
+  /** Vibrate on successful scan */
+  vibrate?: boolean;
+  /** Play sound on successful scan */
+  playSound?: boolean;
+  /** Auto-close scanner after successful scan */
+  autoClose?: boolean;
+  /** Delay before allowing next scan (ms) */
+  scanDelay?: number;
+  /** Maximum history items to keep */
+  maxHistory?: number;
+  /** Supported barcode formats */
+  formats?: string[];
+}

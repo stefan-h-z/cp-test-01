@@ -99,3 +99,9 @@ export {
   type UserProfileCardProps,
   type UserAvatarProps,
 } from './UserProfileCard';
+export {
+  QRScannerResult,
+  QRScannerHistory,
+  type QRScannerResultProps,
+  type QRScannerHistoryProps,
+} from './QRScanner';
