@@ -1,4 +1,8 @@
 import type { AppConfig, AuthConfig, I18nAppConfig } from '@app/types';
+import { getEnvironmentConfig, currentEnvironment } from './env';
+
+// Re-export environment utilities
+export * from './env';
 
 // Default i18n configuration
 export const defaultI18nConfig: I18nAppConfig = {
@@ -82,8 +86,8 @@ export const defaultAppConfig: AppConfig = {
     offlineMode: true,
   },
   api: {
-    baseUrl: 'https://api.example.com',
-    timeout: 30000,
+    baseUrl: getEnvironmentConfig().apiBaseUrl,
+    timeout: getEnvironmentConfig().apiTimeout,
   },
   auth: defaultAuthConfig,
   i18n: defaultI18nConfig,

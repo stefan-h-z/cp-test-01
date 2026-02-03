@@ -60,6 +60,14 @@ function InnerLayout() {
                 animation: 'slide_from_bottom',
               }}
             />
+            <Stack.Screen
+              name="settings"
+              options={{
+                headerShown: false,
+                presentation: 'modal',
+                animation: 'slide_from_right',
+              }}
+            />
           </Stack>
           <StatusBar style="auto" />
         </AuthGuard>

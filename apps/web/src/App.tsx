@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-route
 import { TamaguiProvider, Theme, ErrorBoundary } from '@app/ui';
 import { AppProvider, AuthProvider, useAuth, useAppConfig } from '@app/shared';
 import { config } from './tamagui.config';
-import { HomeScreen, DetailsScreen, LoginScreen, AuthCallbackScreen, DashboardScreen } from './screens';
+import { HomeScreen, DetailsScreen, LoginScreen, AuthCallbackScreen, DashboardScreen, QRScannerScreen, SettingsScreen } from './screens';
 import { Layout } from './Layout';
 import { DashboardLayout } from './DashboardLayout';
 import { WebAuthProvider } from './auth';
@@ -71,6 +71,8 @@ function AppRoutes() {
         <Route path="/transactions" element={<PlaceholderScreen title="Transactions" />} />
         <Route path="/accounts" element={<PlaceholderScreen title="Accounts" />} />
         <Route path="/add" element={<PlaceholderScreen title="Add Transaction" />} />
+        <Route path="/qr-scanner" element={<QRScannerScreen />} />
+        <Route path="/settings" element={<SettingsScreen />} />
         <Route path="/details/:id" element={<DetailsScreen />} />
       </Route>
 
