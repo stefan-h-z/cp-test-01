@@ -1,4 +1,4 @@
-import { YStack, XStack, ScrollView } from 'tamagui';
+import { YStack, XStack } from 'tamagui';
 import { Heading, BodyText } from '../components/Typography';
 import { transactionsData, formatTransactionAmount } from './screenData';
 import type { TransactionData } from './screenData';
@@ -25,13 +25,21 @@ function TransactionItemWithDate({ icon, title, category, amount, date }: Transa
           <BodyText fontSize={20}>{icon}</BodyText>
         </YStack>
         <YStack flex={1}>
-          <BodyText fontWeight="600" numberOfLines={1}>{title}</BodyText>
+          <BodyText fontWeight="600" numberOfLines={1}>
+            {title}
+          </BodyText>
           <XStack gap="$2">
-            <BodyText size="sm" color="$neutral500">{category}</BodyText>
+            <BodyText size="sm" color="$neutral500">
+              {category}
+            </BodyText>
             {date && (
               <>
-                <BodyText size="sm" color="$neutral400">•</BodyText>
-                <BodyText size="sm" color="$neutral400">{date}</BodyText>
+                <BodyText size="sm" color="$neutral400">
+                  •
+                </BodyText>
+                <BodyText size="sm" color="$neutral400">
+                  {date}
+                </BodyText>
               </>
             )}
           </XStack>
@@ -58,11 +66,7 @@ function FilterChip({ label, active }: FilterChipProps) {
       paddingVertical="$2"
       borderRadius="$4"
     >
-      <BodyText
-        color={active ? 'white' : '$neutral600'}
-        size="sm"
-        fontWeight="500"
-      >
+      <BodyText color={active ? 'white' : '$neutral600'} size="sm" fontWeight="500">
         {label}
       </BodyText>
     </YStack>
@@ -93,7 +97,9 @@ export function TransactionsContent({ headerIcon }: TransactionsContentProps) {
           )}
           <YStack>
             <Heading level={2}>Transactions</Heading>
-            <BodyText color="$neutral500" size="sm">Your recent activity</BodyText>
+            <BodyText color="$neutral500" size="sm">
+              Your recent activity
+            </BodyText>
           </YStack>
         </XStack>
       </YStack>

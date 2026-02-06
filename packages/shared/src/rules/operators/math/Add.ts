@@ -1,9 +1,7 @@
+import { AbstractOperator } from '../AbstractOperator';
 
-
-class Add extends AbstractOperator{
-
-
-    public execute() {
-        
-    }
+export class Add extends AbstractOperator {
+  public execute(): unknown {
+    return null;
+  }
 }

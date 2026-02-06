@@ -1,5 +1,5 @@
 import { Eye, EyeOff, Search, X } from '@tamagui/lucide-icons';
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import {
   styled,
   Input as TamaguiInput,
@@ -222,11 +222,7 @@ export function FloatingInput({
   return (
     <YStack gap="$1" width="100%">
       <FloatingLabelContainer>
-        <FloatingLabel
-          focused={isFocused}
-          hasValue={hasValue}
-          error={error}
-        >
+        <FloatingLabel focused={isFocused} hasValue={hasValue} error={error}>
           {label}
         </FloatingLabel>
         <Input
@@ -244,11 +240,7 @@ export function FloatingInput({
         />
       </FloatingLabelContainer>
       {(errorMessage || helperText) && (
-        <Text
-          fontSize="$2"
-          color={errorMessage ? '$error' : '$placeholderColor'}
-          paddingLeft="$1"
-        >
+        <Text fontSize="$2" color={errorMessage ? '$error' : '$placeholderColor'} paddingLeft="$1">
           {errorMessage || helperText}
         </Text>
       )}
@@ -378,11 +370,7 @@ export interface InputWithAddonProps extends InputProps {
   rightAddon?: React.ReactNode;
 }
 
-export function InputWithAddon({
-  leftAddon,
-  rightAddon,
-  ...props
-}: InputWithAddonProps) {
+export function InputWithAddon({ leftAddon, rightAddon, ...props }: InputWithAddonProps) {
   return (
     <XStack
       borderWidth={1.5}

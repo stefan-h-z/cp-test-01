@@ -1,4 +1,4 @@
-import { YStack, XStack, Heading, BodyText, Button, Card } from '@app/ui';
+import { YStack, XStack, Heading, BodyText, Button } from '@app/ui';
 import { X, ArrowDownCircle, ArrowUpCircle, RefreshCw } from '@tamagui/lucide-icons';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
@@ -61,12 +61,7 @@ export default function AddTransactionScreen() {
           borderBottomWidth={1}
           borderBottomColor="#e2e8f0"
         >
-          <Button
-            variant="ghost"
-            size="sm"
-            onPress={() => router.back()}
-            padding="$2"
-          >
+          <Button variant="ghost" size="sm" onPress={() => router.back()} padding="$2">
             <X size={24} color="#64748b" />
           </Button>
           <Heading level={3}>Add Transaction</Heading>
@@ -76,7 +71,9 @@ export default function AddTransactionScreen() {
         <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
           {/* Transaction Type */}
           <YStack padding="$4" gap="$3">
-            <BodyText fontWeight="600" color="$neutral600">Transaction Type</BodyText>
+            <BodyText fontWeight="600" color="$neutral600">
+              Transaction Type
+            </BodyText>
             <XStack gap="$2">
               {transactionTypes.map((type) => {
                 const Icon = type.icon;
@@ -109,7 +106,9 @@ export default function AddTransactionScreen() {
 
           {/* Amount Display */}
           <YStack padding="$4" alignItems="center" gap="$2">
-            <BodyText size="sm" color="$neutral500">Amount</BodyText>
+            <BodyText size="sm" color="$neutral500">
+              Amount
+            </BodyText>
             <Heading level={1} fontSize={48}>
               ${amount}
             </Heading>
@@ -117,7 +116,9 @@ export default function AddTransactionScreen() {
 
           {/* Category Selection */}
           <YStack padding="$4" gap="$3">
-            <BodyText fontWeight="600" color="$neutral600">Category</BodyText>
+            <BodyText fontWeight="600" color="$neutral600">
+              Category
+            </BodyText>
             <XStack flexWrap="wrap" gap="$2">
               {categories.map((cat) => {
                 const isSelected = selectedCategory === cat.id;
@@ -149,7 +150,12 @@ export default function AddTransactionScreen() {
 
           {/* Number Pad */}
           <YStack padding="$4" gap="$2">
-            {[['1', '2', '3'], ['4', '5', '6'], ['7', '8', '9'], ['.', '0', '⌫']].map((row, i) => (
+            {[
+              ['1', '2', '3'],
+              ['4', '5', '6'],
+              ['7', '8', '9'],
+              ['.', '0', '⌫'],
+            ].map((row, i) => (
               <XStack key={i} gap="$2" justifyContent="center">
                 {row.map((num) => (
                   <YStack
@@ -160,10 +166,12 @@ export default function AddTransactionScreen() {
                     backgroundColor="white"
                     alignItems="center"
                     justifyContent="center"
-                    onPress={() => num === '⌫' ? handleDelete() : handleNumberPress(num)}
+                    onPress={() => (num === '⌫' ? handleDelete() : handleNumberPress(num))}
                     pressStyle={{ opacity: 0.7, backgroundColor: '#f1f5f9' }}
                   >
-                    <BodyText fontSize={24} fontWeight="500">{num}</BodyText>
+                    <BodyText fontSize={24} fontWeight="500">
+                      {num}
+                    </BodyText>
                   </YStack>
                 ))}
               </XStack>
@@ -180,7 +188,9 @@ export default function AddTransactionScreen() {
                 router.back();
               }}
             >
-              <BodyText color="white" fontWeight="600">Save Transaction</BodyText>
+              <BodyText color="white" fontWeight="600">
+                Save Transaction
+              </BodyText>
             </Button>
           </YStack>
 

@@ -9,13 +9,15 @@ export const resources = {
 // Lazy load to support tree shaking
 export async function loadLocale(locale: string): Promise<Record<string, unknown>> {
   switch (locale) {
-    case 'de':
+    case 'de': {
       const { de } = await import('./de');
       return de;
+    }
     case 'en':
-    default:
+    default: {
       const { en } = await import('./en');
       return en;
+    }
   }
 }
 

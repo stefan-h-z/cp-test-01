@@ -1,4 +1,4 @@
-import type { SidebarProps, SidebarItem, SidebarConfig } from '@app/types';
+import type { SidebarProps, SidebarItem } from '@app/types';
 import {
   X,
   ChevronRight,
@@ -201,12 +201,7 @@ export function Sidebar({
             }
           }}
         >
-          {IconComponent && (
-            <IconComponent
-              size={20}
-              color={isActive ? '$blue10' : '$gray10'}
-            />
-          )}
+          {IconComponent && <IconComponent size={20} color={isActive ? '$blue10' : '$gray10'} />}
           <Text
             flex={1}
             fontSize="$3"
@@ -218,24 +213,19 @@ export function Sidebar({
           {item.badge !== undefined && (
             <Badge>
               <Text color="white" fontSize={11} fontWeight="600">
-                {typeof item.badge === 'number' && item.badge > 99
-                  ? '99+'
-                  : item.badge}
+                {typeof item.badge === 'number' && item.badge > 99 ? '99+' : item.badge}
               </Text>
             </Badge>
           )}
-          {hasChildren && (
-            isExpanded ? (
+          {hasChildren &&
+            (isExpanded ? (
               <ChevronDown size={16} color="$gray9" />
             ) : (
               <ChevronRight size={16} color="$gray9" />
-            )
-          )}
+            ))}
         </MenuItem>
         {hasChildren && isExpanded && (
-          <YStack>
-            {item.children!.map((child) => renderItem(child, true))}
-          </YStack>
+          <YStack>{item.children!.map((child) => renderItem(child, true))}</YStack>
         )}
       </React.Fragment>
     );
@@ -246,10 +236,7 @@ export function Sidebar({
   }
 
   const sidebarContent = (
-    <SidebarContainer
-      position={position}
-      width={280}
-    >
+    <SidebarContainer position={position} width={280}>
       {/* Header */}
       {config.header && (
         <SidebarHeader>
@@ -270,9 +257,7 @@ export function Sidebar({
 
       {/* Navigation Items */}
       <ScrollView flex={1}>
-        <YStack paddingVertical="$2">
-          {config.items.map((item) => renderItem(item))}
-        </YStack>
+        <YStack paddingVertical="$2">{config.items.map((item) => renderItem(item))}</YStack>
       </ScrollView>
 
       {/* Footer */}
@@ -280,12 +265,7 @@ export function Sidebar({
         <SidebarFooter>
           {config.footer.items?.map((item) => renderItem(item))}
           {config.footer.showVersion && (
-            <Text
-              fontSize="$1"
-              color="$gray9"
-              textAlign="center"
-              paddingVertical="$2"
-            >
+            <Text fontSize="$1" color="$gray9" textAlign="center" paddingVertical="$2">
               Version 1.0.0
             </Text>
           )}
@@ -297,10 +277,7 @@ export function Sidebar({
   // Temporary variant with overlay
   if (variant === 'temporary') {
     return (
-      <Overlay
-        onPress={onClose}
-        style={{ position: 'fixed' } as never}
-      >
+      <Overlay onPress={onClose} style={{ position: 'fixed' } as never}>
         <XStack
           onPress={(e) => e.stopPropagation()}
           height="100%"

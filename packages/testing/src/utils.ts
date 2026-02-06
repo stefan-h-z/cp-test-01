@@ -6,9 +6,7 @@ export function waitFor(ms: number): Promise<void> {
 }
 
 // Create a mock function with typed return
-export function createMockFn<T extends (...args: unknown[]) => unknown>(
-  implementation?: T
-) {
+export function createMockFn<T extends (...args: unknown[]) => unknown>(implementation?: T) {
   return vi.fn(implementation);
 }
 
@@ -45,7 +43,7 @@ export function mockFetchError(error: Error | string): void {
 
 export function mockFetchSequence(responses: (MockFetchResponse | unknown)[]): void {
   const mockFn = vi.fn();
-  responses.forEach((response, index) => {
+  responses.forEach((response, _index) => {
     const mockResponse: MockFetchResponse =
       typeof response === 'object' && response !== null && 'ok' in response
         ? (response as MockFetchResponse)

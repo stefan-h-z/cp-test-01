@@ -1,4 +1,4 @@
-import { YStack, XStack } from 'tamagui';
+import { YStack } from 'tamagui';
 import { Heading, BodyText } from '../components/Typography';
 
 interface BudgetContentProps {
@@ -24,7 +24,9 @@ export function BudgetContent({ icon }: BudgetContentProps) {
       <BodyText color="$neutral500" textAlign="center">
         Manage your monthly budgets and spending limits.
       </BodyText>
-      <BodyText color="$neutral400" size="sm">Coming soon...</BodyText>
+      <BodyText color="$neutral400" size="sm">
+        Coming soon...
+      </BodyText>
     </YStack>
   );
 }

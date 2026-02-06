@@ -19,7 +19,9 @@ export function StatCard({ label, value, change, changeType }: StatData) {
       shadowRadius={8}
       elevation={3}
     >
-      <BodyText size="sm" color="$neutral500">{label}</BodyText>
+      <BodyText size="sm" color="$neutral500">
+        {label}
+      </BodyText>
       <Heading level={3}>{value}</Heading>
       <BodyText size="xs" color={changeType === 'positive' ? '#10b981' : '#ef4444'}>
         {change} from last month
@@ -28,7 +30,12 @@ export function StatCard({ label, value, change, changeType }: StatData) {
   );
 }
 
-export function TransactionItem({ icon, title, category, amount }: Omit<TransactionData, 'id' | 'date'>) {
+export function TransactionItem({
+  icon,
+  title,
+  category,
+  amount,
+}: Omit<TransactionData, 'id' | 'date'>) {
   const isIncome = amount > 0;
   return (
     <XStack
@@ -50,8 +57,12 @@ export function TransactionItem({ icon, title, category, amount }: Omit<Transact
           <BodyText fontSize={20}>{icon}</BodyText>
         </YStack>
         <YStack flex={1}>
-          <BodyText fontWeight="600" numberOfLines={1}>{title}</BodyText>
-          <BodyText size="sm" color="$neutral500">{category}</BodyText>
+          <BodyText fontWeight="600" numberOfLines={1}>
+            {title}
+          </BodyText>
+          <BodyText size="sm" color="$neutral500">
+            {category}
+          </BodyText>
         </YStack>
       </XStack>
       <BodyText fontWeight="600" color={isIncome ? '#10b981' : '$color'}>
@@ -69,7 +80,9 @@ export function CategoryItem({ name, percentage, spent, budget, color }: Categor
       <XStack justifyContent="space-between" alignItems="center">
         <XStack gap="$2" alignItems="center">
           <YStack width={12} height={12} borderRadius={6} backgroundColor={color} />
-          <BodyText fontWeight="500">{percentage}% {name}</BodyText>
+          <BodyText fontWeight="500">
+            {percentage}% {name}
+          </BodyText>
         </XStack>
       </XStack>
       <YStack height={6} backgroundColor="#e2e8f0" borderRadius={3} overflow="hidden">
@@ -95,21 +108,38 @@ export function BudgetOverviewCard() {
       </XStack>
       <XStack justifyContent="space-between">
         <YStack alignItems="center">
-          <BodyText size="sm" color="$neutral500">Budgeted</BodyText>
+          <BodyText size="sm" color="$neutral500">
+            Budgeted
+          </BodyText>
           <Heading level={4}>$3,500</Heading>
         </YStack>
         <YStack alignItems="center">
-          <BodyText size="sm" color="$neutral500">Spent</BodyText>
+          <BodyText size="sm" color="$neutral500">
+            Spent
+          </BodyText>
           <Heading level={4}>$1,400</Heading>
         </YStack>
         <YStack alignItems="center">
-          <BodyText size="sm" color="$neutral500">Left</BodyText>
-          <Heading level={4} color="#10b981">$2,100</Heading>
+          <BodyText size="sm" color="$neutral500">
+            Left
+          </BodyText>
+          <Heading level={4} color="#10b981">
+            $2,100
+          </Heading>
         </YStack>
       </XStack>
-      <XStack marginTop="$3" padding="$3" backgroundColor="#ecfdf5" borderRadius="$3" alignItems="center" gap="$2">
+      <XStack
+        marginTop="$3"
+        padding="$3"
+        backgroundColor="#ecfdf5"
+        borderRadius="$3"
+        alignItems="center"
+        gap="$2"
+      >
         <BodyText color="#059669">✓</BodyText>
-        <BodyText size="sm" color="#059669">You are on track!</BodyText>
+        <BodyText size="sm" color="#059669">
+          You are on track!
+        </BodyText>
       </XStack>
     </Card>
   );
@@ -120,7 +150,9 @@ export function TransactionsCard({ limit = 4 }: { limit?: number }) {
     <Card padded backgroundColor="white">
       <XStack justifyContent="space-between" alignItems="center" marginBottom="$3">
         <Heading level={4}>Latest transactions</Heading>
-        <BodyText size="sm" color="#6366f1" fontWeight="500">Show all</BodyText>
+        <BodyText size="sm" color="#6366f1" fontWeight="500">
+          Show all
+        </BodyText>
       </XStack>
       <YStack gap="$2">
         {transactionsData.slice(0, limit).map((tx) => (
@@ -136,7 +168,9 @@ export function SpendingTrendsCard() {
     <Card padded backgroundColor="white">
       <XStack justifyContent="space-between" alignItems="center" marginBottom="$4">
         <Heading level={4}>Spending trends</Heading>
-        <BodyText size="xs" color="$neutral500">This month</BodyText>
+        <BodyText size="xs" color="$neutral500">
+          This month
+        </BodyText>
       </XStack>
       <YStack gap="$4">
         {categoriesData.map((cat) => (
@@ -165,7 +199,11 @@ function MenuIcon() {
   );
 }
 
-export function DashboardHeader({ userName = 'Developer', balance = '$450', onMenuPress }: DashboardHeaderProps) {
+export function DashboardHeader({
+  userName = 'Developer',
+  balance = '$450',
+  onMenuPress,
+}: DashboardHeaderProps) {
   const currentMonth = new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
 
   return (
@@ -186,8 +224,12 @@ export function DashboardHeader({ userName = 'Developer', balance = '$450', onMe
             </BodyText>
           </YStack>
           <YStack>
-            <BodyText size="sm" color="rgba(255,255,255,0.7)">My Budget</BodyText>
-            <BodyText color="white" fontWeight="500">{currentMonth}</BodyText>
+            <BodyText size="sm" color="rgba(255,255,255,0.7)">
+              My Budget
+            </BodyText>
+            <BodyText color="white" fontWeight="500">
+              {currentMonth}
+            </BodyText>
           </YStack>
         </XStack>
         {onMenuPress && (
@@ -207,7 +249,9 @@ export function DashboardHeader({ userName = 'Developer', balance = '$450', onMe
       {/* Balance */}
       <YStack alignItems="center" gap="$1" paddingVertical="$4">
         <BodyText color="rgba(255,255,255,0.7)">Funds available to budget</BodyText>
-        <Heading level={1} color="white" fontSize={48}>{balance}</Heading>
+        <Heading level={1} color="white" fontSize={48}>
+          {balance}
+        </Heading>
       </YStack>
     </YStack>
   );
@@ -229,7 +273,10 @@ interface DashboardContentProps {
   userAvatar?: string;
 }
 
-export function DashboardContent({ userName, userAvatar }: DashboardContentProps) {
+export function DashboardContent({
+  userName: _userName,
+  userAvatar: _userAvatar,
+}: DashboardContentProps) {
   return (
     <YStack flex={1} gap="$4" padding="$4">
       <BudgetOverviewCard />

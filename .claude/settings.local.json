@@ -8,7 +8,10 @@
       "Bash(pnpm --filter @app/mobile typecheck:*)",
       "Bash(timeout 30 pnpm dev:web:*)",
       "Bash(pnpm lint:*)",
-      "Bash(pnpm lint:fix:*)"
+      "Bash(pnpm lint:fix:*)",
+      "Bash(pnpm exec eslint:*)",
+      "Bash(pnpm --filter @app/ui typecheck:*)",
+      "Bash(timeout 15 pnpm dev:web:*)"
     ]
   }
 }

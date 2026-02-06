@@ -1,5 +1,5 @@
 import type { SortState, FilterState, PaginationState } from '@app/types';
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback } from 'react';
 
 interface UseDataGridOptions {
   initialPage?: number;

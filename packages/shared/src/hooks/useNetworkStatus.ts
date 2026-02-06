@@ -12,7 +12,8 @@ export interface NetworkStatus {
 function useWebNetworkStatus(): NetworkStatus {
   const [status, setStatus] = useState<NetworkStatus>(() => {
     if (typeof navigator !== 'undefined') {
-      const connection = (navigator as Navigator & { connection?: { effectiveType?: string } }).connection;
+      const connection = (navigator as Navigator & { connection?: { effectiveType?: string } })
+        .connection;
       return {
         isOnline: navigator.onLine,
         isOffline: !navigator.onLine,
@@ -46,13 +47,8 @@ function useWebNetworkStatus(): NetworkStatus {
   return status;
 }
 
-// Hook that works on both web and native
-export function useNetworkStatus(): NetworkStatus {
-  // On web, use the web implementation
-  if (Platform.OS === 'web') {
-    return useWebNetworkStatus();
-  }
-
+// Hook for native network status
+function useNativeNetworkStatus(): NetworkStatus {
   // For native, we'll need to use @react-native-community/netinfo
   // This is a placeholder that assumes online - the actual implementation
   // would require the netinfo package to be installed
@@ -79,9 +75,21 @@ export function useNetworkStatus(): NetworkStatus {
   return status;
 }
 
+// Hook that works on both web and native
+export function useNetworkStatus(): NetworkStatus {
+  const isWeb = Platform.OS === 'web';
+  const webStatus = useWebNetworkStatus();
+  const nativeStatus = useNativeNetworkStatus();
+
+  // Return the appropriate status based on platform
+  return isWeb ? webStatus : nativeStatus;
+}
+
 // Hook for handling offline actions
 export function useOfflineQueue() {
-  const [queue, setQueue] = useState<Array<{ id: string; action: () => Promise<void>; retries: number }>>([]);
+  const [queue, setQueue] = useState<
+    Array<{ id: string; action: () => Promise<void>; retries: number }>
+  >([]);
   const { isOnline } = useNetworkStatus();
 
   const addToQueue = useCallback((action: () => Promise<void>) => {
@@ -109,12 +117,10 @@ export function useOfflineQueue() {
         try {
           await item.action();
           removeFromQueue(item.id);
-        } catch (error) {
+        } catch (_error) {
           // Increment retry count
           setQueue((prev) =>
-            prev.map((q) =>
-              q.id === item.id ? { ...q, retries: q.retries + 1 } : q
-            )
+            prev.map((q) => (q.id === item.id ? { ...q, retries: q.retries + 1 } : q))
           );
 
           // Remove after max retries

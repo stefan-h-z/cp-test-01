@@ -1,5 +1,5 @@
 import type { AppConfig, AuthConfig, I18nAppConfig } from '@app/types';
-import { getEnvironmentConfig, currentEnvironment } from './env';
+import { getEnvironmentConfig } from './env';
 
 // Re-export environment utilities
 export * from './env';
@@ -127,4 +127,9 @@ export function createAppConfig(overrides: Partial<AppConfig> = {}): AppConfig {
   };
 }
 
-export { type AppConfig, type AuthConfig, type AuthProviderConfig, type I18nAppConfig } from '@app/types';
+export {
+  type AppConfig,
+  type AuthConfig,
+  type AuthProviderConfig,
+  type I18nAppConfig,
+} from '@app/types';

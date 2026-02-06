@@ -1,4 +1,4 @@
-import type { TabConfig, TabBarProps } from '@app/types';
+import type { TabBarProps } from '@app/types';
 import {
   Home,
   Search,
@@ -125,16 +125,11 @@ export function TabBar({
         return (
           <TabItem key={tab.name} onPress={() => onTabPress(tab)}>
             <XStack position="relative">
-              <IconComponent
-                size={24}
-                color={isActive ? '$blue10' : '$gray9'}
-              />
+              <IconComponent size={24} color={isActive ? '$blue10' : '$gray9'} />
               {showBadge && (
                 <Badge>
                   <BadgeText>
-                    {typeof tab.badge === 'number' && tab.badge > 99
-                      ? '99+'
-                      : tab.badge}
+                    {typeof tab.badge === 'number' && tab.badge > 99 ? '99+' : tab.badge}
                   </BadgeText>
                 </Badge>
               )}

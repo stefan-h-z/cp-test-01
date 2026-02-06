@@ -1,5 +1,5 @@
 import React from 'react';
-import { styled, Button as TamaguiButton, GetProps, Spinner, XStack } from 'tamagui';
+import { styled, Button as TamaguiButton, GetProps, Spinner } from 'tamagui';
 
 // Modern button with gradient and glass options
 export const Button = styled(TamaguiButton, {
@@ -116,7 +116,7 @@ export const Button = styled(TamaguiButton, {
       },
       gradient: {
         color: 'white',
-        // @ts-ignore - web specific
+        // @ts-expect-error - web specific
         style: {
           background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
         },
@@ -129,7 +129,7 @@ export const Button = styled(TamaguiButton, {
         color: '$color',
         borderWidth: 1,
         borderColor: '$glassBorder',
-        // @ts-ignore
+        // @ts-expect-error - web specific CSS property
         style: {
           backdropFilter: 'blur(12px)',
           WebkitBackdropFilter: 'blur(12px)',
@@ -318,7 +318,7 @@ export const FAB = styled(TamaguiButton, {
     variant: {
       primary: {
         backgroundColor: '$primary',
-        // @ts-ignore
+        // @ts-expect-error - web specific gradient
         style: {
           background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
         },

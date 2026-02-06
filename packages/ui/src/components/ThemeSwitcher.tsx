@@ -100,13 +100,32 @@ export function ThemeSwitcher({
   labels = defaultLabels,
 }: ThemeSwitcherProps) {
   const mergedLabels = { ...defaultLabels, ...labels };
+  const [isOpen, setIsOpen] = React.useState(false);
 
   const getIcon = (themeMode: ThemeMode | 'light' | 'dark', size = 18) => {
     switch (themeMode) {
       case 'light':
-        return <Sun size={size} color={mode === 'light' || (mode === 'system' && resolvedMode === 'light') ? '$blue10' : '$gray10'} />;
+        return (
+          <Sun
+            size={size}
+            color={
+              mode === 'light' || (mode === 'system' && resolvedMode === 'light')
+                ? '$blue10'
+                : '$gray10'
+            }
+          />
+        );
       case 'dark':
-        return <Moon size={size} color={mode === 'dark' || (mode === 'system' && resolvedMode === 'dark') ? '$blue10' : '$gray10'} />;
+        return (
+          <Moon
+            size={size}
+            color={
+              mode === 'dark' || (mode === 'system' && resolvedMode === 'dark')
+                ? '$blue10'
+                : '$gray10'
+            }
+          />
+        );
       case 'system':
         return <Monitor size={size} color={mode === 'system' ? '$blue10' : '$gray10'} />;
     }
@@ -145,8 +164,6 @@ export function ThemeSwitcher({
 
   // Dropdown variant
   if (variant === 'dropdown') {
-    const [isOpen, setIsOpen] = React.useState(false);
-
     return (
       <YStack position="relative">
         <ToggleButton onPress={() => setIsOpen(!isOpen)}>
@@ -235,9 +252,15 @@ export function ThemeSwitcher({
           isActive={mode === themeMode}
           onPress={() => onModeChange(themeMode)}
         >
-          {themeMode === 'light' && <Sun size={16} color={mode === 'light' ? '$blue10' : '$gray10'} />}
-          {themeMode === 'dark' && <Moon size={16} color={mode === 'dark' ? '$blue10' : '$gray10'} />}
-          {themeMode === 'system' && <Monitor size={16} color={mode === 'system' ? '$blue10' : '$gray10'} />}
+          {themeMode === 'light' && (
+            <Sun size={16} color={mode === 'light' ? '$blue10' : '$gray10'} />
+          )}
+          {themeMode === 'dark' && (
+            <Moon size={16} color={mode === 'dark' ? '$blue10' : '$gray10'} />
+          )}
+          {themeMode === 'system' && (
+            <Monitor size={16} color={mode === 'system' ? '$blue10' : '$gray10'} />
+          )}
           {showLabels && (
             <Text
               fontSize="$2"

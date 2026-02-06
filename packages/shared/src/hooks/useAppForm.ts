@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import {
   useForm,
   UseFormReturn,
@@ -11,7 +11,10 @@ import {
 } from 'react-hook-form';
 import { z } from 'zod';
 
-export interface UseAppFormOptions<T extends FieldValues> extends Omit<UseFormProps<T>, 'resolver'> {
+export interface UseAppFormOptions<T extends FieldValues> extends Omit<
+  UseFormProps<T>,
+  'resolver'
+> {
   schema: z.ZodSchema<T>;
   defaultValues?: DefaultValues<T>;
   onSubmit?: (data: T) => void | Promise<void>;
@@ -57,19 +60,12 @@ export function useAppForm<T extends FieldValues>({
   });
 
   const {
-    formState: { isSubmitting, isValid, isDirty, errors },
+    formState: { isSubmitting, isValid, isDirty },
     handleSubmit,
     setValue,
     getValues,
     trigger,
     clearErrors,
-    reset,
-    watch,
-    control,
-    register,
-    unregister,
-    setError,
-    setFocus,
     getFieldState,
   } = form;
 

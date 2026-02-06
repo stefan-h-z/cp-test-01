@@ -2,7 +2,6 @@ import { useCallback, useMemo } from 'react';
 import { useTranslation as useI18nTranslation, Trans } from 'react-i18next';
 import { i18n } from './config';
 import { supportedLocales, localeNames, type SupportedLocale } from './locales';
-import type { TranslationKeys } from './locales/en';
 
 // Type-safe translation hook
 export function useTranslation() {
@@ -102,7 +101,7 @@ export function useLanguage() {
         name: localeNames[locale],
         isActive: locale === currentLocale,
       })),
-    [currentLocale]
+    [currentLocale, localeNames, supportedLocales]
   );
 
   return {

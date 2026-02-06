@@ -29,10 +29,8 @@ export interface UseProtectedRouteResult {
   hasAllRoles: (roles: string[]) => boolean;
 }
 
-export function useProtectedRoute(
-  options: UseProtectedRouteOptions = {}
-): UseProtectedRouteResult {
-  const { roles = [], redirectTo, onUnauthorized, requireAuth = true } = options;
+export function useProtectedRoute(options: UseProtectedRouteOptions = {}): UseProtectedRouteResult {
+  const { roles = [], redirectTo: _redirectTo, onUnauthorized, requireAuth = true } = options;
 
   const auth = useAuth();
   const { isAuthenticated, isLoading, user } = auth;

@@ -1,12 +1,5 @@
-import type { ThemeMode, ThemeModeState, ThemeModeContextValue } from '@app/types';
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  useCallback,
-  useMemo,
-} from 'react';
+import type { ThemeMode, ThemeModeContextValue } from '@app/types';
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { useColorScheme } from 'react-native';
 import { storage, STORAGE_KEYS } from '../utils/storage';
 
@@ -90,11 +83,7 @@ export function ThemeModeProvider({
     return null;
   }
 
-  return (
-    <ThemeModeContext.Provider value={value}>
-      {children}
-    </ThemeModeContext.Provider>
-  );
+  return <ThemeModeContext.Provider value={value}>{children}</ThemeModeContext.Provider>;
 }
 
 export function useThemeMode(): ThemeModeContextValue {

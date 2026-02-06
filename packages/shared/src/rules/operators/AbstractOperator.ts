@@ -1,7 +1,9 @@
+interface ParameterDefinition {
+  name: string;
+  type: string;
+}
 
-
-class AbstractOperator {
-
-    protected parameterDefinitions: Array<ParameterDefinition> = [];
-    public execute(): any;
+export abstract class AbstractOperator {
+  protected parameterDefinitions: Array<ParameterDefinition> = [];
+  public abstract execute(): unknown;
 }

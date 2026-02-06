@@ -1,8 +1,17 @@
 import { useQRScannerLogic } from '@app/shared';
-import { YStack, XStack, Heading, BodyText, Button, Section, Spinner , QRScannerResult, QRScannerHistory } from '@app/ui';
+import {
+  YStack,
+  XStack,
+  Heading,
+  BodyText,
+  Button,
+  Section,
+  Spinner,
+  QRScannerResult,
+  QRScannerHistory,
+} from '@app/ui';
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 
 // Declare BarcodeDetector for TypeScript
 declare global {
@@ -44,7 +53,9 @@ export function QRScannerScreen() {
       if ('BarcodeDetector' in window) {
         try {
           // Check if QR code format is supported
-          const formats = await (window.BarcodeDetector as unknown as { getSupportedFormats: () => Promise<string[]> }).getSupportedFormats?.() ?? ['qr_code'];
+          const formats = (await (
+            window.BarcodeDetector as unknown as { getSupportedFormats: () => Promise<string[]> }
+          ).getSupportedFormats?.()) ?? ['qr_code'];
           setIsSupported(formats.includes('qr_code'));
 
           // Create detector instance
@@ -177,8 +188,8 @@ export function QRScannerScreen() {
             borderColor="$yellow6"
           >
             <BodyText textAlign="center">
-              Your browser doesn't support the Barcode Detection API.
-              Please use a modern browser like Chrome, Edge, or Safari on macOS.
+              Your browser doesn&apos;t support the Barcode Detection API. Please use a modern
+              browser like Chrome, Edge, or Safari on macOS.
             </BodyText>
           </YStack>
           <Button variant="outline" onPress={() => navigate(-1)}>
@@ -271,7 +282,9 @@ export function QRScannerScreen() {
             ) : isSupported === null ? (
               <YStack alignItems="center" padding="$6">
                 <Spinner size="large" />
-                <BodyText muted marginTop="$2">Checking browser support...</BodyText>
+                <BodyText muted marginTop="$2">
+                  Checking browser support...
+                </BodyText>
               </YStack>
             ) : (
               <YStack

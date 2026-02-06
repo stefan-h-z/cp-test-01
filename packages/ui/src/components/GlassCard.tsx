@@ -10,7 +10,7 @@ const GlassBase = styled(YStack, {
   borderRadius: '$5',
   overflow: 'hidden',
   // CSS backdrop-filter for web
-  // @ts-ignore - web-specific property
+  // @ts-expect-error - web-specific property
   style: {
     backdropFilter: 'blur(12px)',
     WebkitBackdropFilter: 'blur(12px)',
@@ -42,7 +42,7 @@ const GlassBase = styled(YStack, {
       solid: {
         backgroundColor: '$background',
         borderColor: '$borderColor',
-        // @ts-ignore
+        // @ts-expect-error - web specific CSS
         style: {
           backdropFilter: 'none',
         },
@@ -101,16 +101,13 @@ const GradientBorderWrapper = styled(YStack, {
   padding: 1,
   borderRadius: '$5',
   overflow: 'hidden',
-  // @ts-ignore
+  // @ts-expect-error - web specific gradient
   style: {
     background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.5) 0%, rgba(168, 85, 247, 0.5) 100%)',
   },
 });
 
-export function GlassCardGradient({
-  children,
-  ...props
-}: GlassCardProps) {
+export function GlassCardGradient({ children, ...props }: GlassCardProps) {
   return (
     <GradientBorderWrapper>
       <GlassBase {...props} borderWidth={0}>
@@ -222,7 +219,7 @@ export interface FeatureCardProps extends GetProps<typeof FeatureCardBase> {
 export function FeatureCard({
   icon,
   title,
-  description,
+  description: _description,
   children,
   ...props
 }: FeatureCardProps) {
@@ -235,7 +232,7 @@ export function FeatureCard({
           borderRadius="$3"
           alignItems="center"
           justifyContent="center"
-          // @ts-ignore
+          // @ts-expect-error - web specific gradient
           style={{
             background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
           }}
@@ -245,9 +242,7 @@ export function FeatureCard({
       )}
       {title && (
         <XStack>
-          <YStack>
-            {/* Title would be Text component */}
-          </YStack>
+          <YStack>{/* Title would be Text component */}</YStack>
         </XStack>
       )}
       {children}

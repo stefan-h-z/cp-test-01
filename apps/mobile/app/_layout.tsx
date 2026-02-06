@@ -1,4 +1,11 @@
-import { AppProvider, AuthProvider, useAuth, useAppConfig, ConfigProvider, ThemeModeProvider } from '@app/shared';
+import {
+  AppProvider,
+  AuthProvider,
+  useAuth,
+  useAppConfig,
+  ConfigProvider,
+  ThemeModeProvider,
+} from '@app/shared';
 import { TamaguiProvider, Theme } from '@app/ui';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -31,7 +38,7 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
       // Redirect to home
       router.replace('/(tabs)');
     }
-  }, [isAuthenticated, isLoading, segments, authConfig.enabled]);
+  }, [isAuthenticated, isLoading, segments, authConfig.enabled, router]);
 
   return <>{children}</>;
 }

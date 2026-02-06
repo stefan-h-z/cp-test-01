@@ -4,12 +4,6 @@ import { YStack, XStack, Heading, BodyText, Button, Spinner, Section } from '@ap
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const providerLabels: Record<AuthProviderType, string> = {
-  google: 'Google',
-  entra: 'Microsoft',
-  dev: 'Developer',
-};
-
 export default function LoginScreen() {
   const router = useRouter();
   const {
@@ -89,7 +83,9 @@ export default function LoginScreen() {
             <>
               <XStack alignItems="center" gap="$2" opacity={0.5}>
                 <YStack flex={1} height={1} backgroundColor="$gray6" />
-                <BodyText size="sm" muted>DEV</BodyText>
+                <BodyText size="sm" muted>
+                  DEV
+                </BodyText>
                 <YStack flex={1} height={1} backgroundColor="$gray6" />
               </XStack>
               <Button

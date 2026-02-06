@@ -9,9 +9,10 @@ const SkeletonBase = styled(YStack, {
   overflow: 'hidden',
   position: 'relative',
   // Shimmer animation via CSS
-  // @ts-ignore
+  // @ts-expect-error - web specific CSS animation
   style: {
-    background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%)',
+    background:
+      'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%)',
     backgroundSize: '200% 100%',
     animation: 'shimmer 1.5s infinite',
   },
@@ -19,23 +20,25 @@ const SkeletonBase = styled(YStack, {
     variant: {
       pulse: {
         animation: 'pulse',
-        // @ts-ignore
+        // @ts-expect-error - web specific animation
         style: {
           animation: 'pulse 2s ease-in-out infinite',
         },
       },
       shimmer: {
-        // @ts-ignore
+        // @ts-expect-error - web specific animation
         style: {
-          background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%)',
+          background:
+            'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%)',
           backgroundSize: '200% 100%',
           animation: 'shimmer 1.5s infinite linear',
         },
       },
       wave: {
-        // @ts-ignore
+        // @ts-expect-error - web specific animation
         style: {
-          background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 25%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0.2) 75%, transparent 100%)',
+          background:
+            'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 25%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0.2) 75%, transparent 100%)',
           backgroundSize: '400% 100%',
           animation: 'wave 2s infinite ease-in-out',
         },
@@ -107,18 +110,8 @@ export function SkeletonText({
 }
 
 // Avatar skeleton
-export function SkeletonAvatar({
-  size = 48,
-  ...props
-}: SkeletonProps & { size?: number }) {
-  return (
-    <SkeletonBase
-      width={size}
-      height={size}
-      borderRadius="$full"
-      {...props}
-    />
-  );
+export function SkeletonAvatar({ size = 48, ...props }: SkeletonProps & { size?: number }) {
+  return <SkeletonBase width={size} height={size} borderRadius="$full" {...props} />;
 }
 
 // Card skeleton
@@ -142,9 +135,7 @@ export function SkeletonCard({
       borderColor="$borderColor"
       {...props}
     >
-      {showImage && (
-        <SkeletonBase height={160} width="100%" borderRadius="$3" />
-      )}
+      {showImage && <SkeletonBase height={160} width="100%" borderRadius="$3" />}
       {showAvatar && (
         <XStack gap="$3" alignItems="center">
           <SkeletonAvatar size={40} />
@@ -182,9 +173,7 @@ export function SkeletonListItem({
         <SkeletonBase height={14} width="70%" />
         <SkeletonBase height={12} width="50%" />
       </YStack>
-      {showAction && (
-        <SkeletonBase height={32} width={32} borderRadius="$2" />
-      )}
+      {showAction && <SkeletonBase height={32} width={32} borderRadius="$2" />}
     </XStack>
   );
 }
@@ -195,14 +184,7 @@ export function SkeletonButton({
   height = 40,
   ...props
 }: SkeletonProps & { width?: number | string; height?: number }) {
-  return (
-    <SkeletonBase
-      width={width}
-      height={height}
-      borderRadius="$3"
-      {...props}
-    />
-  );
+  return <SkeletonBase width={width} height={height} borderRadius="$3" {...props} />;
 }
 
 // Input skeleton

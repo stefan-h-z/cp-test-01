@@ -10,11 +10,7 @@ export interface ContactFormProps {
   isLoading?: boolean;
 }
 
-export function ContactForm({
-  onSubmit,
-  onCancel,
-  isLoading: externalLoading,
-}: ContactFormProps) {
+export function ContactForm({ onSubmit, onCancel, isLoading: externalLoading }: ContactFormProps) {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
@@ -36,9 +32,7 @@ export function ContactForm({
         form.reset();
       } catch (error) {
         setSubmitError(
-          error instanceof Error
-            ? error.message
-            : 'Failed to send message. Please try again.'
+          error instanceof Error ? error.message : 'Failed to send message. Please try again.'
         );
       }
     },
@@ -53,7 +47,7 @@ export function ContactForm({
           Message Sent!
         </Text>
         <Text fontSize="$3" color="$gray11" textAlign="center">
-          Thank you for contacting us. We'll get back to you as soon as possible.
+          Thank you for contacting us. We&apos;ll get back to you as soon as possible.
         </Text>
         <Button onPress={() => setSubmitSuccess(false)} variant="outlined">
           Send Another Message
@@ -118,18 +112,11 @@ export function ContactForm({
 
         <FormActions>
           {onCancel && (
-            <Button
-              variant="outlined"
-              onPress={onCancel}
-              disabled={isLoading}
-            >
+            <Button variant="outlined" onPress={onCancel} disabled={isLoading}>
               Cancel
             </Button>
           )}
-          <Button
-            onPress={form.handleFormSubmit}
-            disabled={isLoading || !form.isDirty}
-          >
+          <Button onPress={form.handleFormSubmit} disabled={isLoading || !form.isDirty}>
             {isLoading ? <Spinner size="small" /> : 'Send Message'}
           </Button>
         </FormActions>

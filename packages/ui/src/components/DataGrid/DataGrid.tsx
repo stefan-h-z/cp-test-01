@@ -1,13 +1,7 @@
-import type {
-  DataGridProps,
-  DataGridColumn,
-  SortState,
-  FilterState,
-  PaginationState,
-} from '@app/types';
+import type { DataGridProps, SortState, FilterState, PaginationState } from '@app/types';
 import React, { useState, useMemo, useCallback } from 'react';
 import { ScrollView } from 'react-native';
-import { YStack, XStack, Text, Spinner } from 'tamagui';
+import { YStack, Text, Spinner } from 'tamagui';
 import { DataGridFilter } from './DataGridFilter';
 import { DataGridHeader } from './DataGridHeader';
 import { DataGridPagination } from './DataGridPagination';
@@ -69,8 +63,8 @@ export function DataGrid<T extends { id: string | number }>({
           ? sortState.direction === 'asc'
             ? 'desc'
             : sortState.direction === 'desc'
-            ? null
-            : 'asc'
+              ? null
+              : 'asc'
           : 'asc';
 
       const newSortState: SortState = {
@@ -209,7 +203,8 @@ export function DataGrid<T extends { id: string | number }>({
   const totalPages = Math.ceil(totalItems / paginationState.pageSize);
 
   // Check if all visible rows are selected
-  const allSelected = paginatedData.length > 0 && paginatedData.every((row) => selectedIds.includes(row.id));
+  const allSelected =
+    paginatedData.length > 0 && paginatedData.every((row) => selectedIds.includes(row.id));
   const someSelected = paginatedData.some((row) => selectedIds.includes(row.id)) && !allSelected;
 
   return (

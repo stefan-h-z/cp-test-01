@@ -1,4 +1,4 @@
-import type { ToastData, ToastType } from '@app/ui';
+import type { ToastData } from '@app/ui';
 import React, { createContext, useContext, useCallback, useState, type ReactNode } from 'react';
 
 interface ToastContextValue {
@@ -29,21 +29,24 @@ interface ToastProviderProps {
 export function ToastProvider({ children, maxToasts = 5 }: ToastProviderProps) {
   const [toasts, setToasts] = useState<ToastData[]>([]);
 
-  const showToast = useCallback((toast: Omit<ToastData, 'id'>): string => {
-    const id = generateId();
-    const newToast: ToastData = { ...toast, id };
+  const showToast = useCallback(
+    (toast: Omit<ToastData, 'id'>): string => {
+      const id = generateId();
+      const newToast: ToastData = { ...toast, id };
 
-    setToasts((prev) => {
-      const updated = [...prev, newToast];
-      // Limit number of toasts
-      if (updated.length > maxToasts) {
-        return updated.slice(-maxToasts);
-      }
-      return updated;
-    });
+      setToasts((prev) => {
+        const updated = [...prev, newToast];
+        // Limit number of toasts
+        if (updated.length > maxToasts) {
+          return updated.slice(-maxToasts);
+        }
+        return updated;
+      });
 
-    return id;
-  }, [maxToasts]);
+      return id;
+    },
+    [maxToasts]
+  );
 
   const dismissToast = useCallback((id: string) => {
     setToasts((prev) => prev.filter((toast) => toast.id !== id));
@@ -54,21 +57,33 @@ export function ToastProvider({ children, maxToasts = 5 }: ToastProviderProps) {
   }, []);
 
   // Convenience methods
-  const success = useCallback((title: string, message?: string) => {
-    return showToast({ type: 'success', title, message });
-  }, [showToast]);
+  const success = useCallback(
+    (title: string, message?: string) => {
+      return showToast({ type: 'success', title, message });
+    },
+    [showToast]
+  );
 
-  const error = useCallback((title: string, message?: string) => {
-    return showToast({ type: 'error', title, message, duration: 6000 });
-  }, [showToast]);
+  const error = useCallback(
+    (title: string, message?: string) => {
+      return showToast({ type: 'error', title, message, duration: 6000 });
+    },
+    [showToast]
+  );
 
-  const warning = useCallback((title: string, message?: string) => {
-    return showToast({ type: 'warning', title, message });
-  }, [showToast]);
+  const warning = useCallback(
+    (title: string, message?: string) => {
+      return showToast({ type: 'warning', title, message });
+    },
+    [showToast]
+  );
 
-  const info = useCallback((title: string, message?: string) => {
-    return showToast({ type: 'info', title, message });
-  }, [showToast]);
+  const info = useCallback(
+    (title: string, message?: string) => {
+      return showToast({ type: 'info', title, message });
+    },
+    [showToast]
+  );
 
   const value: ToastContextValue = {
     toasts,
@@ -81,11 +96,7 @@ export function ToastProvider({ children, maxToasts = 5 }: ToastProviderProps) {
     info,
   };
 
-  return (
-    <ToastContext.Provider value={value}>
-      {children}
-    </ToastContext.Provider>
-  );
+  return <ToastContext.Provider value={value}>{children}</ToastContext.Provider>;
 }
 
 export function useToast(): ToastContextValue {

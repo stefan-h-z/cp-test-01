@@ -16,6 +16,7 @@ export default tseslint.config(
       '**/*.config.js',
       '**/*.config.ts',
       '**/tamagui.config.ts',
+      '**/.tamagui/**',
     ],
   },
 
@@ -87,14 +88,7 @@ export default tseslint.config(
       'import/order': [
         'warn',
         {
-          groups: [
-            'builtin',
-            'external',
-            'internal',
-            'parent',
-            'sibling',
-            'index',
-          ],
+          groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
           'newlines-between': 'never',
           alphabetize: {
             order: 'asc',

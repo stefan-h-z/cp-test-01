@@ -1,4 +1,4 @@
-import { useAuth, type LoginHandler, type AuthUser, type AuthProviderConfig } from '@app/shared';
+import { useAuth, type LoginHandler, type AuthUser } from '@app/shared';
 import * as AuthSession from 'expo-auth-session';
 import * as Google from 'expo-auth-session/providers/google';
 import * as WebBrowser from 'expo-web-browser';
@@ -19,13 +19,13 @@ interface MobileAuthProviderProps {
 }
 
 export function MobileAuthProvider({ children }: MobileAuthProviderProps) {
-  const { setLoginHandler, setLogoutHandler, getProviderConfig, availableProviders } = useAuth();
+  const { setLoginHandler, setLogoutHandler, getProviderConfig } = useAuth();
 
   const googleConfig = getProviderConfig('google');
   const entraConfig = getProviderConfig('entra');
 
   // Google Auth Request
-  const [googleRequest, googleResponse, googlePromptAsync] = Google.useAuthRequest(
+  const [_googleRequest, _googleResponse, googlePromptAsync] = Google.useAuthRequest(
     googleConfig
       ? {
           clientId: googleConfig.clientId,
@@ -42,7 +42,7 @@ export function MobileAuthProvider({ children }: MobileAuthProviderProps) {
     scheme: 'crossplatformapp',
   });
 
-  const [entraRequest, entraResponse, entraPromptAsync] = AuthSession.useAuthRequest(
+  const [_entraRequest, _entraResponse, entraPromptAsync] = AuthSession.useAuthRequest(
     entraConfig
       ? {
           clientId: entraConfig.clientId,
@@ -58,11 +58,16 @@ export function MobileAuthProvider({ children }: MobileAuthProviderProps) {
   );
 
   // Handle Google login
-  const handleGoogleLogin = useCallback(async (): Promise<{ user: AuthUser; accessToken: string }> => {
+  const handleGoogleLogin = useCallback(async (): Promise<{
+    user: AuthUser;
+    accessToken: string;
+  }> => {
     const result = await googlePromptAsync();
 
     if (result.type !== 'success') {
-      throw new Error(result.type === 'cancel' ? 'Authentication cancelled' : 'Authentication failed');
+      throw new Error(
+        result.type === 'cancel' ? 'Authentication cancelled' : 'Authentication failed'
+      );
     }
 
     const accessToken = result.authentication?.accessToken;
@@ -89,11 +94,16 @@ export function MobileAuthProvider({ children }: MobileAuthProviderProps) {
   }, [googlePromptAsync]);
 
   // Handle Entra login
-  const handleEntraLogin = useCallback(async (): Promise<{ user: AuthUser; accessToken: string }> => {
+  const handleEntraLogin = useCallback(async (): Promise<{
+    user: AuthUser;
+    accessToken: string;
+  }> => {
     const result = await entraPromptAsync();
 
     if (result.type !== 'success') {
-      throw new Error(result.type === 'cancel' ? 'Authentication cancelled' : 'Authentication failed');
+      throw new Error(
+        result.type === 'cancel' ? 'Authentication cancelled' : 'Authentication failed'
+      );
     }
 
     const accessToken = result.params?.access_token;

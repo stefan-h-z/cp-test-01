@@ -1,13 +1,5 @@
 import type { NavigationState, NavigationContextValue } from '@app/types';
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useCallback,
-  useMemo,
-  ReactNode,
-  useEffect,
-} from 'react';
+import React, { createContext, useContext, useState, useCallback, useMemo, ReactNode } from 'react';
 
 const NavigationContext = createContext<NavigationContextValue | null>(null);
 
@@ -94,7 +86,7 @@ export function NavigationProvider({
   }, []);
 
   const getParam = useCallback(
-    <T = string>(key: string, defaultValue?: T): T | undefined => {
+    <T = string,>(key: string, defaultValue?: T): T | undefined => {
       const value = state.params[key];
       if (value === undefined) {
         return defaultValue;
@@ -116,11 +108,7 @@ export function NavigationProvider({
     [state, navigate, goBack, canGoBack, setParams, getParam]
   );
 
-  return (
-    <NavigationContext.Provider value={value}>
-      {children}
-    </NavigationContext.Provider>
-  );
+  return <NavigationContext.Provider value={value}>{children}</NavigationContext.Provider>;
 }
 
 export function useNavigation(): NavigationContextValue {

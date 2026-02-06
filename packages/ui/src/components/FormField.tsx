@@ -248,7 +248,7 @@ interface SelectFieldProps {
 }
 
 function SelectField({
-  name,
+  name: _name,
   options,
   value,
   onChange,
@@ -268,9 +268,7 @@ function SelectField({
           backgroundColor={value === option.value ? '$blue3' : '$gray2'}
           borderRadius="$2"
           borderWidth={1}
-          borderColor={
-            hasError ? '$red8' : value === option.value ? '$blue8' : '$gray6'
-          }
+          borderColor={hasError ? '$red8' : value === option.value ? '$blue8' : '$gray6'}
           opacity={disabled || option.disabled ? 0.5 : 1}
           pressStyle={{ backgroundColor: '$gray3' }}
           onPress={() => {
@@ -303,7 +301,7 @@ interface RadioGroupProps {
   disabled?: boolean;
 }
 
-function RadioGroup({ name, options, value, onChange, disabled }: RadioGroupProps) {
+function RadioGroup({ name: _name, options, value, onChange, disabled }: RadioGroupProps) {
   return (
     <YStack gap="$2">
       {options.map((option) => (
@@ -329,12 +327,7 @@ function RadioGroup({ name, options, value, onChange, disabled }: RadioGroupProp
             justifyContent="center"
           >
             {value === option.value && (
-              <XStack
-                width={10}
-                height={10}
-                borderRadius={5}
-                backgroundColor="$blue9"
-              />
+              <XStack width={10} height={10} borderRadius={5} backgroundColor="$blue9" />
             )}
           </XStack>
           <Text fontSize="$3">{option.label}</Text>
@@ -351,7 +344,7 @@ interface FormProps {
   gap?: string | number;
 }
 
-export function Form({ children, onSubmit, gap = '$4' }: FormProps) {
+export function Form({ children, onSubmit: _onSubmit, gap = '$4' }: FormProps) {
   return (
     <YStack gap={gap} width="100%">
       {children}

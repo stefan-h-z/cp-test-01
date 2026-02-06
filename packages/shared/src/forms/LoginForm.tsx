@@ -31,9 +31,7 @@ export function LoginForm({
       try {
         await onSubmit(data);
       } catch (error) {
-        setSubmitError(
-          error instanceof Error ? error.message : 'Login failed. Please try again.'
-        );
+        setSubmitError(error instanceof Error ? error.message : 'Login failed. Please try again.');
       }
     },
   });
@@ -76,11 +74,7 @@ export function LoginForm({
 
         <FormActions align="center">
           <YStack width="100%" gap="$3">
-            <Button
-              onPress={form.handleFormSubmit}
-              disabled={isLoading}
-              width="100%"
-            >
+            <Button onPress={form.handleFormSubmit} disabled={isLoading} width="100%">
               {isLoading ? <Spinner size="small" /> : 'Sign In'}
             </Button>
 
@@ -98,7 +92,7 @@ export function LoginForm({
 
             {onSignUp && (
               <Text fontSize="$2" textAlign="center" color="$gray11">
-                Don't have an account?{' '}
+                Don&apos;t have an account?{' '}
                 <Text color="$blue10" onPress={onSignUp} cursor="pointer">
                   Sign up
                 </Text>

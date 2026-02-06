@@ -1,9 +1,4 @@
-import type {
-  QRScannerState,
-  QRScanResult,
-  QRScannerOptions,
-  QRScannerStatus,
-} from '@app/types';
+import type { QRScannerState, QRScanResult, QRScannerOptions } from '@app/types';
 import { useState, useCallback, useRef } from 'react';
 
 const DEFAULT_OPTIONS: Required<QRScannerOptions> = {
@@ -46,9 +41,7 @@ export interface UseQRScannerLogicResult {
  * Shared hook for QR scanner business logic
  * Platform-specific implementations handle the actual camera/scanning
  */
-export function useQRScannerLogic(
-  userOptions: QRScannerOptions = {}
-): UseQRScannerLogicResult {
+export function useQRScannerLogic(userOptions: QRScannerOptions = {}): UseQRScannerLogicResult {
   const options = { ...DEFAULT_OPTIONS, ...userOptions };
   const lastScanTime = useRef<number>(0);
 
