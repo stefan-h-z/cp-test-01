@@ -1,5 +1,5 @@
-import { YStack, XStack, Heading, BodyText, Card } from '@app/ui';
 import { useAuth } from '@app/shared';
+import { YStack, XStack, Heading, BodyText, Card } from '@app/ui';
 
 // Demo data
 const stats = [

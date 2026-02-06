@@ -1,8 +1,8 @@
-import { useEffect, useCallback, type ReactNode } from 'react';
+import { useAuth, type LoginHandler, type AuthUser, type AuthProviderConfig } from '@app/shared';
 import * as AuthSession from 'expo-auth-session';
 import * as Google from 'expo-auth-session/providers/google';
 import * as WebBrowser from 'expo-web-browser';
-import { useAuth, type LoginHandler, type AuthUser, type AuthProviderConfig } from '@app/shared';
+import { useEffect, useCallback, type ReactNode } from 'react';
 
 // Complete auth session for web browser
 WebBrowser.maybeCompleteAuthSession();

@@ -1,7 +1,7 @@
-import { ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { YStack, XStack, Heading, BodyText, Card } from '@app/ui';
 import { CreditCard, Building2, Wallet, PiggyBank } from '@tamagui/lucide-icons';
+import { ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Demo accounts data
 const accounts = [

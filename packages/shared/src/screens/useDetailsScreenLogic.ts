@@ -1,6 +1,6 @@
-import { useContent } from '../hooks/useContent';
-import { getDemoContent } from '../constants/demoContent';
 import type { ContentItem } from '@app/types';
+import { getDemoContent } from '../constants/demoContent';
+import { useContent } from '../hooks/useContent';
 
 export interface DetailsScreenData {
   /** The content item to display */

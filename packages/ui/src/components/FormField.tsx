@@ -1,8 +1,8 @@
+import type { FormFieldProps, SelectOption } from '@app/types';
+import { Check, AlertCircle } from '@tamagui/lucide-icons';
 import React from 'react';
 import { YStack, XStack, Text, Label as TamaguiLabel, Checkbox, styled } from 'tamagui';
-import { Check, AlertCircle } from '@tamagui/lucide-icons';
 import { Input, TextArea } from './Input';
-import type { FormFieldProps, SelectOption } from '@app/types';
 
 const FieldContainer = styled(YStack, {
   gap: '$1',

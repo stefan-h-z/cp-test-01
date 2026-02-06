@@ -1,6 +1,6 @@
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { YStack, BudgetContent } from '@app/ui';
 import { Calendar } from '@tamagui/lucide-icons';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function BudgetScreen() {
   return (

@@ -1,5 +1,4 @@
-import React from 'react';
-import { XStack, YStack, Text, styled } from 'tamagui';
+import type { TabConfig, TabBarProps } from '@app/types';
 import {
   Home,
   Search,
@@ -15,7 +14,8 @@ import {
   Bookmark,
   type LucideIcon,
 } from '@tamagui/lucide-icons';
-import type { TabConfig, TabBarProps } from '@app/types';
+import React from 'react';
+import { XStack, YStack, Text, styled } from 'tamagui';
 
 // Icon mapping
 const iconMap: Record<string, LucideIcon> = {

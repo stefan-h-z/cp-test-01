@@ -1,10 +1,10 @@
-import React, { type ReactNode, useMemo } from 'react';
-import { QueryClientProvider } from '@tanstack/react-query';
-import type { AppConfig } from '@app/types';
 import { defaultAppConfig } from '@app/config';
+import type { AppConfig } from '@app/types';
+import { QueryClientProvider } from '@tanstack/react-query';
+import React, { type ReactNode, useMemo } from 'react';
 import { AppConfigContext } from '../hooks/useAppConfig';
-import { ToastProvider } from './ToastProvider';
 import { createQueryClient } from '../utils/queryClient';
+import { ToastProvider } from './ToastProvider';
 
 interface AppProviderProps {
   children: ReactNode;

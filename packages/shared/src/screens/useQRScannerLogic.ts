@@ -1,10 +1,10 @@
-import { useState, useCallback, useRef } from 'react';
 import type {
   QRScannerState,
   QRScanResult,
   QRScannerOptions,
   QRScannerStatus,
 } from '@app/types';
+import { useState, useCallback, useRef } from 'react';
 
 const DEFAULT_OPTIONS: Required<QRScannerOptions> = {
   vibrate: true,

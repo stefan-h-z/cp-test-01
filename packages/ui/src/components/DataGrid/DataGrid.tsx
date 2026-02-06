@@ -1,6 +1,3 @@
-import React, { useState, useMemo, useCallback } from 'react';
-import { ScrollView } from 'react-native';
-import { YStack, XStack, Text, Spinner } from 'tamagui';
 import type {
   DataGridProps,
   DataGridColumn,
@@ -8,10 +5,13 @@ import type {
   FilterState,
   PaginationState,
 } from '@app/types';
-import { DataGridHeader } from './DataGridHeader';
-import { DataGridRow } from './DataGridRow';
-import { DataGridPagination } from './DataGridPagination';
+import React, { useState, useMemo, useCallback } from 'react';
+import { ScrollView } from 'react-native';
+import { YStack, XStack, Text, Spinner } from 'tamagui';
 import { DataGridFilter } from './DataGridFilter';
+import { DataGridHeader } from './DataGridHeader';
+import { DataGridPagination } from './DataGridPagination';
+import { DataGridRow } from './DataGridRow';
 
 export function DataGrid<T extends { id: string | number }>({
   data,

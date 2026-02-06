@@ -1,5 +1,5 @@
-import type { RemoteAppConfig } from '@app/types';
 import { defaultAppConfig, defaultAuthConfig, defaultI18nConfig } from '@app/config';
+import type { RemoteAppConfig } from '@app/types';
 
 /**
  * Fallback configuration used when remote config is unavailable.
@@ -128,12 +128,12 @@ export const fallbackConfig: RemoteAppConfig = {
       fab: { route: 'add-transaction', icon: 'Plus' },
     },
     sidebar: {
-      ...({} as any),
       header: {
         title: 'FinanceApp',
         showUserInfo: true,
       },
       items: [],
+      footer: undefined,
       groups: [
         {
           id: 'main',

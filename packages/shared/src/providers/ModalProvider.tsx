@@ -1,3 +1,9 @@
+import type {
+  ModalState,
+  ModalContextValue,
+  AlertDialogProps,
+  ConfirmDialogProps,
+} from '@app/types';
 import React, {
   createContext,
   useContext,
@@ -6,12 +12,6 @@ import React, {
   useMemo,
   ReactNode,
 } from 'react';
-import type {
-  ModalState,
-  ModalContextValue,
-  AlertDialogProps,
-  ConfirmDialogProps,
-} from '@app/types';
 
 const ModalContext = createContext<ModalContextValue | null>(null);
 

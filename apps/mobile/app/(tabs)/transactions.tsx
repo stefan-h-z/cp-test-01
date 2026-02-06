@@ -1,7 +1,7 @@
-import { ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { YStack, TransactionsContent } from '@app/ui';
 import { List } from '@tamagui/lucide-icons';
+import { ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function TransactionsScreen() {
   return (

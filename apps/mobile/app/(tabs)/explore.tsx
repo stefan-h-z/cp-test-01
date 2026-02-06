@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { ScrollView } from 'react-native';
-import { YStack, XStack, Section, Heading, BodyText, Input, Button, Spinner } from '@app/ui';
 import { useSections } from '@app/shared';
 import type { ContentSection } from '@app/types';
+import { YStack, XStack, Section, Heading, BodyText, Input, Button, Spinner } from '@app/ui';
+import { useState } from 'react';
+import { ScrollView } from 'react-native';
 
 // Demo sections for development
 const demoSections: ContentSection[] = [

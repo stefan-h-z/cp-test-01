@@ -1,5 +1,5 @@
-import { XStack, Label as TamaguiLabel, Checkbox } from 'tamagui';
 import { Check } from '@tamagui/lucide-icons';
+import { XStack, Label as TamaguiLabel, Checkbox } from 'tamagui';
 import { FieldWrapper, RequiredMark, type FieldWrapperProps } from './FieldWrapper';
 
 export interface CheckboxFieldProps extends Omit<FieldWrapperProps, 'children' | 'hideLabel'> {

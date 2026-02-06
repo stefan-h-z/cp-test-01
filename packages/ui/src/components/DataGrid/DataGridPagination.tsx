@@ -1,6 +1,6 @@
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from '@tamagui/lucide-icons';
 import React from 'react';
 import { XStack, YStack, Text, Button, Select } from 'tamagui';
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from '@tamagui/lucide-icons';
 
 interface DataGridPaginationProps {
   page: number;

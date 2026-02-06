@@ -1,8 +1,8 @@
-import { useEffect, useCallback, type ReactNode } from 'react';
-import { GoogleOAuthProvider, useGoogleLogin } from '@react-oauth/google';
+import { useAuth, type LoginHandler, type AuthUser, type AuthProviderConfig, type AuthProviderType } from '@app/shared';
 import { PublicClientApplication, type Configuration, type AuthenticationResult } from '@azure/msal-browser';
 import { MsalProvider, useMsal } from '@azure/msal-react';
-import { useAuth, type LoginHandler, type AuthUser, type AuthProviderConfig, type AuthProviderType } from '@app/shared';
+import { GoogleOAuthProvider, useGoogleLogin } from '@react-oauth/google';
+import { useEffect, useCallback, type ReactNode } from 'react';
 
 // Create MSAL instance based on config
 function createMsalInstance(config: AuthProviderConfig): PublicClientApplication | null {

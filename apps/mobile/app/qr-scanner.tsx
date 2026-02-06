@@ -1,10 +1,9 @@
-import { useEffect, useState, useCallback } from 'react';
-import { useRouter } from 'expo-router';
-import { StyleSheet, Linking, Vibration } from 'react-native';
-import { CameraView, useCameraPermissions, BarcodeScanningResult } from 'expo-camera';
-import { YStack, XStack, Heading, BodyText, Button, Section, Spinner } from '@app/ui';
-import { QRScannerResult, QRScannerHistory } from '@app/ui';
 import { useQRScannerLogic } from '@app/shared';
+import { YStack, XStack, Heading, BodyText, Button, Section, Spinner , QRScannerResult, QRScannerHistory } from '@app/ui';
+import { CameraView, useCameraPermissions, BarcodeScanningResult } from 'expo-camera';
+import { useRouter } from 'expo-router';
+import { useEffect, useState, useCallback } from 'react';
+import { StyleSheet, Linking, Vibration } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function QRScannerScreen() {

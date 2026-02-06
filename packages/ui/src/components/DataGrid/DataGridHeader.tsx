@@ -1,7 +1,7 @@
+import type { DataGridColumn, SortState } from '@app/types';
+import { ChevronUp, ChevronDown, ChevronsUpDown } from '@tamagui/lucide-icons';
 import React from 'react';
 import { XStack, YStack, Text, Checkbox } from 'tamagui';
-import { ChevronUp, ChevronDown, ChevronsUpDown } from '@tamagui/lucide-icons';
-import type { DataGridColumn, SortState } from '@app/types';
 
 interface DataGridHeaderProps<T> {
   columns: DataGridColumn<T>[];

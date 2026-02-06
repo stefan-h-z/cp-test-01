@@ -1,8 +1,8 @@
+import type { AuthProviderType, AuthProviderConfig } from '@app/types';
 import { useCallback } from 'react';
 import { useAuth } from '../auth/AuthContext';
-import { useAppConfig } from '../hooks/useAppConfig';
 import { authProviderLabels, authProviderColors } from '../constants/authProviders';
-import type { AuthProviderType, AuthProviderConfig } from '@app/types';
+import { useAppConfig } from '../hooks/useAppConfig';
 
 export interface LoginScreenData {
   /** App name for display */

@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { YStack, XStack, Text, styled, ScrollView } from 'tamagui';
+import type { SidebarProps, SidebarItem, SidebarConfig } from '@app/types';
 import {
   X,
   ChevronRight,
@@ -21,7 +20,8 @@ import {
   Info,
   type LucideIcon,
 } from '@tamagui/lucide-icons';
-import type { SidebarProps, SidebarItem, SidebarConfig } from '@app/types';
+import React, { useState } from 'react';
+import { YStack, XStack, Text, styled, ScrollView } from 'tamagui';
 
 // Icon mapping
 const iconMap: Record<string, LucideIcon> = {

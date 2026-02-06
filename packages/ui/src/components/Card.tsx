@@ -1,5 +1,5 @@
-import { styled, Card as TamaguiCard, XStack, YStack, Paragraph, H3, Image, GetProps } from 'tamagui';
 import type { ContentItem } from '@app/types';
+import { styled, Card as TamaguiCard, XStack, YStack, Paragraph, H3, Image, GetProps } from 'tamagui';
 
 const StyledCard = styled(TamaguiCard, {
   name: 'Card',

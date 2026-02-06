@@ -1,7 +1,7 @@
+import type { ProtectedRouteProps } from '@app/types';
+import { Lock, AlertCircle } from '@tamagui/lucide-icons';
 import React from 'react';
 import { YStack, XStack, Text, Spinner, styled } from 'tamagui';
-import { Lock, AlertCircle } from '@tamagui/lucide-icons';
-import type { ProtectedRouteProps } from '@app/types';
 import { Button } from '../Button';
 
 const Container = styled(YStack, {

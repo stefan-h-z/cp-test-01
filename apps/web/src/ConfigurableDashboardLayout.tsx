@@ -1,7 +1,7 @@
+import { useRemoteConfig, useThemeMode } from '@app/shared';
+import { XStack, YStack, Heading } from '@app/ui';
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import { XStack, YStack, Heading } from '@app/ui';
-import { useRemoteConfig, useThemeMode } from '@app/shared';
 import { ConfigurableSidebar } from './components/ConfigurableSidebar';
 import { ConfigurableTabs } from './components/ConfigurableTabs';
 

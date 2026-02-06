@@ -1,6 +1,3 @@
-import React, { useMemo } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useLocation, Outlet } from 'react-router-dom';
-import { TamaguiProvider, Theme, ErrorBoundary } from '@app/ui';
 import {
   AppProvider,
   AuthProvider,
@@ -13,7 +10,14 @@ import {
   useRemoteConfig,
   ThemeModeProvider,
 } from '@app/shared';
-import { config } from './tamagui.config';
+import type { RouteDefinition } from '@app/types';
+import { TamaguiProvider, Theme, ErrorBoundary , YStack, Heading, BodyText } from '@app/ui';
+import React, { useMemo } from 'react';
+import type { ReactNode } from 'react';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { WebAuthProvider } from './auth';
+import { ConfigurableDashboardLayout } from './ConfigurableDashboardLayout';
+import { Layout } from './Layout';
 import {
   HomeScreen,
   DetailsScreen,
@@ -23,12 +27,8 @@ import {
   QRScannerScreen,
   SettingsScreen,
 } from './screens';
-import { Layout } from './Layout';
-import { ConfigurableDashboardLayout } from './ConfigurableDashboardLayout';
-import { WebAuthProvider } from './auth';
-import type { ReactNode } from 'react';
-import type { RouteDefinition } from '@app/types';
-import { YStack, Heading, BodyText } from '@app/ui';
+import { config } from './tamagui.config';
+
 
 // Global error handler for logging
 function handleGlobalError(error: Error, errorInfo: React.ErrorInfo) {

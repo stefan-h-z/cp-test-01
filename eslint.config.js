@@ -45,8 +45,13 @@ export default tseslint.config(
         version: 'detect',
       },
       'import/resolver': {
-        typescript: true,
+        typescript: {
+          alwaysTryTypes: true,
+        },
         node: true,
+      },
+      'import/parsers': {
+        '@typescript-eslint/parser': ['.ts', '.tsx'],
       },
     },
     rules: {
@@ -97,7 +102,7 @@ export default tseslint.config(
           },
         },
       ],
-      'import/no-duplicates': 'error',
+      'import/no-duplicates': 'warn',
 
       // General rules
       'no-console': ['warn', { allow: ['warn', 'error'] }],

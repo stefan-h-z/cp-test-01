@@ -1,6 +1,6 @@
+import { Globe, Check } from '@tamagui/lucide-icons';
 import React from 'react';
 import { XStack, YStack, Text, styled } from 'tamagui';
-import { Globe, Check } from '@tamagui/lucide-icons';
 
 export interface Language {
   code: string;

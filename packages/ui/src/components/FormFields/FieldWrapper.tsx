@@ -1,6 +1,6 @@
-import { YStack, XStack, Text, Label as TamaguiLabel, styled } from 'tamagui';
 import { AlertCircle } from '@tamagui/lucide-icons';
 import type { ReactNode } from 'react';
+import { YStack, XStack, Text, Label as TamaguiLabel, styled } from 'tamagui';
 
 export const FieldContainer = styled(YStack, {
   gap: '$1',

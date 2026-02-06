@@ -1,6 +1,6 @@
-import { createContext, useContext } from 'react';
-import type { AppConfig } from '@app/types';
 import { defaultAppConfig } from '@app/config';
+import type { AppConfig } from '@app/types';
+import { createContext, useContext } from 'react';
 
 export const AppConfigContext = createContext<AppConfig>(defaultAppConfig);
 

@@ -1,3 +1,10 @@
+import type {
+  RemoteAppConfig,
+  ConfigState,
+  RouteDefinition,
+  ExtendedTabBarConfig,
+  ExtendedSidebarConfig,
+} from '@app/types';
 import React, {
   createContext,
   useContext,
@@ -7,13 +14,6 @@ import React, {
   useMemo,
   type ReactNode,
 } from 'react';
-import type {
-  RemoteAppConfig,
-  ConfigState,
-  RouteDefinition,
-  ExtendedTabBarConfig,
-  ExtendedSidebarConfig,
-} from '@app/types';
 import { ConfigService } from './ConfigService';
 import { fallbackConfig } from './fallbackConfig';
 

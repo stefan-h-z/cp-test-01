@@ -1,6 +1,6 @@
+import { ChevronRight, Home } from '@tamagui/lucide-icons';
 import React from 'react';
 import { XStack, Text, styled } from 'tamagui';
-import { ChevronRight, Home } from '@tamagui/lucide-icons';
 
 export interface BreadcrumbItem {
   title: string;

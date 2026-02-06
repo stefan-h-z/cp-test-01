@@ -1,8 +1,8 @@
-import React, { useMemo } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
-import { YStack, Heading, BodyText } from '@app/ui';
 import { useRemoteNavigation, useComponentRegistry } from '@app/shared';
 import type { RouteDefinition } from '@app/types';
+import { YStack, Heading, BodyText } from '@app/ui';
+import React, { useMemo } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { RouteWrapper } from './RouteWrapper';
 
 /**
@@ -83,10 +83,12 @@ export function ConfigurableRouter({
 
     routes.forEach((route) => {
       const layoutKey = route.layout;
-      if (!groups.has(layoutKey)) {
-        groups.set(layoutKey, []);
+      const existing = groups.get(layoutKey);
+      if (existing) {
+        existing.push(route);
+      } else {
+        groups.set(layoutKey, [route]);
       }
-      groups.get(layoutKey)!.push(route);
     });
 
     return groups;

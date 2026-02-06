@@ -1,7 +1,7 @@
+import type { ThemeMode } from '@app/types';
+import { Sun, Moon, Monitor, Check } from '@tamagui/lucide-icons';
 import React from 'react';
 import { XStack, YStack, Text, styled } from 'tamagui';
-import { Sun, Moon, Monitor, Check } from '@tamagui/lucide-icons';
-import type { ThemeMode } from '@app/types';
 
 export interface ThemeSwitcherProps {
   mode: ThemeMode;

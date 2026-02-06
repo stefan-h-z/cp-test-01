@@ -1,8 +1,8 @@
+import { useQRScannerLogic } from '@app/shared';
+import { YStack, XStack, Heading, BodyText, Button, Section, Spinner , QRScannerResult, QRScannerHistory } from '@app/ui';
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { YStack, XStack, Heading, BodyText, Button, Section, Spinner } from '@app/ui';
-import { QRScannerResult, QRScannerHistory } from '@app/ui';
-import { useQRScannerLogic } from '@app/shared';
+
 
 // Declare BarcodeDetector for TypeScript
 declare global {

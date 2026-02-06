@@ -1,6 +1,6 @@
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { YStack, Heading, BodyText } from '@app/ui';
 import { Plus } from '@tamagui/lucide-icons';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 // This is a placeholder screen for the FAB action
 // The actual add flow is handled by the FAB button navigating to /add route

@@ -1,3 +1,4 @@
+import { Eye, EyeOff, Search, X } from '@tamagui/lucide-icons';
 import React, { useState, useRef } from 'react';
 import {
   styled,
@@ -8,7 +9,6 @@ import {
   XStack,
   Text,
 } from 'tamagui';
-import { Eye, EyeOff, Search, X } from '@tamagui/lucide-icons';
 
 // Modern Input with smooth animations
 export const Input = styled(TamaguiInput, {

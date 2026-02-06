@@ -1,8 +1,9 @@
-import { useNavigate } from 'react-router-dom';
-import { XStack, YStack, BodyText, Heading, Button } from '@app/ui';
-import { Switch } from 'tamagui';
 import { useAuth, useRemoteNavigation, useRemoteConfig, useThemeMode } from '@app/shared';
 import type { RouteDefinition, SidebarRouteItem, SidebarGroup, LocalizedString } from '@app/types';
+import { XStack, YStack, BodyText, Heading, Button } from '@app/ui';
+import type { CSSProperties } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Switch } from 'tamagui';
 
 // Icon components
 const IconMap: Record<string, React.FC> = {
@@ -200,7 +201,7 @@ export function ConfigurableSidebar({ isOpen, onClose }: ConfigurableSidebarProp
         backgroundColor="rgba(0, 0, 0, 0.5)"
         zIndex={200}
         onPress={onClose}
-        style={{ cursor: 'pointer', position: 'fixed' } as any}
+        style={{ cursor: 'pointer', position: 'fixed' } as CSSProperties}
       />
 
       {/* Sidebar */}
@@ -217,7 +218,7 @@ export function ConfigurableSidebar({ isOpen, onClose }: ConfigurableSidebarProp
           position: 'fixed',
           boxShadow: '-4px 0 20px rgba(0, 0, 0, 0.15)',
           animation: 'slideIn 0.2s ease-out',
-        } as any}
+        } as CSSProperties}
       >
         {/* Header */}
         <XStack justifyContent="space-between" alignItems="center" marginBottom="$6">

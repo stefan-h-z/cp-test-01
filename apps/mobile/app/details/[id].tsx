@@ -1,7 +1,7 @@
+import { useDetailsScreenLogic } from '@app/shared';
+import { YStack, XStack, Heading, BodyText, Button, Spinner, Image, Section } from '@app/ui';
 import { useLocalSearchParams, useRouter, Stack } from 'expo-router';
 import { ScrollView } from 'react-native';
-import { YStack, XStack, Heading, BodyText, Button, Spinner, Image, Section } from '@app/ui';
-import { useDetailsScreenLogic } from '@app/shared';
 
 export default function DetailsScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();

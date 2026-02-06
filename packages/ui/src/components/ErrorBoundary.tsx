@@ -1,6 +1,6 @@
+import { AlertTriangle, RefreshCw } from '@tamagui/lucide-icons';
 import React, { Component, type ReactNode, type ErrorInfo } from 'react';
 import { YStack, XStack, Heading, Text, Button } from 'tamagui';
-import { AlertTriangle, RefreshCw } from '@tamagui/lucide-icons';
 
 interface ErrorBoundaryProps {
   children: ReactNode;

@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
-import { Stack, useRouter, useSegments } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import * as SplashScreen from 'expo-splash-screen';
-import { TamaguiProvider, Theme } from '@app/ui';
 import { AppProvider, AuthProvider, useAuth, useAppConfig, ConfigProvider, ThemeModeProvider } from '@app/shared';
-import { config } from '../tamagui.config';
+import { TamaguiProvider, Theme } from '@app/ui';
+import { Stack, useRouter, useSegments } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
+import { StatusBar } from 'expo-status-bar';
+import { useEffect, useState } from 'react';
 import { MobileAuthProvider } from '../auth';
+import { config } from '../tamagui.config';
 
 SplashScreen.preventAutoHideAsync();
 

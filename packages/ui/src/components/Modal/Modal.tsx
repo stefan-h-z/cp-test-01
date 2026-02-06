@@ -1,7 +1,7 @@
+import type { ModalProps, ModalSize } from '@app/types';
+import { X } from '@tamagui/lucide-icons';
 import React, { useEffect, useCallback } from 'react';
 import { YStack, XStack, Text, styled, AnimatePresence } from 'tamagui';
-import { X } from '@tamagui/lucide-icons';
-import type { ModalProps, ModalSize } from '@app/types';
 
 const Overlay = styled(YStack, {
   position: 'absolute' as const,

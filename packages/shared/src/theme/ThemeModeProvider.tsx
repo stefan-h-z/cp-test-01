@@ -1,3 +1,4 @@
+import type { ThemeMode, ThemeModeState, ThemeModeContextValue } from '@app/types';
 import React, {
   createContext,
   useContext,
@@ -7,7 +8,6 @@ import React, {
   useMemo,
 } from 'react';
 import { useColorScheme } from 'react-native';
-import type { ThemeMode, ThemeModeState, ThemeModeContextValue } from '@app/types';
 import { storage, STORAGE_KEYS } from '../utils/storage';
 
 const ThemeModeContext = createContext<ThemeModeContextValue | null>(null);

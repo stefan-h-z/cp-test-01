@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
 import type { DeepLinkConfig, DeepLinkScreenConfig } from '@app/types';
+import { useCallback, useEffect, useState } from 'react';
 
 /**
  * Create a deep link configuration for the app

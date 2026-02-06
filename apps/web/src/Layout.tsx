@@ -1,6 +1,6 @@
-import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
-import { XStack, YStack, Container, Button, Heading, UserProfileCard } from '@app/ui';
 import { useAppConfig, useAuth } from '@app/shared';
+import { XStack, YStack, Container, Button, Heading, UserProfileCard } from '@app/ui';
+import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 
 export function Layout() {
   const config = useAppConfig();

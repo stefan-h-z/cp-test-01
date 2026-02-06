@@ -1,5 +1,5 @@
-import React from 'react';
 import type { ModalState, AlertDialogProps, ConfirmDialogProps } from '@app/types';
+import React from 'react';
 import { AlertDialog } from './AlertDialog';
 import { ConfirmDialog } from './ConfirmDialog';
 

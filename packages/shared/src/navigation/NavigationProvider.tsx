@@ -1,3 +1,4 @@
+import type { NavigationState, NavigationContextValue } from '@app/types';
 import React, {
   createContext,
   useContext,
@@ -7,7 +8,6 @@ import React, {
   ReactNode,
   useEffect,
 } from 'react';
-import type { NavigationState, NavigationContextValue } from '@app/types';
 
 const NavigationContext = createContext<NavigationContextValue | null>(null);
 

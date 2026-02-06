@@ -1,9 +1,9 @@
-import { ScrollView } from 'react-native';
-import { useRouter } from 'expo-router';
-import { YStack, XStack, Heading, BodyText, Button, Section, Separator } from '@app/ui';
-import { Switch } from 'tamagui';
 import { useSettingsScreenLogic } from '@app/shared';
+import { YStack, XStack, Heading, BodyText, Button, Section, Separator } from '@app/ui';
+import { useRouter } from 'expo-router';
+import { ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Switch } from 'tamagui';
 
 export default function SettingsScreen() {
   const router = useRouter();

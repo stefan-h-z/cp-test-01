@@ -1,6 +1,6 @@
+import type { SelectOption } from '@app/types';
 import { YStack, XStack, Text } from 'tamagui';
 import { FieldWrapper, type FieldWrapperProps } from './FieldWrapper';
-import type { SelectOption } from '@app/types';
 
 export interface SelectFieldProps extends Omit<FieldWrapperProps, 'children'> {
   value: string;

@@ -1,7 +1,7 @@
+import type { ThemeMode, AppConfig } from '@app/types';
+import { useAuth } from '../auth/AuthContext';
 import { useAppConfig } from '../hooks/useAppConfig';
 import { useThemeMode } from '../theme/ThemeModeProvider';
-import { useAuth } from '../auth/AuthContext';
-import type { ThemeMode, AppConfig } from '@app/types';
 
 export interface SettingsScreenData {
   /** App configuration */

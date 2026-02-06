@@ -1,7 +1,7 @@
+import type { DataGridColumn, DataGridAction } from '@app/types';
+import { Eye, Pencil, Trash2 } from '@tamagui/lucide-icons';
 import React from 'react';
 import { XStack, YStack, Text, Checkbox, Button } from 'tamagui';
-import { Eye, Pencil, Trash2 } from '@tamagui/lucide-icons';
-import type { DataGridColumn, DataGridAction } from '@app/types';
 
 interface DataGridRowProps<T> {
   row: T;

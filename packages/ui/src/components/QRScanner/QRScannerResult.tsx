@@ -1,8 +1,8 @@
-import { styled, YStack, XStack, GetProps } from 'tamagui';
-import { Heading } from '../Typography';
-import { BodyText } from '../Typography';
-import { Button } from '../Button';
 import type { QRScanResult } from '@app/types';
+import { styled, YStack, XStack, GetProps } from 'tamagui';
+import { Button } from '../Button';
+import { Heading , BodyText } from '../Typography';
+
 
 const ResultContainer = styled(YStack, {
   backgroundColor: '$background',

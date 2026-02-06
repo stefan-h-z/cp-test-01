@@ -1,7 +1,7 @@
-import { useContentList } from '../hooks/useContent';
-import { useAppConfig } from '../hooks/useAppConfig';
-import { demoContentList } from '../constants/demoContent';
 import type { ContentItem, AppConfig } from '@app/types';
+import { demoContentList } from '../constants/demoContent';
+import { useAppConfig } from '../hooks/useAppConfig';
+import { useContentList } from '../hooks/useContent';
 
 export interface HomeScreenData {
   /** App configuration */

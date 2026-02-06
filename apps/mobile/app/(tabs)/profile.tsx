@@ -1,7 +1,7 @@
-import { ScrollView } from 'react-native';
-import { useRouter } from 'expo-router';
-import { YStack, XStack, Section, Heading, BodyText, Button, Separator, UserProfileCard } from '@app/ui';
 import { useAppConfig, useFeatureFlag, useAuth } from '@app/shared';
+import { YStack, XStack, Section, Heading, BodyText, Button, Separator, UserProfileCard } from '@app/ui';
+import { useRouter } from 'expo-router';
+import { ScrollView } from 'react-native';
 
 export default function ProfileScreen() {
   const router = useRouter();

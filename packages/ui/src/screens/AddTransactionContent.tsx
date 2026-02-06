@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { YStack, XStack } from 'tamagui';
-import { Heading, BodyText } from '../components/Typography';
 import { Button } from '../components/Button';
+import { Heading, BodyText } from '../components/Typography';
 import { transactionCategories } from './screenData';
 
 interface TransactionType {

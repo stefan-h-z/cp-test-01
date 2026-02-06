@@ -1,5 +1,5 @@
-import React from 'react';
 import type { ScreenComponent, LayoutComponent } from '@app/types';
+import React from 'react';
 
 /**
  * Registry for mapping screen/layout names from config to actual React components.

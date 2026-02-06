@@ -1,7 +1,7 @@
+import { useAuth, useRemoteConfig } from '@app/shared';
+import type { RouteDefinition } from '@app/types';
 import type { ReactNode } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import type { RouteDefinition } from '@app/types';
-import { useAuth, useRemoteConfig } from '@app/shared';
 
 interface RouteWrapperProps {
   route: RouteDefinition;

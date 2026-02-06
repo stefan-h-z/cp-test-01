@@ -1,10 +1,10 @@
-import { Tabs } from 'expo-router';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { Activity, Calendar, List, CreditCard, Plus, Settings, QrCode } from '@tamagui/lucide-icons';
-import { useRouter } from 'expo-router';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useRemoteNavigation, useRemoteConfig } from '@app/shared';
 import type { TabDefinition, RouteDefinition, LocalizedString } from '@app/types';
+import { Activity, Calendar, List, CreditCard, Plus, Settings, QrCode } from '@tamagui/lucide-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Tabs , useRouter } from 'expo-router';
+import { TouchableOpacity, StyleSheet } from 'react-native';
+
 
 // Icon mapping for dynamic icons
 const IconComponents: Record<string, React.ComponentType<{ size: number; color: string }>> = {
@@ -33,12 +33,12 @@ function FABButton() {
   const { tabsConfig, routes } = useRemoteNavigation();
 
   const fabRoute = tabsConfig?.fab
-    ? routes.find((r) => r.id === tabsConfig.fab!.route)
+    ? routes.find((r) => r.id === tabsConfig.fab?.route)
     : null;
 
   const handlePress = () => {
     if (fabRoute) {
-      router.push(fabRoute.path as any);
+      router.push(fabRoute.path as Parameters<typeof router.push>[0]);
     } else {
       router.push('/add');
     }

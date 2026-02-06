@@ -6,7 +6,9 @@
       "Bash(pnpm --filter @app/shared typecheck:*)",
       "Bash(pnpm --filter @app/web typecheck:*)",
       "Bash(pnpm --filter @app/mobile typecheck:*)",
-      "Bash(timeout 30 pnpm dev:web:*)"
+      "Bash(timeout 30 pnpm dev:web:*)",
+      "Bash(pnpm lint:*)",
+      "Bash(pnpm lint:fix:*)"
     ]
   }
 }

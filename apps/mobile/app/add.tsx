@@ -1,9 +1,9 @@
+import { YStack, XStack, Heading, BodyText, Button, Card } from '@app/ui';
+import { X, ArrowDownCircle, ArrowUpCircle, RefreshCw } from '@tamagui/lucide-icons';
+import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRouter } from 'expo-router';
-import { YStack, XStack, Heading, BodyText, Button, Card } from '@app/ui';
-import { X, ArrowDownCircle, ArrowUpCircle, RefreshCw } from '@tamagui/lucide-icons';
 
 const transactionTypes = [
   { id: 'expense', label: 'Expense', icon: ArrowDownCircle, color: '#ef4444' },

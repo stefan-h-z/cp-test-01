@@ -1,6 +1,6 @@
+import { YStack, Spinner, BodyText } from '@app/ui';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { YStack, Spinner, BodyText } from '@app/ui';
 
 export function AuthCallbackScreen() {
   const navigate = useNavigate();

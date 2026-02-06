@@ -1,6 +1,6 @@
 import { YStack, XStack } from 'tamagui';
-import { Heading, BodyText } from '../components/Typography';
 import { Card } from '../components/Card';
+import { Heading, BodyText } from '../components/Typography';
 import { statsData, transactionsData, categoriesData, formatTransactionAmount } from './screenData';
 import type { StatData, TransactionData, CategoryData } from './screenData';
 

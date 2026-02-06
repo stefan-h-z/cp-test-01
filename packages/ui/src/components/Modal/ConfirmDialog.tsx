@@ -1,9 +1,9 @@
+import type { ConfirmDialogProps } from '@app/types';
+import { AlertTriangle, HelpCircle } from '@tamagui/lucide-icons';
 import React, { useState } from 'react';
 import { YStack, XStack, Text, styled } from 'tamagui';
-import { AlertTriangle, HelpCircle } from '@tamagui/lucide-icons';
-import type { ConfirmDialogProps } from '@app/types';
-import { Modal } from './Modal';
 import { Button } from '../Button';
+import { Modal } from './Modal';
 
 const IconContainer = styled(XStack, {
   width: 48,

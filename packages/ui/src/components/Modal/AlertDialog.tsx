@@ -1,9 +1,9 @@
+import type { AlertDialogProps, AlertVariant } from '@app/types';
+import { AlertCircle, CheckCircle, AlertTriangle, XCircle } from '@tamagui/lucide-icons';
 import React from 'react';
 import { YStack, XStack, Text, styled } from 'tamagui';
-import { AlertCircle, CheckCircle, AlertTriangle, XCircle } from '@tamagui/lucide-icons';
-import type { AlertDialogProps, AlertVariant } from '@app/types';
-import { Modal } from './Modal';
 import { Button } from '../Button';
+import { Modal } from './Modal';
 
 const variantConfig: Record<
   AlertVariant,

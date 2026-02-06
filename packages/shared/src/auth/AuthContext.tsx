@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useReducer, useCallback, type ReactNode } from 'react';
 import type { AuthState, AuthUser, AuthProviderType, AuthConfig, AuthProviderConfig } from '@app/types';
+import React, { createContext, useContext, useReducer, useCallback, type ReactNode } from 'react';
 
 // Auth Actions
 type AuthAction =

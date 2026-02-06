@@ -1,7 +1,7 @@
-import { styled, XStack, YStack, GetProps, Image } from 'tamagui';
-import { Heading } from './Typography';
-import { BodyText } from './Typography';
 import type { AuthUser, AuthProviderType } from '@app/types';
+import { styled, XStack, YStack, GetProps, Image } from 'tamagui';
+import { Heading , BodyText } from './Typography';
+
 
 // Inline provider labels to avoid circular dependency with @app/shared
 const providerLabels: Record<string, string> = {

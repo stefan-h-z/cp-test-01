@@ -1,7 +1,4 @@
-import { ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
-import { useRouter } from 'expo-router';
+import { useAuth } from '@app/shared';
 import {
   YStack,
   XStack,
@@ -9,7 +6,10 @@ import {
   StatsRow,
   DashboardContent,
 } from '@app/ui';
-import { useAuth } from '@app/shared';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useRouter } from 'expo-router';
+import { ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function DashboardScreen() {
   const { user } = useAuth();

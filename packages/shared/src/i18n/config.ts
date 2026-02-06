@@ -1,8 +1,8 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import { en } from './locales/en';
-import { de } from './locales/de';
 import { supportedLocales, type SupportedLocale } from './locales';
+import { de } from './locales/de';
+import { en } from './locales/en';
 
 export interface I18nConfig {
   defaultLocale?: SupportedLocale;

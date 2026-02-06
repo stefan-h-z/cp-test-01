@@ -1,6 +1,6 @@
-import { useParams, useNavigate } from 'react-router-dom';
-import { YStack, XStack, Heading, BodyText, Button, Spinner, Image, Section } from '@app/ui';
 import { useDetailsScreenLogic } from '@app/shared';
+import { YStack, XStack, Heading, BodyText, Button, Spinner, Image, Section } from '@app/ui';
+import { useParams, useNavigate } from 'react-router-dom';
 
 export function DetailsScreen() {
   const { id } = useParams<{ id: string }>();

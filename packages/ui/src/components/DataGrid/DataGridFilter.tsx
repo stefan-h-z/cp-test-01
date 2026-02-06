@@ -1,7 +1,7 @@
+import type { DataGridColumn, FilterState } from '@app/types';
+import { Search, Filter, X } from '@tamagui/lucide-icons';
 import React, { useState } from 'react';
 import { XStack, YStack, Input, Button, Text, Popover } from 'tamagui';
-import { Search, Filter, X } from '@tamagui/lucide-icons';
-import type { DataGridColumn, FilterState } from '@app/types';
 
 interface DataGridFilterProps<T> {
   value: string;

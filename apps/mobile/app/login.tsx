@@ -1,8 +1,8 @@
-import { useRouter } from 'expo-router';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { YStack, XStack, Heading, BodyText, Button, Spinner, Section } from '@app/ui';
 import { useLoginScreenLogic } from '@app/shared';
 import type { AuthProviderType } from '@app/types';
+import { YStack, XStack, Heading, BodyText, Button, Spinner, Section } from '@app/ui';
+import { useRouter } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const providerLabels: Record<AuthProviderType, string> = {
   google: 'Google',

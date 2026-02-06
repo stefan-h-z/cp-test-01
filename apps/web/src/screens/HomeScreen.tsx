@@ -1,6 +1,6 @@
-import { useNavigate } from 'react-router-dom';
-import { YStack, XStack, Section, Heading, BodyText, ContentCard, Button, Spinner } from '@app/ui';
 import { useHomeScreenLogic } from '@app/shared';
+import { YStack, XStack, Section, Heading, BodyText, ContentCard, Button, Spinner } from '@app/ui';
+import { useNavigate } from 'react-router-dom';
 
 export function HomeScreen() {
   const navigate = useNavigate();

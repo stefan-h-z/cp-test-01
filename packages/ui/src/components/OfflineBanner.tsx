@@ -1,6 +1,6 @@
+import { WifiOff } from '@tamagui/lucide-icons';
 import React from 'react';
 import { XStack, Text } from 'tamagui';
-import { WifiOff } from '@tamagui/lucide-icons';
 
 interface OfflineBannerProps {
   isOffline: boolean;

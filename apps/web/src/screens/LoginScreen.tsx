@@ -1,13 +1,7 @@
-import { useNavigate, Navigate } from 'react-router-dom';
-import { YStack, XStack, Heading, BodyText, Button, Spinner, Section } from '@app/ui';
 import { useLoginScreenLogic } from '@app/shared';
 import type { AuthProviderType } from '@app/types';
-
-const providerLabels: Record<AuthProviderType, string> = {
-  google: 'Google',
-  entra: 'Microsoft',
-  dev: 'Developer',
-};
+import { YStack, XStack, Heading, BodyText, Button, Spinner, Section } from '@app/ui';
+import { useNavigate, Navigate } from 'react-router-dom';
 
 const providerColors: Record<AuthProviderType, string> = {
   google: '#4285F4',

@@ -1,7 +1,7 @@
+import { CheckCircle, AlertCircle, AlertTriangle, Info, X } from '@tamagui/lucide-icons';
 import React, { useEffect, useState } from 'react';
 import { Animated } from 'react-native';
 import { YStack, XStack, Text, Button } from 'tamagui';
-import { CheckCircle, AlertCircle, AlertTriangle, Info, X } from '@tamagui/lucide-icons';
 
 export type ToastType = 'success' | 'error' | 'warning' | 'info';
 

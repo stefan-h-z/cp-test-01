@@ -1,7 +1,8 @@
-import { useLocation, useNavigate } from 'react-router-dom';
-import { XStack, YStack, BodyText } from '@app/ui';
 import { useRemoteNavigation, useRemoteConfig, useThemeMode } from '@app/shared';
 import type { RouteDefinition, TabDefinition, LocalizedString } from '@app/types';
+import { XStack, YStack, BodyText } from '@app/ui';
+import type { CSSProperties } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 // Icon components
 const IconMap: Record<string, React.FC<{ active?: boolean }>> = {
@@ -129,7 +130,7 @@ export function ConfigurableTabs({ className }: ConfigurableTabsProps) {
   const renderFab = () => {
     if (!tabsConfig.fab) return null;
 
-    const fabRoute = routes.find((r) => r.id === tabsConfig.fab!.route);
+    const fabRoute = routes.find((r) => r.id === tabsConfig.fab?.route);
     if (!fabRoute) return null;
 
     return (
@@ -172,7 +173,7 @@ export function ConfigurableTabs({ className }: ConfigurableTabsProps) {
       style={{
         position: 'fixed',
         boxShadow: '0 -4px 20px rgba(0, 0, 0, 0.08)',
-      } as any}
+      } as CSSProperties}
     >
       {leftTabs.map(renderTab)}
       {renderFab()}
