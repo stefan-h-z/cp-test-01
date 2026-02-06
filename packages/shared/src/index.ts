@@ -31,6 +31,12 @@ export * from './constants';
 // Screen Logic Hooks
 export * from './screens';
 
+// Remote Config
+export * from './config';
+
+// Component Registry
+export * from './registry';
+
 // Re-export types and config
 export * from '@app/types';
 export * from '@app/config';

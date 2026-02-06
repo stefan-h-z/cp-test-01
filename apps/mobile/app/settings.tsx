@@ -1,6 +1,7 @@
 import { ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
-import { YStack, XStack, Heading, BodyText, Button, Section, Separator, Switch } from '@app/ui';
+import { YStack, XStack, Heading, BodyText, Button, Section, Separator } from '@app/ui';
+import { Switch } from 'tamagui';
 import { useSettingsScreenLogic } from '@app/shared';
 import { SafeAreaView } from 'react-native-safe-area-context';
 

@@ -6,6 +6,7 @@ import type { AuthProviderType } from '@app/types';
 export const authProviderLabels: Record<AuthProviderType, string> = {
   google: 'Google',
   entra: 'Microsoft',
+  dev: 'Development',
 };
 
 /**
@@ -14,6 +15,7 @@ export const authProviderLabels: Record<AuthProviderType, string> = {
 export const authProviderColors: Record<AuthProviderType, string> = {
   google: '#4285F4',
   entra: '#00A4EF',
+  dev: '#666666',
 };
 
 /**

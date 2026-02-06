@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import { YStack, XStack, Heading, BodyText, Button, Section, Separator, Switch } from '@app/ui';
+import { YStack, XStack, Heading, BodyText, Button, Section, Separator } from '@app/ui';
+import { Switch } from 'tamagui';
 import { useSettingsScreenLogic } from '@app/shared';
 
 export function SettingsScreen() {

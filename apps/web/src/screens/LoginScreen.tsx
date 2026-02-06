@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { YStack, XStack, Heading, BodyText, Button, Spinner, Section } from '@app/ui';
 import { useLoginScreenLogic } from '@app/shared';
 import type { AuthProviderType } from '@app/types';
@@ -30,8 +30,7 @@ export function LoginScreen() {
 
   // Redirect if already authenticated
   if (isAuthenticated) {
-    navigate('/', { replace: true });
-    return null;
+    return <Navigate to="/" replace />;
   }
 
   const onLogin = async (provider: AuthProviderType) => {

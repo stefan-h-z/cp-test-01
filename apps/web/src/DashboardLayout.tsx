@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { XStack, YStack, BodyText, Heading, Button, Switch } from '@app/ui';
+import { XStack, YStack, BodyText, Heading, Button } from '@app/ui';
+import { Switch } from 'tamagui';
 import { useAuth, useThemeMode } from '@app/shared';
 
 // Menu icon component

@@ -3,7 +3,7 @@ import { Stack, useRouter, useSegments } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as SplashScreen from 'expo-splash-screen';
 import { TamaguiProvider, Theme } from '@app/ui';
-import { AppProvider, AuthProvider, useAuth, useAppConfig } from '@app/shared';
+import { AppProvider, AuthProvider, useAuth, useAppConfig, ConfigProvider, ThemeModeProvider } from '@app/shared';
 import { config } from '../tamagui.config';
 import { MobileAuthProvider } from '../auth';
 
@@ -96,7 +96,11 @@ export default function RootLayout() {
     <TamaguiProvider config={config}>
       <Theme name="light">
         <AppProvider>
-          <InnerLayout />
+          <ThemeModeProvider>
+            <ConfigProvider useFallbackOnError={true}>
+              <InnerLayout />
+            </ConfigProvider>
+          </ThemeModeProvider>
         </AppProvider>
       </Theme>
     </TamaguiProvider>

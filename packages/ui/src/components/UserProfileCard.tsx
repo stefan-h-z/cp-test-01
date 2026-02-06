@@ -1,8 +1,18 @@
 import { styled, XStack, YStack, GetProps, Image } from 'tamagui';
 import { Heading } from './Typography';
 import { BodyText } from './Typography';
-import { getProviderLabel } from '@app/shared';
 import type { AuthUser, AuthProviderType } from '@app/types';
+
+// Inline provider labels to avoid circular dependency with @app/shared
+const providerLabels: Record<string, string> = {
+  google: 'Google',
+  entra: 'Microsoft',
+  dev: 'Development',
+};
+
+function getProviderLabel(provider: AuthProviderType): string {
+  return providerLabels[provider] || provider;
+}
 
 const ProfileCardContainer = styled(YStack, {
   alignItems: 'center',

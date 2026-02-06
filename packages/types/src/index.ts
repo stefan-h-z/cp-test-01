@@ -1,3 +1,5 @@
+import type React from 'react';
+
 // App Configuration Types
 export interface AppConfig {
   name: string;
@@ -613,6 +615,138 @@ export interface ProtectedRouteProps {
   redirectTo?: string;
   roles?: string[];
   onUnauthorized?: () => void;
+}
+
+// Remote Config Types
+export interface RemoteAppConfig extends AppConfig {
+  navigation: ExtendedNavigationConfig;
+  _meta: ConfigMeta;
+}
+
+export interface ConfigMeta {
+  version: string;
+  fetchedAt: number;
+  expiresAt: number;
+}
+
+// Extended Navigation Config
+export interface ExtendedNavigationConfig extends NavigationConfig {
+  routes: RouteDefinition[];
+  initialRoute: string;
+  tabs?: ExtendedTabBarConfig;
+  sidebar?: ExtendedSidebarConfig;
+  fallback?: NavigationFallback;
+}
+
+export interface NavigationFallback {
+  notFound: string;
+  unauthorized: string;
+}
+
+export interface RouteDefinition {
+  id: string;
+  path: string;
+  title: string | LocalizedString;
+  icon?: string;
+  screen: string;
+  layout?: string;
+  access?: RouteAccess;
+  visibility?: RouteVisibility;
+  featureFlag?: string;
+  params?: RouteParam[];
+}
+
+export interface LocalizedString {
+  key: string;
+  defaultValue?: string;
+}
+
+export interface RouteAccess {
+  type: 'public' | 'authenticated' | 'roles';
+  roles?: string[];
+}
+
+export interface RouteVisibility {
+  showInTabs?: boolean;
+  showInSidebar?: boolean;
+  showInNav?: boolean;
+}
+
+export interface RouteParam {
+  name: string;
+  type: 'string' | 'number';
+  required?: boolean;
+}
+
+export interface ExtendedTabBarConfig {
+  tabs: TabDefinition[];
+  position: 'bottom' | 'top';
+  fab?: FabConfig;
+  showLabels?: boolean;
+  variant?: 'default' | 'floating' | 'minimal';
+}
+
+export interface TabDefinition {
+  route: string;
+  title?: string | LocalizedString;
+  icon?: string;
+  badge?: number | string;
+  hidden?: boolean;
+}
+
+export interface FabConfig {
+  route: string;
+  icon: string;
+}
+
+export interface ExtendedSidebarConfig extends SidebarConfig {
+  groups?: SidebarGroup[];
+  showSearch?: boolean;
+  collapsible?: boolean;
+}
+
+export interface SidebarGroup {
+  id: string;
+  title?: string | LocalizedString;
+  items: SidebarRouteItem[];
+  collapsible?: boolean;
+  defaultExpanded?: boolean;
+}
+
+export interface SidebarRouteItem {
+  route: string;
+  title?: string | LocalizedString;
+  icon?: string;
+  badge?: number | string;
+}
+
+// Config Service Types
+export interface ConfigServiceOptions {
+  endpoint: string;
+  cacheKey?: string;
+  cacheDuration?: number;
+  retryAttempts?: number;
+  retryDelay?: number;
+}
+
+export interface ConfigState<T> {
+  config: T | null;
+  isLoading: boolean;
+  error: string | null;
+  isStale: boolean;
+  lastFetched: number | null;
+}
+
+// Component Registry Types
+export type ScreenComponent = React.ComponentType<unknown>;
+export type LayoutComponent = React.ComponentType<{ children: React.ReactNode }>;
+
+export interface ScreenRegistry {
+  [name: string]: ScreenComponent;
+}
+
+export interface LayoutRegistry {
+  [name: string]: LayoutComponent;
 }
 
 // QR Scanner Types
