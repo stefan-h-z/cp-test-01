@@ -7,3 +7,10 @@ export {
   getDefaultRegistry,
   resetDefaultRegistry,
 } from './ComponentRegistry';
+
+export {
+  WidgetRegistry,
+  WidgetRegistryProvider,
+  useWidgetRegistry,
+  useWidget,
+} from './WidgetRegistry';

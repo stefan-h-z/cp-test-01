@@ -6,29 +6,27 @@ import {
   ConfigProvider,
   ComponentRegistry,
   RegistryProvider,
+  WidgetRegistry,
+  WidgetRegistryProvider,
   useRemoteNavigation,
   useRemoteConfig,
   ThemeModeProvider,
+  useThemeMode,
+  DynamicScreen,
+  ScreenNotFound,
+  registerDefaultWidgets,
 } from '@app/shared';
+import type { ActionExecutorDeps } from '@app/shared';
 import type { RouteDefinition } from '@app/types';
-import { TamaguiProvider, Theme, ErrorBoundary , YStack, Heading, BodyText } from '@app/ui';
+import { TamaguiProvider, Theme, ErrorBoundary, YStack, Heading, BodyText } from '@app/ui';
 import React, { useMemo } from 'react';
 import type { ReactNode } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { WebAuthProvider } from './auth';
 import { ConfigurableDashboardLayout } from './ConfigurableDashboardLayout';
-import { Layout } from './Layout';
-import {
-  HomeScreen,
-  DetailsScreen,
-  LoginScreen,
-  AuthCallbackScreen,
-  DashboardScreen,
-  QRScannerScreen,
-  SettingsScreen,
-} from './screens';
+import { LoginScreen, AuthCallbackScreen, SettingsScreen } from './screens';
 import { config } from './tamagui.config';
-
+import { registerWebWidgets } from './widgets';
 
 // Global error handler for logging
 function handleGlobalError(error: Error, errorInfo: React.ErrorInfo) {
@@ -36,7 +34,7 @@ function handleGlobalError(error: Error, errorInfo: React.ErrorInfo) {
   console.error('Component stack:', errorInfo.componentStack);
 }
 
-// Placeholder screen for routes not yet implemented
+// Placeholder screen for screens not yet registered
 function PlaceholderScreen({ title }: { title: string }) {
   return (
     <YStack flex={1} alignItems="center" justifyContent="center" padding="$6">
@@ -48,27 +46,16 @@ function PlaceholderScreen({ title }: { title: string }) {
   );
 }
 
-// Create and configure the component registry
+// Create and configure the component registry (only hardcoded screens)
 function createRegistry(): ComponentRegistry {
   const registry = new ComponentRegistry();
 
-  // Register all screens
   registry.registerScreens({
-    HomeScreen,
-    DetailsScreen,
     LoginScreen,
     AuthCallbackScreen,
-    DashboardScreen,
-    QRScannerScreen,
     SettingsScreen,
-    // Placeholder screens for routes not yet implemented
-    BudgetScreen: () => <PlaceholderScreen title="Budget" />,
-    TransactionsScreen: () => <PlaceholderScreen title="Transactions" />,
-    AccountsScreen: () => <PlaceholderScreen title="Accounts" />,
-    AddTransactionScreen: () => <PlaceholderScreen title="Add Transaction" />,
   });
 
-  // Register layouts
   registry.registerLayouts({
     AuthLayout: ({ children }: { children: ReactNode }) => <>{children}</>,
     DashboardLayout: ConfigurableDashboardLayout,
@@ -77,18 +64,24 @@ function createRegistry(): ComponentRegistry {
   return registry;
 }
 
+// Create and configure the widget registry
+function createWidgetReg(): WidgetRegistry {
+  const reg = new WidgetRegistry();
+  registerDefaultWidgets(reg);
+  registerWebWidgets(reg);
+  return reg;
+}
+
 // Route wrapper for access control
 function RouteWrapper({ route, children }: { route: RouteDefinition; children: ReactNode }) {
   const { isAuthenticated, isLoading, authConfig } = useAuth();
   const { isFeatureEnabled } = useRemoteConfig();
   const location = useLocation();
 
-  // Check feature flag
   if (route.featureFlag && !isFeatureEnabled(route.featureFlag)) {
     return <Navigate to="/" replace />;
   }
 
-  // Handle access control
   if (route.access?.type === 'authenticated') {
     if (!authConfig.enabled) {
       return <>{children}</>;
@@ -102,15 +95,50 @@ function RouteWrapper({ route, children }: { route: RouteDefinition; children: R
   return <>{children}</>;
 }
 
-// Screen renderer that uses the registry
-function ScreenRenderer({ route, registry }: { route: RouteDefinition; registry: ComponentRegistry }) {
-  const ScreenComponent = registry.getScreen(route.screen);
+// Screen renderer: config-driven (screenCode) takes priority, then registry
+function ScreenRenderer({
+  route,
+  registry,
+}: {
+  route: RouteDefinition;
+  registry: ComponentRegistry;
+}) {
+  const { config } = useRemoteConfig();
+  const navigate = useNavigate();
+  const { logout } = useAuth();
+  const { toggleMode } = useThemeMode();
 
+  const actionDeps: ActionExecutorDeps = useMemo(
+    () => ({
+      logout,
+      toggleTheme: toggleMode,
+    }),
+    [logout, toggleMode]
+  );
+
+  // If route has a screenCode, render via DynamicScreen
+  if (route.screenCode) {
+    const screenDef = config?.screens?.[route.screenCode];
+    if (!screenDef) {
+      return <ScreenNotFound screenCode={route.screenCode} />;
+    }
+    return (
+      <DynamicScreen
+        screenDef={screenDef}
+        config={config}
+        navigate={navigate}
+        goBack={() => window.history.back()}
+        actionDeps={actionDeps}
+      />
+    );
+  }
+
+  // Otherwise, fall back to hardcoded registry
+  const ScreenComponent = registry.getScreen(route.screen);
   if (!ScreenComponent) {
     const title = typeof route.title === 'string' ? route.title : route.id;
     return <PlaceholderScreen title={title} />;
   }
-
   return <ScreenComponent />;
 }
 
@@ -118,7 +146,6 @@ function ScreenRenderer({ route, registry }: { route: RouteDefinition; registry:
 function ConfigDrivenRoutes({ registry }: { registry: ComponentRegistry }) {
   const { routes, fallback } = useRemoteNavigation();
 
-  // Separate routes by layout
   const publicRoutes = routes.filter(
     (r) => r.access?.type === 'public' || r.layout === 'AuthLayout'
   );
@@ -156,18 +183,6 @@ function ConfigDrivenRoutes({ registry }: { registry: ComponentRegistry }) {
         ))}
       </Route>
 
-      {/* Legacy routes for backward compatibility */}
-      <Route element={<Layout />}>
-        <Route
-          path="/home"
-          element={
-            <RouteWrapper route={{ id: 'home', path: '/home', title: 'Home', screen: 'HomeScreen', access: { type: 'authenticated' } }}>
-              <HomeScreen />
-            </RouteWrapper>
-          }
-        />
-      </Route>
-
       {/* Fallback */}
       <Route path="*" element={<Navigate to={fallback?.notFound || '/'} replace />} />
     </Routes>
@@ -192,16 +207,20 @@ function AppWithAuth({ registry }: { registry: ComponentRegistry }) {
 }
 
 // App with config provider
-function AppWithConfig({ registry }: { registry: ComponentRegistry }) {
+function AppWithConfig({
+  registry,
+  widgetRegistry,
+}: {
+  registry: ComponentRegistry;
+  widgetRegistry: WidgetRegistry;
+}) {
   return (
     <ThemeModeProvider>
-      <ConfigProvider
-        // Configure endpoint when you have a backend
-        // endpoint="/api/config"
-        useFallbackOnError={true}
-      >
+      <ConfigProvider useFallbackOnError={true}>
         <RegistryProvider registry={registry}>
-          <AppWithAuth registry={registry} />
+          <WidgetRegistryProvider registry={widgetRegistry}>
+            <AppWithAuth registry={registry} />
+          </WidgetRegistryProvider>
         </RegistryProvider>
       </ConfigProvider>
     </ThemeModeProvider>
@@ -209,15 +228,15 @@ function AppWithConfig({ registry }: { registry: ComponentRegistry }) {
 }
 
 export function App() {
-  // Create registry once
   const registry = useMemo(() => createRegistry(), []);
+  const widgetRegistry = useMemo(() => createWidgetReg(), []);
 
   return (
     <ErrorBoundary onError={handleGlobalError} onReset={() => window.location.reload()}>
       <TamaguiProvider config={config}>
         <Theme name="light">
           <AppProvider>
-            <AppWithConfig registry={registry} />
+            <AppWithConfig registry={registry} widgetRegistry={widgetRegistry} />
           </AppProvider>
         </Theme>
       </TamaguiProvider>

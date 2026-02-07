@@ -1,10 +1,18 @@
 import { useRemoteNavigation, useRemoteConfig } from '@app/shared';
 import type { TabDefinition, RouteDefinition, LocalizedString } from '@app/types';
-import { Activity, Calendar, List, CreditCard, Plus, Settings, QrCode } from '@tamagui/lucide-icons';
+import {
+  Activity,
+  Calendar,
+  List,
+  CreditCard,
+  Plus,
+  Settings,
+  QrCode,
+} from '@tamagui/lucide-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Tabs , useRouter } from 'expo-router';
+import { Tabs, useRouter } from 'expo-router';
 import { TouchableOpacity, StyleSheet } from 'react-native';
-
+import { useTheme } from 'tamagui';
 
 // Icon mapping for dynamic icons
 const IconComponents: Record<string, React.ComponentType<{ size: number; color: string }>> = {
@@ -32,9 +40,7 @@ function FABButton() {
   const router = useRouter();
   const { tabsConfig, routes } = useRemoteNavigation();
 
-  const fabRoute = tabsConfig?.fab
-    ? routes.find((r) => r.id === tabsConfig.fab?.route)
-    : null;
+  const fabRoute = tabsConfig?.fab ? routes.find((r) => r.id === tabsConfig.fab?.route) : null;
 
   const handlePress = () => {
     if (fabRoute) {
@@ -48,11 +54,7 @@ function FABButton() {
   const IconComponent = getIcon(fabIcon);
 
   return (
-    <TouchableOpacity
-      style={styles.fabContainer}
-      onPress={handlePress}
-      activeOpacity={0.8}
-    >
+    <TouchableOpacity style={styles.fabContainer} onPress={handlePress} activeOpacity={0.8}>
       <LinearGradient
         colors={['#6366f1', '#a855f7']}
         start={{ x: 0, y: 0 }}
@@ -68,6 +70,7 @@ function FABButton() {
 export default function TabLayout() {
   const { tabsConfig, routes } = useRemoteNavigation();
   const { isFeatureEnabled } = useRemoteConfig();
+  const theme = useTheme();
 
   // Get route for a tab
   const getRouteForTab = (tab: TabDefinition): RouteDefinition | undefined => {
@@ -88,6 +91,7 @@ export default function TabLayout() {
   // Map route id to Expo Router screen name
   const getScreenName = (routeId: string): string => {
     const routeToScreen: Record<string, string> = {
+      home: 'index',
       dashboard: 'index',
       budget: 'budget',
       transactions: 'transactions',
@@ -100,15 +104,15 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#6366f1',
-        tabBarInactiveTintColor: '#64748b',
+        tabBarActiveTintColor: theme.blue9?.val ?? '#6366f1',
+        tabBarInactiveTintColor: theme.gray10?.val ?? '#64748b',
         tabBarStyle: {
           height: 70,
           paddingBottom: 10,
           paddingTop: 10,
-          backgroundColor: 'white',
+          backgroundColor: theme.background?.val ?? 'white',
           borderTopWidth: 1,
-          borderTopColor: '#e2e8f0',
+          borderTopColor: theme.borderColor?.val ?? '#e2e8f0',
           elevation: 10,
           shadowColor: '#000',
           shadowOffset: { width: 0, height: -4 },
@@ -161,26 +165,27 @@ export default function TabLayout() {
       )}
 
       {/* Render tabs after FAB */}
-      {fabIndex >= 0 && visibleTabs.slice(fabIndex).map((tab) => {
-        const route = getRouteForTab(tab);
-        if (!route) return null;
+      {fabIndex >= 0 &&
+        visibleTabs.slice(fabIndex).map((tab) => {
+          const route = getRouteForTab(tab);
+          if (!route) return null;
 
-        const screenName = getScreenName(tab.route);
-        const title = getTitle(tab.title, getTitle(route.title, route.id));
-        const icon = tab.icon || route.icon;
-        const IconComponent = getIcon(icon);
+          const screenName = getScreenName(tab.route);
+          const title = getTitle(tab.title, getTitle(route.title, route.id));
+          const icon = tab.icon || route.icon;
+          const IconComponent = getIcon(icon);
 
-        return (
-          <Tabs.Screen
-            key={tab.route}
-            name={screenName}
-            options={{
-              title,
-              tabBarIcon: ({ color, size }) => <IconComponent size={size} color={color} />,
-            }}
-          />
-        );
-      })}
+          return (
+            <Tabs.Screen
+              key={tab.route}
+              name={screenName}
+              options={{
+                title,
+                tabBarIcon: ({ color, size }) => <IconComponent size={size} color={color} />,
+              }}
+            />
+          );
+        })}
 
       {/* Hidden screens - still need to be registered for Expo Router */}
       <Tabs.Screen

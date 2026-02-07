@@ -19,6 +19,6 @@ export default defineConfig({
     'process.env.TAMAGUI_TARGET': JSON.stringify('web'),
   },
   optimizeDeps: {
-    include: ['@app/ui', '@app/shared', '@app/config', '@app/types'],
+    exclude: ['@app/ui', '@app/shared', '@app/config', '@app/types'],
   },
 });

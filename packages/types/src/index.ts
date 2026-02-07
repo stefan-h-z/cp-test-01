@@ -620,6 +620,8 @@ export interface ProtectedRouteProps {
 // Remote Config Types
 export interface RemoteAppConfig extends AppConfig {
   navigation: ExtendedNavigationConfig;
+  /** Screen definitions keyed by screen code */
+  screens?: Record<string, ScreenDefinition>;
   _meta: ConfigMeta;
 }
 
@@ -648,7 +650,10 @@ export interface RouteDefinition {
   path: string;
   title: string | LocalizedString;
   icon?: string;
+  /** Registered component name (for hardcoded screens like LoginScreen, SettingsScreen) */
   screen: string;
+  /** References a screen code from config.screens (takes precedence over screen) */
+  screenCode?: string;
   layout?: string;
   access?: RouteAccess;
   visibility?: RouteVisibility;
@@ -792,3 +797,332 @@ export interface QRScannerOptions {
   /** Supported barcode formats */
   formats?: string[];
 }
+
+// ============================================================
+// CONFIG-DRIVEN SCREEN TYPES
+// ============================================================
+
+/** Top-level screen definition in the config */
+export interface ScreenDefinition {
+  /** Unique screen code, referenced by routes */
+  code: string;
+  /** Human-readable title */
+  title?: string | LocalizedString;
+  /** The component tree that makes up this screen */
+  components: WidgetDefinition[];
+  /** Optional screen-level styling */
+  style?: ScreenStyle;
+  /** Optional data sources this screen needs */
+  dataSources?: DataSourceDefinition[];
+}
+
+export interface ScreenStyle {
+  backgroundColor?: string;
+  padding?: number | string;
+  gap?: number | string;
+  maxWidth?: number;
+  scrollable?: boolean;
+}
+
+/** Data source that a screen can fetch and bind to widgets */
+export interface DataSourceDefinition {
+  id: string;
+  endpoint: string;
+  method?: 'GET' | 'POST';
+  params?: Record<string, string>;
+  refreshInterval?: number;
+}
+
+// ============================================================
+// WIDGET DEFINITION TYPES
+// ============================================================
+
+/** Supported widget types */
+export type WidgetType =
+  | 'Header'
+  | 'Text'
+  | 'Card'
+  | 'Button'
+  | 'Image'
+  | 'Spacer'
+  | 'Divider'
+  | 'QRScanner'
+  | 'DataGrid'
+  | 'FormField'
+  | 'Container'
+  | 'Row'
+  | 'Icon'
+  | 'Badge'
+  | 'List';
+
+/** Column width as a number 1-12 */
+export type ColumnWidth = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+
+/** Responsive width overrides per breakpoint */
+export interface ResponsiveWidth {
+  xs?: ColumnWidth;
+  sm?: ColumnWidth;
+  md?: ColumnWidth;
+  lg?: ColumnWidth;
+  xl?: ColumnWidth;
+}
+
+export interface VisibilityCondition {
+  featureFlag?: string;
+  auth?: 'authenticated' | 'unauthenticated' | 'any';
+}
+
+export interface WidgetStyle {
+  padding?: number | string;
+  margin?: number | string;
+  marginTop?: number | string;
+  marginBottom?: number | string;
+  backgroundColor?: string;
+  borderRadius?: number | string;
+  borderWidth?: number;
+  borderColor?: string;
+  minHeight?: number;
+  maxHeight?: number;
+  alignItems?: 'flex-start' | 'center' | 'flex-end' | 'stretch';
+  justifyContent?: 'flex-start' | 'center' | 'flex-end' | 'space-between' | 'space-around';
+  gap?: number | string;
+}
+
+/** Base for all widget definitions */
+export interface WidgetDefinitionBase {
+  type: WidgetType;
+  id?: string;
+  width?: ColumnWidth;
+  responsiveWidth?: ResponsiveWidth;
+  visible?: boolean | VisibilityCondition;
+  featureFlag?: string;
+  style?: WidgetStyle;
+}
+
+// --- Concrete Widget Definitions ---
+
+export interface HeaderWidgetDef extends WidgetDefinitionBase {
+  type: 'Header';
+  label: string | LocalizedString;
+  level?: 1 | 2 | 3 | 4 | 5;
+}
+
+export interface TextWidgetDef extends WidgetDefinitionBase {
+  type: 'Text';
+  label: string | LocalizedString;
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  muted?: boolean;
+  color?: string;
+  align?: 'left' | 'center' | 'right';
+}
+
+export interface CardWidgetDef extends WidgetDefinitionBase {
+  type: 'Card';
+  header?: string | LocalizedString;
+  description?: string | LocalizedString;
+  variant?: 'elevated' | 'outlined' | 'filled';
+  children?: WidgetDefinition[];
+  image?: ImageWidgetDef;
+  buttons?: ButtonWidgetDef[];
+  link?: LinkDefinition;
+}
+
+export interface ButtonWidgetDef extends WidgetDefinitionBase {
+  type: 'Button';
+  label: string | LocalizedString;
+  variant?:
+    | 'primary'
+    | 'secondary'
+    | 'outline'
+    | 'ghost'
+    | 'destructive'
+    | 'success'
+    | 'gradient'
+    | 'glass';
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  icon?: string;
+  iconPosition?: 'left' | 'right';
+  fullWidth?: boolean;
+  link?: LinkDefinition;
+}
+
+export interface ImageWidgetDef extends WidgetDefinitionBase {
+  type: 'Image';
+  url: string;
+  alt?: string;
+  height?: number | string;
+  resizeMode?: 'cover' | 'contain' | 'stretch' | 'center';
+  borderRadius?: number | string;
+}
+
+export interface SpacerWidgetDef extends WidgetDefinitionBase {
+  type: 'Spacer';
+  size?: number | string;
+}
+
+export interface DividerWidgetDef extends WidgetDefinitionBase {
+  type: 'Divider';
+  color?: string;
+  thickness?: number;
+}
+
+export interface QRScannerWidgetDef extends WidgetDefinitionBase {
+  type: 'QRScanner';
+  onScan?: LinkDefinition;
+  showHistory?: boolean;
+}
+
+export interface DataGridWidgetDef extends WidgetDefinitionBase {
+  type: 'DataGrid';
+  dataSource: string;
+  columns: DataGridColumnDef[];
+  actions?: DataGridActionDef[];
+  sortable?: boolean;
+  filterable?: boolean;
+  pagination?: boolean;
+  pageSizeOptions?: number[];
+}
+
+export interface DataGridColumnDef {
+  key: string;
+  title: string | LocalizedString;
+  width?: number | string;
+  minWidth?: number;
+  sortable?: boolean;
+  filterable?: boolean;
+  align?: 'left' | 'center' | 'right';
+}
+
+export interface DataGridActionDef {
+  id: string;
+  label: string | LocalizedString;
+  icon?: string;
+  variant?: 'primary' | 'secondary' | 'destructive' | 'ghost';
+  link?: LinkDefinition;
+}
+
+export interface FormFieldWidgetDef extends WidgetDefinitionBase {
+  type: 'FormField';
+  name: string;
+  label?: string | LocalizedString;
+  placeholder?: string | LocalizedString;
+  fieldType?: FormFieldType;
+  required?: boolean;
+  disabled?: boolean;
+  helperText?: string | LocalizedString;
+  options?: Array<{ value: string; label: string | LocalizedString }>;
+  submitAction?: LinkDefinition;
+}
+
+export interface ContainerWidgetDef extends WidgetDefinitionBase {
+  type: 'Container';
+  children: WidgetDefinition[];
+  direction?: 'vertical' | 'horizontal';
+}
+
+export interface RowWidgetDef extends WidgetDefinitionBase {
+  type: 'Row';
+  children: WidgetDefinition[];
+  wrap?: boolean;
+}
+
+export interface IconWidgetDef extends WidgetDefinitionBase {
+  type: 'Icon';
+  name: string;
+  size?: number;
+  color?: string;
+}
+
+export interface BadgeWidgetDef extends WidgetDefinitionBase {
+  type: 'Badge';
+  label: string | LocalizedString;
+  variant?: 'default' | 'primary' | 'success' | 'warning' | 'error' | 'info';
+}
+
+export interface ListWidgetDef extends WidgetDefinitionBase {
+  type: 'List';
+  dataSource: string;
+  itemTemplate: WidgetDefinition[];
+  emptyMessage?: string | LocalizedString;
+  dividers?: boolean;
+}
+
+/** Discriminated union of all widget definitions */
+export type WidgetDefinition =
+  | HeaderWidgetDef
+  | TextWidgetDef
+  | CardWidgetDef
+  | ButtonWidgetDef
+  | ImageWidgetDef
+  | SpacerWidgetDef
+  | DividerWidgetDef
+  | QRScannerWidgetDef
+  | DataGridWidgetDef
+  | FormFieldWidgetDef
+  | ContainerWidgetDef
+  | RowWidgetDef
+  | IconWidgetDef
+  | BadgeWidgetDef
+  | ListWidgetDef;
+
+// ============================================================
+// LINK / ACTION SYSTEM
+// ============================================================
+
+export type LinkType = 'SCREEN' | 'URL' | 'ACTION';
+
+export type LinkDefinition = ScreenLink | UrlLink | ActionLink;
+
+export interface ScreenLink {
+  type: 'SCREEN';
+  code: string;
+  params?: Record<string, string>;
+}
+
+export interface UrlLink {
+  type: 'URL';
+  url: string;
+  external?: boolean;
+}
+
+export interface ActionLink {
+  type: 'ACTION';
+  action: ActionType;
+  payload?: Record<string, unknown>;
+}
+
+export type ActionType =
+  | 'logout'
+  | 'toggleTheme'
+  | 'openModal'
+  | 'closeModal'
+  | 'apiCall'
+  | 'refresh'
+  | 'goBack'
+  | 'copyToClipboard'
+  | 'showToast'
+  | 'custom';
+
+// ============================================================
+// WIDGET RENDERER TYPES
+// ============================================================
+
+/** Props passed to every widget renderer */
+export interface WidgetRendererProps<T extends WidgetDefinition = WidgetDefinition> {
+  definition: T;
+  screenContext: ScreenContext;
+}
+
+/** Context available to all widgets on a screen */
+export interface ScreenContext {
+  screen: ScreenDefinition;
+  data: Record<string, unknown>;
+  isLoading: Record<string, boolean>;
+  executeLink: (link: LinkDefinition) => void;
+  resolveString: (value: string | LocalizedString) => string;
+}
+
+/** Widget renderer component type */
+export type WidgetRenderer<T extends WidgetDefinition = WidgetDefinition> = React.ComponentType<
+  WidgetRendererProps<T>
+>;

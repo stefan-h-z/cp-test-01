@@ -37,6 +37,9 @@ export * from './config';
 // Component Registry
 export * from './registry';
 
+// Widgets (Config-Driven Screens)
+export * from './widgets';
+
 // Re-export types and config
 export * from '@app/types';
 export * from '@app/config';

@@ -1,5 +1,390 @@
 import { defaultAppConfig, defaultAuthConfig, defaultI18nConfig } from '@app/config';
-import type { RemoteAppConfig } from '@app/types';
+import type { RemoteAppConfig, ScreenDefinition } from '@app/types';
+
+/**
+ * Screen definitions for config-driven screens.
+ * Each screen defines its widget tree, referenced by routes via screenCode.
+ */
+const screens: Record<string, ScreenDefinition> = {
+  home: {
+    code: 'home',
+    title: 'Home',
+    components: [
+      {
+        type: 'Header',
+        width: 12,
+        label: 'Welcome to FinanceApp!',
+        level: 1,
+      },
+      {
+        type: 'Text',
+        width: 12,
+        label: 'Select a tile below to get started.',
+        muted: true,
+        size: 'lg',
+      },
+      {
+        type: 'Spacer',
+        width: 12,
+        size: '$2',
+      },
+      {
+        type: 'Card',
+        width: 4,
+        responsiveWidth: { xs: 12, sm: 6 },
+        variant: 'elevated',
+        header: 'Budget',
+        description: 'Track your monthly budget and spending habits.',
+        buttons: [
+          {
+            type: 'Button',
+            label: 'View Budget',
+            variant: 'primary',
+            fullWidth: true,
+            link: { type: 'SCREEN', code: 'budget' },
+          },
+        ],
+      },
+      {
+        type: 'Card',
+        width: 4,
+        responsiveWidth: { xs: 12, sm: 6 },
+        variant: 'elevated',
+        header: 'Transactions',
+        description: 'View and manage your recent transactions.',
+        buttons: [
+          {
+            type: 'Button',
+            label: 'View Transactions',
+            variant: 'primary',
+            fullWidth: true,
+            link: { type: 'SCREEN', code: 'transactions' },
+          },
+        ],
+      },
+      {
+        type: 'Card',
+        width: 4,
+        responsiveWidth: { xs: 12, sm: 6 },
+        variant: 'elevated',
+        header: 'Accounts',
+        description: 'Manage your bank accounts and credit cards.',
+        buttons: [
+          {
+            type: 'Button',
+            label: 'View Accounts',
+            variant: 'primary',
+            fullWidth: true,
+            link: { type: 'SCREEN', code: 'accounts' },
+          },
+        ],
+      },
+      {
+        type: 'Spacer',
+        width: 12,
+        size: '$4',
+      },
+      {
+        type: 'Card',
+        width: 4,
+        responsiveWidth: { xs: 12, sm: 6 },
+        variant: 'outlined',
+        featureFlag: 'qrScanner',
+        header: 'QR Scanner',
+        description: 'Scan QR codes to quickly add transactions or links.',
+        buttons: [
+          {
+            type: 'Button',
+            label: 'Open Scanner',
+            variant: 'outline',
+            fullWidth: true,
+            link: { type: 'SCREEN', code: 'qr-scanner' },
+          },
+        ],
+      },
+    ],
+  },
+
+  budget: {
+    code: 'budget',
+    title: 'Budget',
+    components: [
+      {
+        type: 'Header',
+        width: 12,
+        label: 'Budget Overview',
+        level: 2,
+      },
+      {
+        type: 'Text',
+        width: 12,
+        label: 'Track your monthly spending and stay within your budget.',
+        muted: true,
+      },
+      {
+        type: 'Divider',
+        width: 12,
+      },
+      {
+        type: 'Card',
+        width: 6,
+        responsiveWidth: { xs: 12 },
+        variant: 'elevated',
+        header: 'Monthly Budget',
+        description: 'You have spent $1,250 of your $2,000 monthly budget.',
+      },
+      {
+        type: 'Card',
+        width: 6,
+        responsiveWidth: { xs: 12 },
+        variant: 'elevated',
+        header: 'Savings Goal',
+        description: 'You are 65% towards your $5,000 savings goal.',
+      },
+      {
+        type: 'Spacer',
+        width: 12,
+        size: '$3',
+      },
+      {
+        type: 'Button',
+        width: 4,
+        responsiveWidth: { xs: 12 },
+        label: 'Back to Home',
+        variant: 'outline',
+        link: { type: 'SCREEN', code: 'home' },
+      },
+    ],
+  },
+
+  transactions: {
+    code: 'transactions',
+    title: 'Transactions',
+    components: [
+      {
+        type: 'Header',
+        width: 12,
+        label: 'Transactions',
+        level: 2,
+      },
+      {
+        type: 'Text',
+        width: 12,
+        label: 'View and manage your recent transactions.',
+        muted: true,
+      },
+      {
+        type: 'Divider',
+        width: 12,
+      },
+      {
+        type: 'Card',
+        width: 12,
+        variant: 'outlined',
+        header: 'Recent Transactions',
+        description: 'No transactions to display yet. Add your first transaction to get started.',
+        buttons: [
+          {
+            type: 'Button',
+            label: 'Add Transaction',
+            variant: 'primary',
+            link: { type: 'SCREEN', code: 'add-transaction' },
+          },
+        ],
+      },
+      {
+        type: 'Spacer',
+        width: 12,
+        size: '$3',
+      },
+      {
+        type: 'Button',
+        width: 4,
+        responsiveWidth: { xs: 12 },
+        label: 'Back to Home',
+        variant: 'outline',
+        link: { type: 'SCREEN', code: 'home' },
+      },
+    ],
+  },
+
+  accounts: {
+    code: 'accounts',
+    title: 'Accounts',
+    components: [
+      {
+        type: 'Header',
+        width: 12,
+        label: 'Accounts',
+        level: 2,
+      },
+      {
+        type: 'Text',
+        width: 12,
+        label: 'Manage your bank accounts and credit cards.',
+        muted: true,
+      },
+      {
+        type: 'Divider',
+        width: 12,
+      },
+      {
+        type: 'Card',
+        width: 6,
+        responsiveWidth: { xs: 12 },
+        variant: 'elevated',
+        header: 'Checking Account',
+        description: 'Balance: $3,450.00',
+      },
+      {
+        type: 'Card',
+        width: 6,
+        responsiveWidth: { xs: 12 },
+        variant: 'elevated',
+        header: 'Savings Account',
+        description: 'Balance: $12,800.00',
+      },
+      {
+        type: 'Spacer',
+        width: 12,
+        size: '$3',
+      },
+      {
+        type: 'Button',
+        width: 4,
+        responsiveWidth: { xs: 12 },
+        label: 'Back to Home',
+        variant: 'outline',
+        link: { type: 'SCREEN', code: 'home' },
+      },
+    ],
+  },
+
+  'qr-scanner': {
+    code: 'qr-scanner',
+    title: 'QR Scanner',
+    components: [
+      {
+        type: 'Header',
+        width: 12,
+        label: 'QR Scanner',
+        level: 2,
+      },
+      {
+        type: 'Text',
+        width: 12,
+        label: 'Scan a QR code to quickly capture data.',
+        muted: true,
+      },
+      {
+        type: 'QRScanner',
+        width: 12,
+        showHistory: true,
+      },
+      {
+        type: 'Spacer',
+        width: 12,
+        size: '$3',
+      },
+      {
+        type: 'Button',
+        width: 4,
+        responsiveWidth: { xs: 12 },
+        label: 'Back to Home',
+        variant: 'outline',
+        link: { type: 'SCREEN', code: 'home' },
+      },
+    ],
+  },
+
+  'add-transaction': {
+    code: 'add-transaction',
+    title: 'Add Transaction',
+    components: [
+      {
+        type: 'Header',
+        width: 12,
+        label: 'Add Transaction',
+        level: 2,
+      },
+      {
+        type: 'Text',
+        width: 12,
+        label: 'Enter the details for your new transaction.',
+        muted: true,
+      },
+      {
+        type: 'Divider',
+        width: 12,
+      },
+      {
+        type: 'FormField',
+        width: 12,
+        name: 'description',
+        label: 'Description',
+        placeholder: 'e.g. Grocery shopping',
+        fieldType: 'text',
+        required: true,
+      },
+      {
+        type: 'FormField',
+        width: 6,
+        responsiveWidth: { xs: 12 },
+        name: 'amount',
+        label: 'Amount',
+        placeholder: '0.00',
+        fieldType: 'number',
+        required: true,
+      },
+      {
+        type: 'FormField',
+        width: 6,
+        responsiveWidth: { xs: 12 },
+        name: 'category',
+        label: 'Category',
+        fieldType: 'select',
+        options: [
+          { value: 'food', label: 'Food & Dining' },
+          { value: 'transport', label: 'Transportation' },
+          { value: 'shopping', label: 'Shopping' },
+          { value: 'bills', label: 'Bills & Utilities' },
+          { value: 'other', label: 'Other' },
+        ],
+      },
+      {
+        type: 'Spacer',
+        width: 12,
+        size: '$3',
+      },
+      {
+        type: 'Row',
+        width: 12,
+        children: [
+          {
+            type: 'Button',
+            width: 4,
+            responsiveWidth: { xs: 6 },
+            label: 'Cancel',
+            variant: 'outline',
+            link: { type: 'SCREEN', code: 'transactions' },
+          },
+          {
+            type: 'Button',
+            width: 4,
+            responsiveWidth: { xs: 6 },
+            label: 'Save Transaction',
+            variant: 'primary',
+            link: {
+              type: 'ACTION',
+              action: 'showToast',
+              payload: { message: 'Transaction saved!' },
+            },
+          },
+        ],
+      },
+    ],
+  },
+};
 
 /**
  * Fallback configuration used when remote config is unavailable.
@@ -12,32 +397,25 @@ export const fallbackConfig: RemoteAppConfig = {
 
   navigation: {
     ...defaultAppConfig.navigation,
-    initialRoute: 'dashboard',
+    initialRoute: 'home',
     routes: [
       {
-        id: 'dashboard',
+        id: 'home',
         path: '/',
-        title: 'Dashboard',
+        title: 'Home',
         icon: 'Activity',
-        screen: 'DashboardScreen',
+        screen: 'DynamicScreen',
+        screenCode: 'home',
         access: { type: 'authenticated' },
         visibility: { showInTabs: true, showInSidebar: true },
-      },
-      {
-        id: 'dashboard-alias',
-        path: '/dashboard',
-        title: 'Dashboard',
-        icon: 'Activity',
-        screen: 'DashboardScreen',
-        access: { type: 'authenticated' },
-        visibility: { showInTabs: false, showInSidebar: false },
       },
       {
         id: 'budget',
         path: '/budget',
         title: 'Budget',
         icon: 'Calendar',
-        screen: 'BudgetScreen',
+        screen: 'DynamicScreen',
+        screenCode: 'budget',
         access: { type: 'authenticated' },
         visibility: { showInTabs: true, showInSidebar: true },
       },
@@ -46,7 +424,8 @@ export const fallbackConfig: RemoteAppConfig = {
         path: '/transactions',
         title: 'Transactions',
         icon: 'List',
-        screen: 'TransactionsScreen',
+        screen: 'DynamicScreen',
+        screenCode: 'transactions',
         access: { type: 'authenticated' },
         visibility: { showInTabs: true, showInSidebar: true },
       },
@@ -55,7 +434,8 @@ export const fallbackConfig: RemoteAppConfig = {
         path: '/accounts',
         title: 'Accounts',
         icon: 'CreditCard',
-        screen: 'AccountsScreen',
+        screen: 'DynamicScreen',
+        screenCode: 'accounts',
         access: { type: 'authenticated' },
         visibility: { showInTabs: true, showInSidebar: true },
       },
@@ -64,7 +444,8 @@ export const fallbackConfig: RemoteAppConfig = {
         path: '/add',
         title: 'Add Transaction',
         icon: 'Plus',
-        screen: 'AddTransactionScreen',
+        screen: 'DynamicScreen',
+        screenCode: 'add-transaction',
         access: { type: 'authenticated' },
         visibility: { showInTabs: false, showInSidebar: false },
       },
@@ -73,7 +454,8 @@ export const fallbackConfig: RemoteAppConfig = {
         path: '/qr-scanner',
         title: 'QR Scanner',
         icon: 'QrCode',
-        screen: 'QRScannerScreen',
+        screen: 'DynamicScreen',
+        screenCode: 'qr-scanner',
         access: { type: 'authenticated' },
         featureFlag: 'qrScanner',
         visibility: { showInTabs: false, showInSidebar: true },
@@ -86,15 +468,6 @@ export const fallbackConfig: RemoteAppConfig = {
         screen: 'SettingsScreen',
         access: { type: 'authenticated' },
         visibility: { showInTabs: false, showInSidebar: true },
-      },
-      {
-        id: 'details',
-        path: '/details/:id',
-        title: 'Details',
-        screen: 'DetailsScreen',
-        access: { type: 'authenticated' },
-        visibility: { showInTabs: false, showInSidebar: false },
-        params: [{ name: 'id', type: 'string', required: true }],
       },
       {
         id: 'login',
@@ -120,7 +493,7 @@ export const fallbackConfig: RemoteAppConfig = {
       showLabels: true,
       variant: 'default',
       tabs: [
-        { route: 'dashboard', icon: 'Activity' },
+        { route: 'home', icon: 'Activity' },
         { route: 'budget', icon: 'Calendar' },
         { route: 'transactions', icon: 'List' },
         { route: 'accounts', icon: 'CreditCard' },
@@ -138,7 +511,7 @@ export const fallbackConfig: RemoteAppConfig = {
         {
           id: 'main',
           items: [
-            { route: 'dashboard', icon: 'Activity' },
+            { route: 'home', icon: 'Activity' },
             { route: 'budget', icon: 'Calendar' },
             { route: 'transactions', icon: 'List' },
             { route: 'accounts', icon: 'CreditCard' },
@@ -147,16 +520,12 @@ export const fallbackConfig: RemoteAppConfig = {
         {
           id: 'tools',
           title: 'Tools',
-          items: [
-            { route: 'qr-scanner', icon: 'QrCode' },
-          ],
+          items: [{ route: 'qr-scanner', icon: 'QrCode' }],
         },
         {
           id: 'settings',
           title: 'Settings',
-          items: [
-            { route: 'settings', icon: 'Settings' },
-          ],
+          items: [{ route: 'settings', icon: 'Settings' }],
         },
       ],
       collapsible: true,
@@ -166,6 +535,8 @@ export const fallbackConfig: RemoteAppConfig = {
       unauthorized: '/login',
     },
   },
+
+  screens,
 
   features: {
     darkMode: true,
@@ -190,7 +561,7 @@ export const fallbackConfig: RemoteAppConfig = {
   _meta: {
     version: 'fallback-v1',
     fetchedAt: 0,
-    expiresAt: Number.MAX_SAFE_INTEGER, // Never expires
+    expiresAt: Number.MAX_SAFE_INTEGER,
   },
 };
 
@@ -205,16 +576,12 @@ export function getRouteById(routeId: string) {
  * Get all routes that should be shown in tabs
  */
 export function getTabRoutes() {
-  return fallbackConfig.navigation.routes.filter(
-    (r) => r.visibility?.showInTabs
-  );
+  return fallbackConfig.navigation.routes.filter((r) => r.visibility?.showInTabs);
 }
 
 /**
  * Get all routes that should be shown in sidebar
  */
 export function getSidebarRoutes() {
-  return fallbackConfig.navigation.routes.filter(
-    (r) => r.visibility?.showInSidebar
-  );
+  return fallbackConfig.navigation.routes.filter((r) => r.visibility?.showInSidebar);
 }
