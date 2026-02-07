@@ -10,10 +10,11 @@ import {
   QRScannerResult,
   QRScannerHistory,
 } from '@app/ui';
+import jsQR from 'jsqr';
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-// Declare BarcodeDetector for TypeScript
+// Declare BarcodeDetector for TypeScript (optional native API)
 declare global {
   interface Window {
     BarcodeDetector?: new (options?: { formats: string[] }) => {
@@ -21,6 +22,8 @@ declare global {
     };
   }
 }
+
+type ScanMode = 'native' | 'jsqr';
 
 export function QRScannerScreen() {
   const navigate = useNavigate();
@@ -31,7 +34,7 @@ export function QRScannerScreen() {
   const detectorRef = useRef<InstanceType<NonNullable<Window['BarcodeDetector']>> | null>(null);
 
   const [copySuccess, setCopySuccess] = useState(false);
-  const [isSupported, setIsSupported] = useState<boolean | null>(null);
+  const [scanMode, setScanMode] = useState<ScanMode | null>(null);
 
   const {
     state,
@@ -47,7 +50,7 @@ export function QRScannerScreen() {
     formatTimestamp,
   } = useQRScannerLogic({ vibrate: true, scanDelay: 2000 });
 
-  // Check if BarcodeDetector is supported
+  // Check if BarcodeDetector is supported, fallback to jsQR
   useEffect(() => {
     const checkSupport = async () => {
       if ('BarcodeDetector' in window) {
@@ -56,16 +59,19 @@ export function QRScannerScreen() {
           const formats = (await (
             window.BarcodeDetector as unknown as { getSupportedFormats: () => Promise<string[]> }
           ).getSupportedFormats?.()) ?? ['qr_code'];
-          setIsSupported(formats.includes('qr_code'));
 
-          // Create detector instance
-          detectorRef.current = new window.BarcodeDetector!({ formats: ['qr_code'] });
+          if (formats.includes('qr_code')) {
+            // Create detector instance
+            detectorRef.current = new window.BarcodeDetector!({ formats: ['qr_code'] });
+            setScanMode('native');
+            return;
+          }
         } catch {
-          setIsSupported(false);
+          // Native API failed, fall through to jsQR
         }
-      } else {
-        setIsSupported(false);
       }
+      // Fallback to jsQR (works in all browsers)
+      setScanMode('jsqr');
     };
     checkSupport();
   }, []);
@@ -79,12 +85,8 @@ export function QRScannerScreen() {
 
       streamRef.current = stream;
       setPermission(true);
-
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        await videoRef.current.play();
-        startScanning();
-      }
+      // First set scanning active so the video element renders
+      startScanning();
     } catch (err) {
       if (err instanceof Error) {
         if (err.name === 'NotAllowedError') {
@@ -96,6 +98,16 @@ export function QRScannerScreen() {
       }
     }
   }, [setPermission, startScanning, onError]);
+
+  // Attach stream to video element when it becomes available
+  useEffect(() => {
+    if (state.isActive && streamRef.current && videoRef.current) {
+      videoRef.current.srcObject = streamRef.current;
+      videoRef.current.play().catch((err) => {
+        onError(`Failed to play video: ${err.message}`);
+      });
+    }
+  }, [state.isActive, onError]);
 
   // Stop camera stream
   const stopCamera = useCallback(() => {
@@ -109,9 +121,9 @@ export function QRScannerScreen() {
     stopScanning();
   }, [stopScanning]);
 
-  // Scan for QR codes
+  // Scan for QR codes using native API or jsQR fallback
   const scanFrame = useCallback(async () => {
-    if (!state.isActive || !videoRef.current || !canvasRef.current || !detectorRef.current) {
+    if (!state.isActive || !videoRef.current || !canvasRef.current || !scanMode) {
       return;
     }
 
@@ -125,10 +137,22 @@ export function QRScannerScreen() {
       ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
       try {
-        const barcodes = await detectorRef.current.detect(canvas);
-        if (barcodes.length > 0) {
-          const barcode = barcodes[0];
-          onScan(barcode.rawValue, barcode.format);
+        if (scanMode === 'native' && detectorRef.current) {
+          // Use native BarcodeDetector API
+          const barcodes = await detectorRef.current.detect(canvas);
+          if (barcodes.length > 0) {
+            const barcode = barcodes[0];
+            onScan(barcode.rawValue, barcode.format);
+          }
+        } else {
+          // Use jsQR fallback
+          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          const code = jsQR(imageData.data, imageData.width, imageData.height, {
+            inversionAttempts: 'dontInvert',
+          });
+          if (code) {
+            onScan(code.data, 'qr_code');
+          }
         }
       } catch {
         // Detection failed, continue scanning
@@ -136,7 +160,7 @@ export function QRScannerScreen() {
     }
 
     animationRef.current = requestAnimationFrame(scanFrame);
-  }, [state.isActive, onScan]);
+  }, [state.isActive, onScan, scanMode]);
 
   // Start scanning loop when active
   useEffect(() => {
@@ -174,27 +198,14 @@ export function QRScannerScreen() {
     startCamera();
   };
 
-  // Browser not supported
-  if (isSupported === false) {
+  // Still checking support
+  if (scanMode === null) {
     return (
       <YStack gap="$6" paddingVertical="$4" alignItems="center">
         <Section alignItems="center" gap="$4" maxWidth={500}>
           <Heading level={2}>QR Scanner</Heading>
-          <YStack
-            backgroundColor="$yellow2"
-            padding="$4"
-            borderRadius="$4"
-            borderWidth={1}
-            borderColor="$yellow6"
-          >
-            <BodyText textAlign="center">
-              Your browser doesn&apos;t support the Barcode Detection API. Please use a modern
-              browser like Chrome, Edge, or Safari on macOS.
-            </BodyText>
-          </YStack>
-          <Button variant="outline" onPress={() => navigate(-1)}>
-            Go Back
-          </Button>
+          <Spinner size="large" />
+          <BodyText muted>Initializing scanner...</BodyText>
         </Section>
       </YStack>
     );
@@ -209,60 +220,84 @@ export function QRScannerScreen() {
         </Button>
       </XStack>
 
-      <YStack gap="$4" maxWidth={600}>
+      <YStack gap="$4" maxWidth={600} alignItems="center">
         {/* Camera View */}
         {!state.result && (
-          <Section gap="$4">
+          <Section gap="$4" alignItems="center" width="100%">
             {state.isActive ? (
-              <YStack
-                position="relative"
-                backgroundColor="$gray12"
-                borderRadius="$4"
-                overflow="hidden"
-                aspectRatio={4 / 3}
-              >
-                <video
-                  ref={videoRef}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                  }}
-                  playsInline
-                  muted
-                />
-                <canvas ref={canvasRef} style={{ display: 'none' }} />
-
-                {/* Scanning overlay */}
+              <YStack alignItems="center" gap="$3">
+                {/* Square camera preview */}
                 <YStack
-                  position="absolute"
-                  top={0}
-                  left={0}
-                  right={0}
-                  bottom={0}
-                  alignItems="center"
-                  justifyContent="center"
-                  pointerEvents="none"
+                  position="relative"
+                  width={280}
+                  height={280}
+                  backgroundColor="$gray12"
+                  borderRadius="$4"
+                  overflow="hidden"
                 >
-                  <YStack
-                    width={200}
-                    height={200}
-                    borderWidth={2}
-                    borderColor="$green10"
-                    borderRadius="$4"
-                    opacity={0.8}
+                  <video
+                    ref={videoRef}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                    }}
+                    playsInline
+                    muted
                   />
-                  <BodyText
-                    color="white"
-                    marginTop="$4"
-                    backgroundColor="rgba(0,0,0,0.5)"
-                    paddingHorizontal="$3"
-                    paddingVertical="$2"
-                    borderRadius="$2"
+                  <canvas ref={canvasRef} style={{ display: 'none' }} />
+
+                  {/* Corner markers overlay */}
+                  <YStack
+                    position="absolute"
+                    top={0}
+                    left={0}
+                    right={0}
+                    bottom={0}
+                    pointerEvents="none"
                   >
-                    Point camera at QR code
-                  </BodyText>
+                    {/* Top-left corner */}
+                    <YStack position="absolute" top={20} left={20}>
+                      <YStack width={40} height={4} backgroundColor="$green10" borderRadius={2} />
+                      <YStack width={4} height={40} backgroundColor="$green10" borderRadius={2} />
+                    </YStack>
+                    {/* Top-right corner */}
+                    <YStack position="absolute" top={20} right={20} alignItems="flex-end">
+                      <YStack width={40} height={4} backgroundColor="$green10" borderRadius={2} />
+                      <YStack
+                        width={4}
+                        height={40}
+                        backgroundColor="$green10"
+                        borderRadius={2}
+                        alignSelf="flex-end"
+                      />
+                    </YStack>
+                    {/* Bottom-left corner */}
+                    <YStack position="absolute" bottom={20} left={20}>
+                      <YStack width={4} height={40} backgroundColor="$green10" borderRadius={2} />
+                      <YStack width={40} height={4} backgroundColor="$green10" borderRadius={2} />
+                    </YStack>
+                    {/* Bottom-right corner */}
+                    <YStack position="absolute" bottom={20} right={20} alignItems="flex-end">
+                      <YStack
+                        width={4}
+                        height={40}
+                        backgroundColor="$green10"
+                        borderRadius={2}
+                        alignSelf="flex-end"
+                      />
+                      <YStack width={40} height={4} backgroundColor="$green10" borderRadius={2} />
+                    </YStack>
+                  </YStack>
                 </YStack>
+
+                <BodyText muted size="sm" textAlign="center">
+                  Position QR code within the frame
+                </BodyText>
+
+                <Button variant="outline" onPress={stopCamera}>
+                  Stop Scanning
+                </Button>
               </YStack>
             ) : state.error ? (
               <YStack
@@ -271,6 +306,7 @@ export function QRScannerScreen() {
                 borderRadius="$4"
                 alignItems="center"
                 gap="$3"
+                maxWidth={300}
               >
                 <BodyText color="$red10" textAlign="center">
                   {state.error}
@@ -279,13 +315,6 @@ export function QRScannerScreen() {
                   Try Again
                 </Button>
               </YStack>
-            ) : isSupported === null ? (
-              <YStack alignItems="center" padding="$6">
-                <Spinner size="large" />
-                <BodyText muted marginTop="$2">
-                  Checking browser support...
-                </BodyText>
-              </YStack>
             ) : (
               <YStack
                 backgroundColor="$gray2"
@@ -293,22 +322,27 @@ export function QRScannerScreen() {
                 borderRadius="$4"
                 alignItems="center"
                 gap="$4"
-                aspectRatio={4 / 3}
+                width={280}
+                height={280}
                 justifyContent="center"
               >
-                <BodyText muted textAlign="center">
-                  Click the button below to start scanning QR codes
+                <YStack
+                  width={80}
+                  height={80}
+                  backgroundColor="$gray4"
+                  borderRadius="$3"
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  <BodyText fontSize={32}>📷</BodyText>
+                </YStack>
+                <BodyText muted textAlign="center" size="sm">
+                  Tap to start scanning
                 </BodyText>
-                <Button variant="primary" size="lg" onPress={startCamera}>
+                <Button variant="primary" onPress={startCamera}>
                   Start Camera
                 </Button>
               </YStack>
-            )}
-
-            {state.isActive && (
-              <Button variant="outline" onPress={stopCamera}>
-                Stop Scanning
-              </Button>
             )}
           </Section>
         )}
