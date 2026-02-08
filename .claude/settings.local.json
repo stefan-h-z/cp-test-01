@@ -25,7 +25,8 @@
       "Bash(pnpm list:*)",
       "Bash(pnpm ls:*)",
       "Bash(findstr:*)",
-      "Bash(pnpm --filter @app/ui exec node:*)"
+      "Bash(pnpm --filter @app/ui exec node:*)",
+      "Bash(pnpm why:*)"
     ]
   }
 }

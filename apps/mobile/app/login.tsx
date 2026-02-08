@@ -2,6 +2,7 @@ import { useLoginScreenLogic } from '@app/shared';
 import type { AuthProviderType } from '@app/types';
 import { YStack, XStack, Heading, BodyText, Button, Spinner, Section } from '@app/ui';
 import { useRouter } from 'expo-router';
+import { useEffect, useCallback } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function LoginScreen() {
@@ -16,18 +17,27 @@ export default function LoginScreen() {
     handleLogin,
   } = useLoginScreenLogic();
 
-  // Redirect if already authenticated
-  if (isAuthenticated) {
-    router.replace('/(tabs)');
-    return null;
-  }
-
-  const onLogin = async (provider: AuthProviderType) => {
-    const success = await handleLogin(provider);
-    if (success) {
+  // Redirect if already authenticated (must be in useEffect, not during render)
+  useEffect(() => {
+    if (isAuthenticated) {
       router.replace('/(tabs)');
     }
-  };
+  }, [isAuthenticated, router]);
+
+  const onLogin = useCallback(
+    async (provider: AuthProviderType) => {
+      const success = await handleLogin(provider);
+      if (success) {
+        router.replace('/(tabs)');
+      }
+    },
+    [handleLogin, router]
+  );
+
+  // Show nothing while redirecting
+  if (isAuthenticated) {
+    return null;
+  }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#f5f5f5' }}>

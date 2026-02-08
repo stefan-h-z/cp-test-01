@@ -58,6 +58,12 @@ const bodyFont = createInterFont(
       6: 16,
       7: 18,
       8: 20,
+      // String size tokens used by Button/IconButton variants
+      xs: 11,
+      sm: 12,
+      md: 13,
+      lg: 14,
+      xl: 15,
     },
     weight: {
       1: '400',
