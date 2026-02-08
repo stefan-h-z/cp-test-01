@@ -19,15 +19,15 @@
     "@azure/msal-browser": "^3.10.0",
     "@azure/msal-react": "^2.0.12",
     "@react-oauth/google": "^0.12.1",
-    "@tamagui/config": "^1.116.0",
-    "@tamagui/core": "^1.116.0",
-    "@tamagui/vite-plugin": "^1.116.0",
+    "@tamagui/config": "1.144.3",
+    "@tamagui/core": "1.144.3",
+    "@tamagui/vite-plugin": "1.144.3",
     "@tanstack/react-query": "^5.60.0",
     "jsqr": "^1.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.0",
-    "tamagui": "^1.116.0"
+    "tamagui": "1.144.3"
   },
   "devDependencies": {
     "@types/react": "^18.2.0",

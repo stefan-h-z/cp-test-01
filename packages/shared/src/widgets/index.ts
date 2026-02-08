@@ -9,16 +9,17 @@ import { BadgeWidget } from './BadgeWidget';
 import { ButtonWidget } from './ButtonWidget';
 import { CardWidget } from './CardWidget';
 import { ContainerWidget } from './ContainerWidget';
-import { RowWidget } from './RowWidget';
-import { ListWidget } from './ListWidget';
 import { DataGridWidget } from './DataGridWidget';
 import { DividerWidget } from './DividerWidget';
 import { FormFieldWidget } from './FormFieldWidget';
 import { HeaderWidget } from './HeaderWidget';
 import { IconWidget } from './IconWidget';
 import { ImageWidget } from './ImageWidget';
+import { ListWidget } from './ListWidget';
+import { RowWidget } from './RowWidget';
 import { SpacerWidget } from './SpacerWidget';
 import { TextWidget } from './TextWidget';
+import { WorkflowWidget } from './WorkflowWidget';
 
 export {
   HeaderWidget,
@@ -35,6 +36,7 @@ export {
   ListWidget,
   DataGridWidget,
   FormFieldWidget,
+  WorkflowWidget,
 };
 
 /**
@@ -56,4 +58,5 @@ export function registerDefaultWidgets(registry: WidgetRegistry): void {
   registry.registerWidget('List', ListWidget);
   registry.registerWidget('DataGrid', DataGridWidget);
   registry.registerWidget('FormField', FormFieldWidget);
+  registry.registerWidget('Workflow', WorkflowWidget);
 }

@@ -297,6 +297,158 @@ const screens: Record<string, ScreenDefinition> = {
     ],
   },
 
+  onboarding: {
+    code: 'onboarding',
+    title: 'Onboarding',
+    components: [
+      {
+        type: 'Header',
+        width: 12,
+        label: 'Get Started',
+        level: 2,
+      },
+      {
+        type: 'Workflow',
+        width: 12,
+        config: {
+          variant: 'horizontal',
+          allowBack: true,
+          allowStepClick: false,
+          labels: {
+            next: 'Continue',
+            back: 'Go Back',
+            submit: 'Complete Setup',
+            cancel: 'Skip for Now',
+          },
+          onComplete: {
+            type: 'SCREEN',
+            code: 'home',
+          },
+          onCancel: {
+            type: 'SCREEN',
+            code: 'home',
+          },
+          steps: [
+            {
+              id: 'personal',
+              title: 'Personal Information',
+              description: 'Tell us about yourself.',
+              icon: 'User',
+              fields: [
+                {
+                  name: 'firstName',
+                  label: 'First Name',
+                  placeholder: 'John',
+                  type: 'text',
+                  required: true,
+                  width: 6,
+                  responsiveWidth: { xs: 12 },
+                  validation: [
+                    { type: 'required', message: 'First name is required' },
+                    { type: 'minLength', value: 2, message: 'Must be at least 2 characters' },
+                  ],
+                },
+                {
+                  name: 'lastName',
+                  label: 'Last Name',
+                  placeholder: 'Doe',
+                  type: 'text',
+                  required: true,
+                  width: 6,
+                  responsiveWidth: { xs: 12 },
+                  validation: [{ type: 'required', message: 'Last name is required' }],
+                },
+                {
+                  name: 'email',
+                  label: 'Email Address',
+                  placeholder: 'john@example.com',
+                  type: 'email',
+                  required: true,
+                  width: 12,
+                  validation: [
+                    { type: 'required' },
+                    { type: 'email', message: 'Please enter a valid email' },
+                  ],
+                },
+              ],
+            },
+            {
+              id: 'preferences',
+              title: 'Preferences',
+              description: 'Customize your experience.',
+              icon: 'Settings',
+              fields: [
+                {
+                  name: 'currency',
+                  label: 'Preferred Currency',
+                  type: 'select',
+                  required: true,
+                  width: 6,
+                  responsiveWidth: { xs: 12 },
+                  options: [
+                    { value: 'USD', label: 'US Dollar ($)' },
+                    { value: 'EUR', label: 'Euro (EUR)' },
+                    { value: 'GBP', label: 'British Pound (GBP)' },
+                  ],
+                  defaultValue: 'USD',
+                  validation: [{ type: 'required' }],
+                },
+                {
+                  name: 'budgetGoal',
+                  label: 'Monthly Budget Goal',
+                  placeholder: '2000',
+                  type: 'number',
+                  required: true,
+                  width: 6,
+                  responsiveWidth: { xs: 12 },
+                  validation: [
+                    { type: 'required' },
+                    { type: 'min', value: 100, message: 'Budget must be at least 100' },
+                    { type: 'max', value: 1000000, message: 'Budget cannot exceed 1,000,000' },
+                  ],
+                },
+                {
+                  name: 'notifications',
+                  label: 'Enable notifications',
+                  type: 'checkbox',
+                  defaultValue: true,
+                  width: 12,
+                },
+              ],
+            },
+            {
+              id: 'confirmation',
+              title: 'Confirmation',
+              description: 'Review and confirm your setup.',
+              icon: 'CheckCircle',
+              fields: [
+                {
+                  name: 'acceptTerms',
+                  label: 'I accept the terms and conditions',
+                  type: 'checkbox',
+                  required: true,
+                  width: 12,
+                  validation: [
+                    { type: 'required', message: 'You must accept the terms to continue' },
+                  ],
+                },
+              ],
+              children: [
+                {
+                  type: 'Text',
+                  label:
+                    'By completing this setup, your account will be configured with the preferences you selected.',
+                  muted: true,
+                  size: 'sm',
+                },
+              ],
+            },
+          ],
+        },
+      },
+    ],
+  },
+
   'add-transaction': {
     code: 'add-transaction',
     title: 'Add Transaction',
@@ -446,6 +598,16 @@ export const fallbackConfig: RemoteAppConfig = {
         icon: 'Plus',
         screen: 'DynamicScreen',
         screenCode: 'add-transaction',
+        access: { type: 'authenticated' },
+        visibility: { showInTabs: false, showInSidebar: false },
+      },
+      {
+        id: 'onboarding',
+        path: '/onboarding',
+        title: 'Onboarding',
+        icon: 'UserPlus',
+        screen: 'DynamicScreen',
+        screenCode: 'onboarding',
         access: { type: 'authenticated' },
         visibility: { showInTabs: false, showInSidebar: false },
       },

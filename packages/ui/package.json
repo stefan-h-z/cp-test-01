@@ -20,14 +20,14 @@
   },
   "dependencies": {
     "@app/types": "workspace:*",
-    "@tamagui/config": "^1.116.0",
-    "@tamagui/core": "^1.116.0",
-    "@tamagui/lucide-icons": "^1.116.0",
-    "@tamagui/font-inter": "^1.116.0",
-    "@tamagui/shorthands": "^1.116.0",
-    "@tamagui/react-native-media-driver": "^1.116.0",
-    "@tamagui/animations-css": "^1.116.0",
-    "tamagui": "^1.116.0",
+    "@tamagui/config": "1.144.3",
+    "@tamagui/core": "1.144.3",
+    "@tamagui/lucide-icons": "1.144.3",
+    "@tamagui/font-inter": "1.144.3",
+    "@tamagui/shorthands": "1.144.3",
+    "@tamagui/react-native-media-driver": "1.144.3",
+    "@tamagui/animations-css": "1.144.3",
+    "tamagui": "1.144.3",
     "react": "^18.2.0"
   },
   "devDependencies": {

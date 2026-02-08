@@ -19,14 +19,14 @@
     "@app/types": "workspace:*",
     "@app/ui": "workspace:*",
     "@hookform/resolvers": "^3.9.0",
-    "@tamagui/core": "^1.116.0",
+    "@tamagui/core": "1.144.3",
     "@tanstack/react-query": "^5.60.0",
     "i18next": "^23.15.0",
     "react": "^18.2.0",
     "react-hook-form": "^7.53.0",
     "react-i18next": "^15.0.0",
     "react-native": "0.76.3",
-    "tamagui": "^1.116.0",
+    "tamagui": "1.144.3",
     "zod": "^3.23.0"
   },
   "devDependencies": {

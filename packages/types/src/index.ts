@@ -853,7 +853,8 @@ export type WidgetType =
   | 'Row'
   | 'Icon'
   | 'Badge'
-  | 'List';
+  | 'List'
+  | 'Workflow';
 
 /** Column width as a number 1-12 */
 export type ColumnWidth = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
@@ -1047,6 +1048,70 @@ export interface ListWidgetDef extends WidgetDefinitionBase {
   dividers?: boolean;
 }
 
+// ============================================================
+// WORKFLOW / WIZARD TYPES
+// ============================================================
+
+/** JSON-serializable validation rule that maps to Zod at runtime */
+export type ValidationRule =
+  | { type: 'required'; message?: string }
+  | { type: 'minLength'; value: number; message?: string }
+  | { type: 'maxLength'; value: number; message?: string }
+  | { type: 'min'; value: number; message?: string }
+  | { type: 'max'; value: number; message?: string }
+  | { type: 'email'; message?: string }
+  | { type: 'url'; message?: string }
+  | { type: 'phone'; message?: string }
+  | { type: 'pattern'; value: string; message?: string }
+  | { type: 'custom'; value: string; message?: string };
+
+/** Configuration for a single form field within a workflow step */
+export interface WorkflowFieldConfig {
+  name: string;
+  label?: string | LocalizedString;
+  placeholder?: string | LocalizedString;
+  type?: FormFieldType;
+  required?: boolean;
+  disabled?: boolean;
+  helperText?: string | LocalizedString;
+  options?: Array<{ value: string; label: string | LocalizedString; disabled?: boolean }>;
+  defaultValue?: unknown;
+  validation?: ValidationRule[];
+  width?: ColumnWidth;
+  responsiveWidth?: ResponsiveWidth;
+}
+
+/** Configuration for a single step in a workflow */
+export interface WorkflowStepConfig {
+  id: string;
+  title: string | LocalizedString;
+  description?: string | LocalizedString;
+  icon?: string;
+  fields: WorkflowFieldConfig[];
+  children?: WidgetDefinition[];
+}
+
+/** Full workflow configuration */
+export interface WorkflowConfig {
+  steps: WorkflowStepConfig[];
+  variant?: 'horizontal' | 'vertical' | 'compact';
+  allowBack?: boolean;
+  allowStepClick?: boolean;
+  labels?: {
+    next?: string | LocalizedString;
+    back?: string | LocalizedString;
+    submit?: string | LocalizedString;
+    cancel?: string | LocalizedString;
+  };
+  onComplete?: LinkDefinition;
+  onCancel?: LinkDefinition;
+}
+
+export interface WorkflowWidgetDef extends WidgetDefinitionBase {
+  type: 'Workflow';
+  config: WorkflowConfig;
+}
+
 /** Discriminated union of all widget definitions */
 export type WidgetDefinition =
   | HeaderWidgetDef
@@ -1063,7 +1128,8 @@ export type WidgetDefinition =
   | RowWidgetDef
   | IconWidgetDef
   | BadgeWidgetDef
-  | ListWidgetDef;
+  | ListWidgetDef
+  | WorkflowWidgetDef;
 
 // ============================================================
 // LINK / ACTION SYSTEM
