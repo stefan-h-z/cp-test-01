@@ -33,8 +33,7 @@ export function MobileAuthProvider({ children }: MobileAuthProviderProps) {
           androidClientId: googleConfig.androidClientId,
           scopes: googleConfig.scopes || ['openid', 'profile', 'email'],
         }
-      : { clientId: '' },
-    { disabled: !googleConfig }
+      : { clientId: '' }
   );
 
   // Entra Auth Request

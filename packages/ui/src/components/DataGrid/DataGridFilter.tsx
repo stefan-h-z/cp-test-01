@@ -1,7 +1,8 @@
 import type { DataGridColumn, FilterState } from '@app/types';
 import { Search, Filter, X } from '@tamagui/lucide-icons';
 import React, { useState } from 'react';
-import { XStack, YStack, Input, Button, Text, Popover } from 'tamagui';
+import { XStack, YStack, Input, Text, Popover } from 'tamagui';
+import { Button } from '../Button';
 
 interface DataGridFilterProps<T> {
   value: string;
@@ -40,12 +41,7 @@ export function DataGridFilter<T>({
   const hasActiveFilters = value || activeFilterCount > 0;
 
   return (
-    <YStack
-      padding="$3"
-      borderBottomWidth={1}
-      borderBottomColor="$borderColor"
-      gap="$3"
-    >
+    <YStack padding="$3" borderBottomWidth={1} borderBottomColor="$borderColor" gap="$3">
       <XStack gap="$2" alignItems="center">
         {/* Global search */}
         <XStack flex={1} position="relative">
@@ -68,20 +64,8 @@ export function DataGridFilter<T>({
             size="$3"
           />
           {value && (
-            <YStack
-              position="absolute"
-              right="$2"
-              top={0}
-              bottom={0}
-              justifyContent="center"
-            >
-              <Button
-                size="$2"
-                variant="ghost"
-                onPress={() => onChange('')}
-                padding="$1"
-                circular
-              >
+            <YStack position="absolute" right="$2" top={0} bottom={0} justifyContent="center">
+              <Button size="$2" variant="ghost" onPress={() => onChange('')} padding="$1" circular>
                 <X size={16} color="$gray10" />
               </Button>
             </YStack>
@@ -119,11 +103,7 @@ export function DataGridFilter<T>({
                     Column Filters
                   </Text>
                   {activeFilterCount > 0 && (
-                    <Button
-                      size="$2"
-                      variant="ghost"
-                      onPress={() => onColumnFilterChange({})}
-                    >
+                    <Button size="$2" variant="ghost" onPress={() => onColumnFilterChange({})}>
                       <Text color="$red10" fontSize="$2">
                         Clear all
                       </Text>
@@ -140,20 +120,14 @@ export function DataGridFilter<T>({
                       <Input
                         size="$3"
                         value={columnFilters[String(column.key)] || ''}
-                        onChangeText={(val) =>
-                          handleColumnFilterChange(String(column.key), val)
-                        }
+                        onChangeText={(val) => handleColumnFilterChange(String(column.key), val)}
                         placeholder={`Filter ${column.title}...`}
                       />
                     </YStack>
                   ))}
                 </YStack>
 
-                <Button
-                  size="$3"
-                  variant="primary"
-                  onPress={() => setShowAdvanced(false)}
-                >
+                <Button size="$3" variant="primary" onPress={() => setShowAdvanced(false)}>
                   Apply Filters
                 </Button>
               </YStack>
@@ -163,12 +137,7 @@ export function DataGridFilter<T>({
 
         {/* Clear all button */}
         {hasActiveFilters && (
-          <Button
-            size="$3"
-            variant="ghost"
-            onPress={clearAllFilters}
-            icon={<X size={18} />}
-          >
+          <Button size="$3" variant="ghost" onPress={clearAllFilters} icon={<X size={18} />}>
             <Text fontSize="$2">Clear</Text>
           </Button>
         )}

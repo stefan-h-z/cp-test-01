@@ -140,7 +140,7 @@ export function useAppForm<T extends FieldValues>({
         if (onError) {
           const errorMessages: Record<string, string> = {};
           Object.entries(formErrors).forEach(([key, error]) => {
-            if (error?.message) {
+            if (error?.message && typeof error.message === 'string') {
               errorMessages[key] = error.message;
             }
           });

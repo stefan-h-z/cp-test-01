@@ -9,8 +9,6 @@ const GlassBase = styled(YStack, {
   borderColor: '$glassBorder',
   borderRadius: '$5',
   overflow: 'hidden',
-  // CSS backdrop-filter for web
-  // @ts-expect-error - web-specific property
   style: {
     backdropFilter: 'blur(12px)',
     WebkitBackdropFilter: 'blur(12px)',
@@ -42,7 +40,6 @@ const GlassBase = styled(YStack, {
       solid: {
         backgroundColor: '$background',
         borderColor: '$borderColor',
-        // @ts-expect-error - web specific CSS
         style: {
           backdropFilter: 'none',
         },
@@ -101,7 +98,6 @@ const GradientBorderWrapper = styled(YStack, {
   padding: 1,
   borderRadius: '$5',
   overflow: 'hidden',
-  // @ts-expect-error - web specific gradient
   style: {
     background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.5) 0%, rgba(168, 85, 247, 0.5) 100%)',
   },
@@ -232,7 +228,6 @@ export function FeatureCard({
           borderRadius="$3"
           alignItems="center"
           justifyContent="center"
-          // @ts-expect-error - web specific gradient
           style={{
             background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
           }}

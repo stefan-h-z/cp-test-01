@@ -8,8 +8,6 @@ const SkeletonBase = styled(YStack, {
   borderRadius: '$2',
   overflow: 'hidden',
   position: 'relative',
-  // Shimmer animation via CSS
-  // @ts-expect-error - web specific CSS animation
   style: {
     background:
       'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%)',
@@ -19,14 +17,12 @@ const SkeletonBase = styled(YStack, {
   variants: {
     variant: {
       pulse: {
-        animation: 'pulse',
-        // @ts-expect-error - web specific animation
+        animation: 'pulse' as never,
         style: {
           animation: 'pulse 2s ease-in-out infinite',
         },
       },
       shimmer: {
-        // @ts-expect-error - web specific animation
         style: {
           background:
             'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%)',
@@ -35,7 +31,6 @@ const SkeletonBase = styled(YStack, {
         },
       },
       wave: {
-        // @ts-expect-error - web specific animation
         style: {
           background:
             'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 25%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0.2) 75%, transparent 100%)',
@@ -54,8 +49,8 @@ const SkeletonBase = styled(YStack, {
     },
   } as const,
   defaultVariants: {
-    variant: 'shimmer',
-    rounded: 'md',
+    variant: 'shimmer' as never,
+    rounded: 'md' as never,
   },
 });
 

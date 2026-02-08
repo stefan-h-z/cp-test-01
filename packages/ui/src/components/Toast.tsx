@@ -1,7 +1,7 @@
 import { CheckCircle, AlertCircle, AlertTriangle, Info, X } from '@tamagui/lucide-icons';
-import React, { useEffect, useState } from 'react';
-import { Animated } from 'react-native';
-import { YStack, XStack, Text, Button } from 'tamagui';
+import React, { useEffect, useState, useCallback } from 'react';
+import { YStack, XStack, Text } from 'tamagui';
+import { Button } from './Button';
 
 export type ToastType = 'success' | 'error' | 'warning' | 'info';
 
@@ -22,7 +22,14 @@ interface ToastItemProps {
   onDismiss: (id: string) => void;
 }
 
-const toastConfig: Record<ToastType, { icon: React.ComponentType<{ size: number; color?: string }>; bgColor: string; iconColor: string }> = {
+const toastConfig: Record<
+  ToastType,
+  {
+    icon: React.ComponentType<{ size: number; color?: string }>;
+    bgColor: string;
+    iconColor: string;
+  }
+> = {
   success: { icon: CheckCircle, bgColor: '$green2', iconColor: '$green10' },
   error: { icon: AlertCircle, bgColor: '$red2', iconColor: '$red10' },
   warning: { icon: AlertTriangle, bgColor: '$yellow2', iconColor: '$yellow10' },
@@ -30,17 +37,13 @@ const toastConfig: Record<ToastType, { icon: React.ComponentType<{ size: number;
 };
 
 function ToastItem({ toast, onDismiss }: ToastItemProps) {
-  const [fadeAnim] = useState(() => new Animated.Value(0));
+  const [visible, setVisible] = useState(false);
   const config = toastConfig[toast.type];
   const IconComponent = config.icon;
 
   useEffect(() => {
-    // Fade in
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 200,
-      useNativeDriver: true,
-    }).start();
+    // Trigger fade in on mount
+    const frame = requestAnimationFrame(() => setVisible(true));
 
     // Auto dismiss
     const duration = toast.duration ?? 4000;
@@ -48,72 +51,66 @@ function ToastItem({ toast, onDismiss }: ToastItemProps) {
       const timer = setTimeout(() => {
         handleDismiss();
       }, duration);
-      return () => clearTimeout(timer);
+      return () => {
+        cancelAnimationFrame(frame);
+        clearTimeout(timer);
+      };
     }
+    return () => cancelAnimationFrame(frame);
   }, []);
 
-  const handleDismiss = () => {
-    Animated.timing(fadeAnim, {
-      toValue: 0,
-      duration: 200,
-      useNativeDriver: true,
-    }).start(() => {
-      onDismiss(toast.id);
-    });
-  };
+  const handleDismiss = useCallback(() => {
+    setVisible(false);
+    setTimeout(() => onDismiss(toast.id), 200);
+  }, [onDismiss, toast.id]);
 
   return (
-    <Animated.View style={{ opacity: fadeAnim, transform: [{ translateY: fadeAnim.interpolate({ inputRange: [0, 1], outputRange: [-20, 0] }) }] }}>
-      <XStack
-        backgroundColor={config.bgColor}
-        borderRadius="$3"
-        padding="$3"
-        marginBottom="$2"
-        alignItems="flex-start"
-        gap="$3"
-        shadowColor="$shadowColor"
-        shadowOffset={{ width: 0, height: 2 }}
-        shadowOpacity={0.1}
-        shadowRadius={4}
-        elevation={3}
-        maxWidth={400}
-        width="100%"
-      >
-        <IconComponent size={20} color={config.iconColor} />
+    <XStack
+      backgroundColor={config.bgColor}
+      borderRadius="$3"
+      padding="$3"
+      marginBottom="$2"
+      alignItems="flex-start"
+      gap="$3"
+      shadowColor="$shadowColor"
+      shadowOffset={{ width: 0, height: 2 }}
+      shadowOpacity={0.1}
+      shadowRadius={4}
+      elevation={3}
+      maxWidth={400}
+      width="100%"
+      opacity={visible ? 1 : 0}
+      y={visible ? 0 : -20}
+      animation="fast"
+    >
+      <IconComponent size={20} color={config.iconColor} />
 
-        <YStack flex={1} gap="$1">
-          <Text fontWeight="600" fontSize="$3">
-            {toast.title}
+      <YStack flex={1} gap="$1">
+        <Text fontWeight="600" fontSize="$3">
+          {toast.title}
+        </Text>
+        {toast.message && (
+          <Text fontSize="$2" color="$gray11">
+            {toast.message}
           </Text>
-          {toast.message && (
-            <Text fontSize="$2" color="$gray11">
-              {toast.message}
-            </Text>
-          )}
-          {toast.action && (
-            <Button
-              size="$2"
-              variant="ghost"
-              marginTop="$1"
-              alignSelf="flex-start"
-              onPress={toast.action.onPress}
-            >
-              {toast.action.label}
-            </Button>
-          )}
-        </YStack>
+        )}
+        {toast.action && (
+          <Button
+            size="$2"
+            variant="ghost"
+            marginTop="$1"
+            alignSelf="flex-start"
+            onPress={toast.action.onPress}
+          >
+            {toast.action.label}
+          </Button>
+        )}
+      </YStack>
 
-        <Button
-          size="$2"
-          variant="ghost"
-          circular
-          padding="$1"
-          onPress={handleDismiss}
-        >
-          <X size={16} color="$gray10" />
-        </Button>
-      </XStack>
-    </Animated.View>
+      <Button size="$2" variant="ghost" circular padding="$1" onPress={handleDismiss}>
+        <X size={16} color="$gray10" />
+      </Button>
+    </XStack>
   );
 }
 

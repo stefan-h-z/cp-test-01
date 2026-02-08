@@ -12,13 +12,14 @@ import {
   MessageCircle,
   ShoppingCart,
   Bookmark,
-  type LucideIcon,
 } from '@tamagui/lucide-icons';
 import React from 'react';
 import { XStack, YStack, Text, styled } from 'tamagui';
 
+type IconComponent = typeof Home;
+
 // Icon mapping
-const iconMap: Record<string, LucideIcon> = {
+const iconMap: Record<string, IconComponent> = {
   home: Home,
   search: Search,
   user: User,
@@ -116,7 +117,7 @@ export function TabBar({
   variant = 'default',
 }: TabBarProps) {
   return (
-    <TabBarContainer position={position} variant={variant}>
+    <TabBarContainer position={position as never} variant={variant as never}>
       {tabs.map((tab) => {
         const isActive = activeTab === tab.name;
         const IconComponent = iconMap[tab.icon.toLowerCase()] || Home;

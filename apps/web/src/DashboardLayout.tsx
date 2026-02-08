@@ -7,7 +7,14 @@ import { Switch } from 'tamagui';
 // Menu icon component
 function MenuIcon() {
   return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
       <line x1="3" y1="6" x2="21" y2="6" />
       <line x1="3" y1="12" x2="21" y2="12" />
       <line x1="3" y1="18" x2="21" y2="18" />
@@ -18,7 +25,14 @@ function MenuIcon() {
 // Close icon component
 function CloseIcon() {
   return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
       <line x1="18" y1="6" x2="6" y2="18" />
       <line x1="6" y1="6" x2="18" y2="18" />
     </svg>
@@ -28,7 +42,14 @@ function CloseIcon() {
 // Settings icon component
 function SettingsIcon() {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
       <circle cx="12" cy="12" r="3" />
       <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
     </svg>
@@ -38,7 +59,14 @@ function SettingsIcon() {
 // QR icon component
 function QRIcon() {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
       <rect x="3" y="3" width="7" height="7" />
       <rect x="14" y="3" width="7" height="7" />
       <rect x="3" y="14" width="7" height="7" />
@@ -71,7 +99,7 @@ function SidebarMenu({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
     <>
       {/* Backdrop */}
       <YStack
-        position="fixed"
+        position={'fixed' as never}
         top={0}
         left={0}
         right={0}
@@ -84,7 +112,7 @@ function SidebarMenu({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
 
       {/* Sidebar */}
       <YStack
-        position="fixed"
+        position={'fixed' as never}
         top={0}
         right={0}
         bottom={0}
@@ -99,14 +127,16 @@ function SidebarMenu({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
       >
         {/* Header */}
         <XStack justifyContent="space-between" alignItems="center" marginBottom="$6">
-          <Heading level={4} color={isDarkMode ? 'white' : undefined}>Menu</Heading>
+          <Heading level={4} color={isDarkMode ? 'white' : undefined}>
+            Menu
+          </Heading>
           <YStack
             padding="$2"
             borderRadius="$2"
             cursor="pointer"
             hoverStyle={{ backgroundColor: isDarkMode ? '$neutral800' : '$neutral100' }}
             onPress={onClose}
-            color={isDarkMode ? 'white' : undefined}
+            style={{ color: isDarkMode ? 'white' : undefined }}
           >
             <CloseIcon />
           </YStack>
@@ -120,8 +150,12 @@ function SidebarMenu({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
             borderRadius="$4"
             marginBottom="$4"
           >
-            <BodyText fontWeight="600" color={isDarkMode ? 'white' : undefined}>{user.name}</BodyText>
-            <BodyText size="sm" color={isDarkMode ? '$neutral400' : '$neutral500'}>{user.email}</BodyText>
+            <BodyText fontWeight="600" color={isDarkMode ? 'white' : undefined}>
+              {user.name}
+            </BodyText>
+            <BodyText size="sm" color={isDarkMode ? '$neutral400' : '$neutral500'}>
+              {user.email}
+            </BodyText>
           </YStack>
         )}
 
@@ -135,11 +169,7 @@ function SidebarMenu({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
           marginBottom="$4"
         >
           <BodyText color={isDarkMode ? 'white' : undefined}>Dark Mode</BodyText>
-          <Switch
-            checked={isDarkMode}
-            onCheckedChange={() => toggleMode()}
-            size="$3"
-          >
+          <Switch checked={isDarkMode} onCheckedChange={() => toggleMode()} size="$3">
             <Switch.Thumb animation="quick" />
           </Switch>
         </XStack>
@@ -154,7 +184,7 @@ function SidebarMenu({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
             alignItems="center"
             gap="$3"
             onPress={() => handleNavigation('/qr-scanner')}
-            color={isDarkMode ? 'white' : undefined}
+            style={{ color: isDarkMode ? 'white' : undefined }}
           >
             <QRIcon />
             <BodyText color={isDarkMode ? 'white' : undefined}>QR Scanner</BodyText>
@@ -168,7 +198,7 @@ function SidebarMenu({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
             alignItems="center"
             gap="$3"
             onPress={() => handleNavigation('/settings')}
-            color={isDarkMode ? 'white' : undefined}
+            style={{ color: isDarkMode ? 'white' : undefined }}
           >
             <SettingsIcon />
             <BodyText color={isDarkMode ? 'white' : undefined}>Settings</BodyText>
@@ -177,11 +207,7 @@ function SidebarMenu({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
 
         {/* Logout Button */}
         {user && (
-          <Button
-            variant="outline"
-            onPress={handleLogout}
-            marginTop="$4"
-          >
+          <Button variant="outline" onPress={handleLogout} marginTop="$4">
             Sign Out
           </Button>
         )}
@@ -205,14 +231,16 @@ function Header({ onMenuOpen }: { onMenuOpen: () => void }) {
       borderBottomWidth={1}
       borderBottomColor={isDarkMode ? '$neutral700' : '$neutral200'}
     >
-      <Heading level={4} color={isDarkMode ? 'white' : undefined}>FinanceApp</Heading>
+      <Heading level={4} color={isDarkMode ? 'white' : undefined}>
+        FinanceApp
+      </Heading>
       <YStack
         padding="$2"
         borderRadius="$2"
         cursor="pointer"
         hoverStyle={{ backgroundColor: isDarkMode ? '$neutral800' : '$neutral100' }}
         onPress={onMenuOpen}
-        color={isDarkMode ? 'white' : undefined}
+        style={{ color: isDarkMode ? 'white' : undefined }}
       >
         <MenuIcon />
       </YStack>
@@ -231,7 +259,13 @@ interface TabItem {
 const tabs: TabItem[] = [
   { id: 'activity', label: 'Activity', icon: '📊', activeIcon: '📊', path: '/dashboard' },
   { id: 'budget', label: 'Budget', icon: '📋', activeIcon: '📋', path: '/budget' },
-  { id: 'transactions', label: 'Transactions', icon: '📝', activeIcon: '📝', path: '/transactions' },
+  {
+    id: 'transactions',
+    label: 'Transactions',
+    icon: '📝',
+    activeIcon: '📝',
+    path: '/transactions',
+  },
   { id: 'accounts', label: 'Accounts', icon: '💳', activeIcon: '💳', path: '/accounts' },
 ];
 
@@ -239,19 +273,40 @@ function TabBarIcon({ name, active }: { name: string; active: boolean }) {
   const icons: Record<string, { default: JSX.Element; active: JSX.Element }> = {
     activity: {
       default: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
           <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
         </svg>
       ),
       active: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+        >
           <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
         </svg>
       ),
     },
     budget: {
       default: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
           <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
           <line x1="16" y1="2" x2="16" y2="6" />
           <line x1="8" y1="2" x2="8" y2="6" />
@@ -259,7 +314,14 @@ function TabBarIcon({ name, active }: { name: string; active: boolean }) {
         </svg>
       ),
       active: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+        >
           <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
           <line x1="16" y1="2" x2="16" y2="6" />
           <line x1="8" y1="2" x2="8" y2="6" />
@@ -269,7 +331,14 @@ function TabBarIcon({ name, active }: { name: string; active: boolean }) {
     },
     transactions: {
       default: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
           <line x1="8" y1="6" x2="21" y2="6" />
           <line x1="8" y1="12" x2="21" y2="12" />
           <line x1="8" y1="18" x2="21" y2="18" />
@@ -279,7 +348,14 @@ function TabBarIcon({ name, active }: { name: string; active: boolean }) {
         </svg>
       ),
       active: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+        >
           <line x1="8" y1="6" x2="21" y2="6" />
           <line x1="8" y1="12" x2="21" y2="12" />
           <line x1="8" y1="18" x2="21" y2="18" />
@@ -291,13 +367,27 @@ function TabBarIcon({ name, active }: { name: string; active: boolean }) {
     },
     accounts: {
       default: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
           <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
           <line x1="1" y1="10" x2="23" y2="10" />
         </svg>
       ),
       active: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+        >
           <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
           <line x1="1" y1="10" x2="23" y2="10" />
         </svg>
@@ -315,11 +405,12 @@ function BottomTabBar() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const isActive = (path: string) => location.pathname === path || location.pathname.startsWith(path + '/');
+  const isActive = (path: string) =>
+    location.pathname === path || location.pathname.startsWith(path + '/');
 
   return (
     <XStack
-      position="fixed"
+      position={'fixed' as never}
       bottom={0}
       left={0}
       right={0}
@@ -346,7 +437,7 @@ function BottomTabBar() {
           hoverStyle={{ opacity: 0.8 }}
           onPress={() => navigate(tab.path)}
         >
-          <YStack color={isActive(tab.path) ? '$primary500' : '$neutral500'}>
+          <YStack style={{ color: isActive(tab.path) ? '#6366f1' : '#737373' }}>
             <TabBarIcon name={tab.id} active={isActive(tab.path)} />
           </YStack>
           <BodyText
@@ -376,7 +467,14 @@ function BottomTabBar() {
         }}
         onPress={() => navigate('/add')}
       >
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="white"
+          strokeWidth="2.5"
+        >
           <line x1="12" y1="5" x2="12" y2="19" />
           <line x1="5" y1="12" x2="19" y2="12" />
         </svg>
@@ -393,7 +491,7 @@ function BottomTabBar() {
           hoverStyle={{ opacity: 0.8 }}
           onPress={() => navigate(tab.path)}
         >
-          <YStack color={isActive(tab.path) ? '$primary500' : '$neutral500'}>
+          <YStack style={{ color: isActive(tab.path) ? '#6366f1' : '#737373' }}>
             <TabBarIcon name={tab.id} active={isActive(tab.path)} />
           </YStack>
           <BodyText

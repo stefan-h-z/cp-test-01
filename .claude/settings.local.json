@@ -24,7 +24,8 @@
       "Bash(npx turbo run typecheck:*)",
       "Bash(pnpm list:*)",
       "Bash(pnpm ls:*)",
-      "Bash(findstr:*)"
+      "Bash(findstr:*)",
+      "Bash(pnpm --filter @app/ui exec node:*)"
     ]
   }
 }

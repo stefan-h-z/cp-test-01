@@ -18,13 +18,14 @@ import {
   LogOut,
   HelpCircle,
   Info,
-  type LucideIcon,
 } from '@tamagui/lucide-icons';
 import React, { useState } from 'react';
 import { YStack, XStack, Text, styled, ScrollView } from 'tamagui';
 
+type IconComponent = typeof Home;
+
 // Icon mapping
-const iconMap: Record<string, LucideIcon> = {
+const iconMap: Record<string, IconComponent> = {
   home: Home,
   search: Search,
   user: User,
@@ -236,7 +237,7 @@ export function Sidebar({
   }
 
   const sidebarContent = (
-    <SidebarContainer position={position} width={280}>
+    <SidebarContainer position={position as never} width={280}>
       {/* Header */}
       {config.header && (
         <SidebarHeader>

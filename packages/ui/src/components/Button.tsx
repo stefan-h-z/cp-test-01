@@ -116,7 +116,6 @@ export const Button = styled(TamaguiButton, {
       },
       gradient: {
         color: 'white',
-        // @ts-expect-error - web specific
         style: {
           background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
         },
@@ -129,7 +128,6 @@ export const Button = styled(TamaguiButton, {
         color: '$color',
         borderWidth: 1,
         borderColor: '$glassBorder',
-        // @ts-expect-error - web specific CSS property
         style: {
           backdropFilter: 'blur(12px)',
           WebkitBackdropFilter: 'blur(12px)',
@@ -318,7 +316,6 @@ export const FAB = styled(TamaguiButton, {
     variant: {
       primary: {
         backgroundColor: '$primary',
-        // @ts-expect-error - web specific gradient
         style: {
           background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
         },

@@ -1,6 +1,15 @@
 import { AlertTriangle, RefreshCw } from '@tamagui/lucide-icons';
 import React, { Component, type ReactNode, type ErrorInfo } from 'react';
-import { YStack, XStack, Heading, Text, Button } from 'tamagui';
+import { YStack, XStack, Heading, Text } from 'tamagui';
+import { Button } from './Button';
+
+const isDev =
+  typeof __DEV__ !== 'undefined'
+    ? __DEV__
+    : typeof (globalThis as Record<string, unknown>).process === 'object'
+      ? ((globalThis as Record<string, unknown>).process as { env?: Record<string, string> })?.env
+          ?.NODE_ENV !== 'production'
+      : false;
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -33,7 +42,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
     this.setState({ errorInfo });
 
     // Log error to console in development
-    if (__DEV__) {
+    if (isDev) {
       console.error('ErrorBoundary caught an error:', error, errorInfo);
     }
 
@@ -58,12 +67,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
       }
 
       // Default error UI
-      return (
-        <ErrorFallback
-          error={this.state.error}
-          onReset={this.handleReset}
-        />
-      );
+      return <ErrorFallback error={this.state.error} onReset={this.handleReset} />;
     }
 
     return this.props.children;
@@ -100,11 +104,7 @@ export function ErrorFallback({
         maxWidth={400}
         gap="$4"
       >
-        <XStack
-          backgroundColor="$red5"
-          padding="$3"
-          borderRadius={50}
-        >
+        <XStack backgroundColor="$red5" padding="$3" borderRadius={50}>
           <AlertTriangle size={32} color="$red10" />
         </XStack>
 
@@ -117,39 +117,20 @@ export function ErrorFallback({
           </Text>
         </YStack>
 
-        {__DEV__ && error && (
-          <YStack
-            backgroundColor="$gray3"
-            padding="$3"
-            borderRadius="$2"
-            width="100%"
-          >
-            <Text fontSize="$2" fontFamily="$mono" color="$red10">
+        {isDev && error && (
+          <YStack backgroundColor="$gray3" padding="$3" borderRadius="$2" width="100%">
+            <Text fontSize="$2" fontFamily="$body" color="$red10">
               {error.message}
             </Text>
           </YStack>
         )}
 
         {onReset && (
-          <Button
-            variant="primary"
-            icon={<RefreshCw size={18} />}
-            onPress={onReset}
-          >
+          <Button variant="primary" icon={<RefreshCw size={18} />} onPress={onReset}>
             Try Again
           </Button>
         )}
       </YStack>
     </YStack>
   );
-}
-
-// Global __DEV__ for React Native compatibility
-declare global {
-  const __DEV__: boolean;
-}
-
-// Define __DEV__ for web if not defined
-if (typeof __DEV__ === 'undefined') {
-  (globalThis as { __DEV__: boolean }).__DEV__ = process.env.NODE_ENV !== 'production';
 }

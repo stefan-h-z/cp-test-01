@@ -1,7 +1,6 @@
 import type { DataGridProps, SortState, FilterState, PaginationState } from '@app/types';
 import React, { useState, useMemo, useCallback } from 'react';
-import { ScrollView } from 'react-native';
-import { YStack, Text, Spinner } from 'tamagui';
+import { YStack, Text, Spinner, ScrollView } from 'tamagui';
 import { DataGridFilter } from './DataGridFilter';
 import { DataGridHeader } from './DataGridHeader';
 import { DataGridPagination } from './DataGridPagination';

@@ -1,7 +1,6 @@
 import type { AuthUser, AuthProviderType } from '@app/types';
 import { styled, XStack, YStack, GetProps, Image } from 'tamagui';
-import { Heading , BodyText } from './Typography';
-
+import { Heading, BodyText } from './Typography';
 
 // Inline provider labels to avoid circular dependency with @app/shared
 const providerLabels: Record<string, string> = {
@@ -102,9 +101,7 @@ export function UserProfileCard({
     />
   ) : (
     <AvatarContainer size={size}>
-      <Heading level={size === 'sm' ? 5 : size === 'md' ? 4 : 2}>
-        {displayInitial}
-      </Heading>
+      <Heading level={size === 'sm' ? 5 : size === 'md' ? 4 : 2}>{displayInitial}</Heading>
     </AvatarContainer>
   );
 
@@ -128,9 +125,7 @@ export function UserProfileCard({
     <ProfileCardContainer {...props}>
       {Avatar}
       <UserInfoContainer>
-        <Heading level={size === 'sm' ? 5 : size === 'md' ? 4 : 3}>
-          {displayName}
-        </Heading>
+        <Heading level={size === 'sm' ? 5 : size === 'md' ? 4 : 3}>{displayName}</Heading>
         <BodyText muted>{displayEmail}</BodyText>
         {showProvider && user?.provider && (
           <BodyText size="sm" muted>
@@ -177,9 +172,7 @@ export function UserAvatar({ user, size = 'md' }: UserAvatarProps) {
 
   return (
     <AvatarContainer size={size}>
-      <Heading level={size === 'sm' ? 6 : size === 'md' ? 5 : 4}>
-        {displayInitial}
-      </Heading>
+      <Heading level={size === 'sm' ? 5 : size === 'md' ? 4 : 3}>{displayInitial}</Heading>
     </AvatarContainer>
   );
 }

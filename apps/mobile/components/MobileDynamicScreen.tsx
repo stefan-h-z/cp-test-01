@@ -41,11 +41,10 @@ export function MobileDynamicScreen({ screenCode }: MobileDynamicScreenProps) {
       logout,
       toggleTheme: toggleMode,
       refresh: () => {
-        router.replace(
-          router.canGoBack()
-            ? (router as unknown as { pathname: string }).pathname || '/(tabs)'
-            : '/(tabs)'
-        );
+        const path = router.canGoBack()
+          ? (router as unknown as { pathname: string }).pathname || '/(tabs)'
+          : '/(tabs)';
+        router.replace(path as Parameters<typeof router.replace>[0]);
       },
       copyToClipboard: async (text: string) => {
         await Clipboard.setStringAsync(text);

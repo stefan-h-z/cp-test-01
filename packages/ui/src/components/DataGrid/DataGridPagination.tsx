@@ -1,6 +1,7 @@
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from '@tamagui/lucide-icons';
 import React from 'react';
-import { XStack, YStack, Text, Button, Select } from 'tamagui';
+import { XStack, YStack, Text, Select } from 'tamagui';
+import { Button } from '../Button';
 
 interface DataGridPaginationProps {
   page: number;
@@ -152,10 +153,7 @@ export function DataGridPagination({
                 minWidth={32}
                 padding="$1"
               >
-                <Text
-                  fontSize="$2"
-                  color={pageNum === page ? '$white' : '$gray11'}
-                >
+                <Text fontSize="$2" color={pageNum === page ? '$white' : '$gray11'}>
                   {pageNum}
                 </Text>
               </Button>

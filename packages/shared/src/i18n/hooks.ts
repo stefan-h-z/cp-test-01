@@ -117,7 +117,7 @@ export function t(key: string, options?: Record<string, unknown>): string {
 }
 
 export function changeLanguage(locale: SupportedLocale): Promise<void> {
-  return i18n.changeLanguage(locale) as Promise<void>;
+  return i18n.changeLanguage(locale) as unknown as Promise<void>;
 }
 
 export function getCurrentLocale(): SupportedLocale {

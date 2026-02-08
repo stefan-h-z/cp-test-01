@@ -1,7 +1,8 @@
 import type { DataGridColumn, DataGridAction } from '@app/types';
 import { Eye, Pencil, Trash2 } from '@tamagui/lucide-icons';
 import React from 'react';
-import { XStack, YStack, Text, Checkbox, Button } from 'tamagui';
+import { XStack, YStack, Text, Checkbox } from 'tamagui';
+import { Button } from '../Button';
 
 interface DataGridRowProps<T> {
   row: T;
@@ -43,13 +44,7 @@ export function DataGridRow<T>({
 
   return (
     <XStack
-      backgroundColor={
-        isSelected
-          ? '$blue2'
-          : striped && !isEven
-          ? '$gray2'
-          : '$background'
-      }
+      backgroundColor={isSelected ? '$blue2' : striped && !isEven ? '$gray2' : '$background'}
       borderBottomWidth={1}
       borderBottomColor="$borderColor"
       hoverStyle={hoverable ? { backgroundColor: isSelected ? '$blue3' : '$gray2' } : undefined}
@@ -64,11 +59,7 @@ export function DataGridRow<T>({
           borderRightWidth={1}
           borderRightColor="$borderColor"
         >
-          <Checkbox
-            checked={isSelected}
-            onCheckedChange={onSelect}
-            size="$3"
-          >
+          <Checkbox checked={isSelected} onCheckedChange={onSelect} size="$3">
             <Checkbox.Indicator>
               <Text>✓</Text>
             </Checkbox.Indicator>
@@ -79,9 +70,7 @@ export function DataGridRow<T>({
       {/* Data cells */}
       {columns.map((column) => {
         const value = getNestedValue(row, column.key as string);
-        const renderedValue = column.render
-          ? column.render(value, row, index)
-          : formatValue(value);
+        const renderedValue = column.render ? column.render(value, row, index) : formatValue(value);
 
         return (
           <XStack
@@ -95,8 +84,8 @@ export function DataGridRow<T>({
               column.align === 'center'
                 ? 'center'
                 : column.align === 'right'
-                ? 'flex-end'
-                : 'flex-start'
+                  ? 'flex-end'
+                  : 'flex-start'
             }
             borderRightWidth={1}
             borderRightColor="$borderColor"
@@ -114,13 +103,7 @@ export function DataGridRow<T>({
 
       {/* Action buttons */}
       {actions && actions.length > 0 && (
-        <XStack
-          width={120}
-          padding={padding}
-          alignItems="center"
-          justifyContent="center"
-          gap="$1"
-        >
+        <XStack width={120} padding={padding} alignItems="center" justifyContent="center" gap="$1">
           {actions.map((action) => {
             // Check visibility
             if (action.isVisible && !action.isVisible(row)) {
@@ -134,11 +117,10 @@ export function DataGridRow<T>({
               action.variant === 'destructive'
                 ? 'ghost'
                 : action.variant === 'primary'
-                ? 'primary'
-                : 'ghost';
+                  ? 'primary'
+                  : 'ghost';
 
-            const buttonColor =
-              action.variant === 'destructive' ? '$red10' : undefined;
+            const buttonColor = action.variant === 'destructive' ? '$red10' : undefined;
 
             return (
               <Button

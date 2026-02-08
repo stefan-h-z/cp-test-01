@@ -23,11 +23,8 @@ import type { FilterState, SortState, PaginationState } from '@app/types';
 export const contentKeys = {
   all: ['content'] as const,
   lists: () => [...contentKeys.all, 'list'] as const,
-  list: (filters?: {
-    filter?: FilterState;
-    sort?: SortState;
-    pagination?: PaginationState;
-  }) => [...contentKeys.lists(), filters] as const,
+  list: (filters?: { filter?: FilterState; sort?: SortState; pagination?: PaginationState }) =>
+    [...contentKeys.lists(), filters] as const,
   details: () => [...contentKeys.all, 'detail'] as const,
   detail: (id: string) => [...contentKeys.details(), id] as const,
 };
@@ -37,8 +34,7 @@ export const userKeys = {
   all: ['user'] as const,
   current: () => [...userKeys.all, 'current'] as const,
   lists: () => [...userKeys.all, 'list'] as const,
-  list: (filters?: { search?: string; role?: string }) =>
-    [...userKeys.lists(), filters] as const,
+  list: (filters?: { search?: string; role?: string }) => [...userKeys.lists(), filters] as const,
   details: () => [...userKeys.all, 'detail'] as const,
   detail: (id: string) => [...userKeys.details(), id] as const,
   preferences: (userId: string) => [...userKeys.detail(userId), 'preferences'] as const,
@@ -96,12 +92,16 @@ export const queryKeys = {
 } as const;
 
 // Type helpers for query key inference
-export type ContentQueryKey = ReturnType<typeof contentKeys[keyof typeof contentKeys]>;
-export type UserQueryKey = ReturnType<typeof userKeys[keyof typeof userKeys]>;
-export type AuthQueryKey = ReturnType<typeof authKeys[keyof typeof authKeys]>;
-export type TransactionQueryKey = ReturnType<typeof transactionKeys[keyof typeof transactionKeys]>;
-export type BudgetQueryKey = ReturnType<typeof budgetKeys[keyof typeof budgetKeys]>;
-export type SettingsQueryKey = ReturnType<typeof settingsKeys[keyof typeof settingsKeys]>;
+type ExtractKeyValues<T> = {
+  [K in keyof T]: T[K] extends (...args: never[]) => infer R ? R : T[K];
+}[keyof T];
+
+export type ContentQueryKey = ExtractKeyValues<typeof contentKeys>;
+export type UserQueryKey = ExtractKeyValues<typeof userKeys>;
+export type AuthQueryKey = ExtractKeyValues<typeof authKeys>;
+export type TransactionQueryKey = ExtractKeyValues<typeof transactionKeys>;
+export type BudgetQueryKey = ExtractKeyValues<typeof budgetKeys>;
+export type SettingsQueryKey = ExtractKeyValues<typeof settingsKeys>;
 
 export type QueryKey =
   | ContentQueryKey

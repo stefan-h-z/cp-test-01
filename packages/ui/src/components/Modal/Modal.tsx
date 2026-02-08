@@ -107,7 +107,7 @@ const CloseButton = styled(XStack, {
 const ModalBody = styled(YStack, {
   padding: '$4',
   flex: 1,
-  overflow: 'auto',
+  overflow: 'scroll' as const,
 });
 
 const ModalFooter = styled(XStack, {
@@ -160,7 +160,7 @@ export function Modal({
     }
   };
 
-  const handleContainerClick = (e: React.MouseEvent) => {
+  const handleContainerClick = (e: { stopPropagation: () => void }) => {
     e.stopPropagation();
   };
 
@@ -171,17 +171,8 @@ export function Modal({
   return (
     <AnimatePresence>
       {open && (
-        <Overlay
-          open={open}
-          onPress={handleOverlayClick}
-          style={{ position: 'fixed' } as never}
-        >
-          <ModalContainer
-            open={open}
-            width={width}
-            maxWidth="95%"
-            onPress={handleContainerClick}
-          >
+        <Overlay open={open} onPress={handleOverlayClick} style={{ position: 'fixed' } as never}>
+          <ModalContainer open={open} width={width} maxWidth="95%" onPress={handleContainerClick}>
             {(title || showCloseButton) && (
               <ModalHeader>
                 <YStack flex={1}>
