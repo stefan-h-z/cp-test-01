@@ -28,23 +28,29 @@ export function buildFieldSchema(field: WorkflowFieldConfig): z.ZodTypeAny {
 
   // Number fields
   if (field.type === 'number') {
-    let schema: z.ZodTypeAny = z.coerce.number({
-      errorMap: () => ({ message: 'Must be a valid number' }),
+    let numberSchema = z.number({
+      errorMap: () => ({ message: requiredMessage || 'Must be a valid number' }),
     });
 
     for (const rule of rules) {
       if (rule.type === 'min' && 'value' in rule) {
-        schema = (schema as z.ZodNumber).min(rule.value, rule.message);
+        numberSchema = numberSchema.min(rule.value, rule.message);
       } else if (rule.type === 'max' && 'value' in rule) {
-        schema = (schema as z.ZodNumber).max(rule.value, rule.message);
+        numberSchema = numberSchema.max(rule.value, rule.message);
       }
     }
 
-    if (!isRequired) {
-      schema = schema.optional();
+    if (isRequired) {
+      return z.preprocess(
+        (val) => (val === '' || val === undefined ? undefined : Number(val)),
+        numberSchema
+      );
     }
 
-    return schema;
+    return z.preprocess(
+      (val) => (val === '' || val === undefined || val === null ? undefined : Number(val)),
+      numberSchema.optional()
+    );
   }
 
   // String-based fields (text, email, password, tel, url, textarea, select, radio, date)

@@ -158,7 +158,7 @@ export function useWorkflow(options: UseWorkflowOptions): UseWorkflowReturn {
     isLastStep,
     isSubmitting,
     isComplete,
-    allFormData: accumulatedDataRef.current,
+    allFormData: { ...accumulatedDataRef.current },
 
     currentStepSchema,
     currentStepDefaultValues,

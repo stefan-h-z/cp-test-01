@@ -262,7 +262,6 @@ function VerticalStepper({
 
 function CompactStepper({ steps, currentStep, getStepStatus }: WorkflowStepperProps) {
   const progress = steps.length > 1 ? currentStep / (steps.length - 1) : 0;
-  const completedCount = steps.filter((_, i) => getStepStatus(i) === 'completed').length;
 
   return (
     <YStack gap="$2">

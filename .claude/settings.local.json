@@ -23,7 +23,8 @@
       "Bash(pnpm --filter @app/shared --filter @app/web --filter @app/mobile typecheck)",
       "Bash(npx turbo run typecheck:*)",
       "Bash(pnpm list:*)",
-      "Bash(pnpm ls:*)"
+      "Bash(pnpm ls:*)",
+      "Bash(findstr:*)"
     ]
   }
 }

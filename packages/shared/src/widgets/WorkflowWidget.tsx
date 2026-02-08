@@ -1,6 +1,6 @@
 import type { WorkflowWidgetDef, WidgetRendererProps, LocalizedString } from '@app/types';
 import { FormField, Button, WorkflowContainer, WorkflowStep } from '@app/ui';
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { XStack, YStack } from 'tamagui';
 import { useAppForm } from '../hooks/useAppForm';
 import { useWorkflow, type UseWorkflowReturn } from '../hooks/useWorkflow';
@@ -39,17 +39,20 @@ export function WorkflowWidget({
     onCancel: handleCancel,
   });
 
+  const formValuesRef = useRef<Record<string, unknown>>({});
+
   const stepDisplayData = config.steps.map((step) => ({
     title: resolveStr(step.title),
     description: step.description ? resolveStr(step.description) : undefined,
     icon: step.icon,
   }));
 
-  const handleStepPress = useCallback((index: number) => {
-    // Step press from stepper is handled inside WorkflowStepForm
-    // since it needs the current form values.
-    // For now, this is a no-op; step navigation happens via buttons.
-  }, []);
+  const handleStepPress = useCallback(
+    (index: number) => {
+      workflow.goToStep(index, formValuesRef.current);
+    },
+    [workflow]
+  );
 
   return (
     <WorkflowContainer
@@ -67,6 +70,7 @@ export function WorkflowWidget({
         registry={registry}
         config={definition.config}
         resolveString={resolveStr}
+        formValuesRef={formValuesRef}
       />
     </WorkflowContainer>
   );
@@ -78,6 +82,7 @@ interface WorkflowStepFormProps {
   registry: WidgetRegistry;
   config: WorkflowWidgetDef['config'];
   resolveString: (value: string | LocalizedString) => string;
+  formValuesRef: React.MutableRefObject<Record<string, unknown>>;
 }
 
 function WorkflowStepForm({
@@ -86,13 +91,18 @@ function WorkflowStepForm({
   registry,
   config,
   resolveString,
+  formValuesRef,
 }: WorkflowStepFormProps) {
   const { currentStepConfig, currentStepSchema, currentStepDefaultValues } = workflow;
 
   const form = useAppForm({
     schema: currentStepSchema,
-    defaultValues: currentStepDefaultValues as Record<string, string>,
+    defaultValues: currentStepDefaultValues as Record<string, unknown>,
   });
+
+  // Keep formValuesRef in sync so parent can read current values for step navigation
+  const values = form.getValues();
+  formValuesRef.current = values as Record<string, unknown>;
 
   const handleNext = useCallback(async () => {
     const isValid = await form.trigger();
@@ -134,7 +144,9 @@ function WorkflowStepForm({
       >
         <GridRow gap="$2">
           {currentStepConfig.fields.map((field) => {
-            const fieldProps = form.getFieldProps(field.name as never);
+            const fieldProps = form.getFieldProps(
+              field.name as string & keyof Record<string, unknown>
+            );
             return (
               <GridColumn
                 key={field.name}
