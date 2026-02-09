@@ -44,6 +44,7 @@ const routeToPath: Record<string, string> = {
   accounts: '/(tabs)/accounts',
   settings: '/(tabs)/settings',
   'qr-scanner': '/(tabs)/qr-scanner',
+  'workflow-demo': '/(tabs)/workflow-demo',
 };
 
 export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {

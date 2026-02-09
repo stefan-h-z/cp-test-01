@@ -212,6 +212,12 @@ export default function TabLayout() {
           }}
         />
         <Tabs.Screen
+          name="workflow-demo"
+          options={{
+            href: null,
+          }}
+        />
+        <Tabs.Screen
           name="explore"
           options={{
             href: null,

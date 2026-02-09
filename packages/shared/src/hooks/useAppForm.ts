@@ -59,6 +59,12 @@ export function useAppForm<T extends FieldValues>({
     ...formOptions,
   });
 
+  // Subscribe to all form value changes so the component re-renders
+  // when setValue() is called (e.g. from getFieldProps onChange).
+  // Without this, getValues() returns stale data because it's a
+  // point-in-time read that doesn't trigger re-renders.
+  form.watch();
+
   const {
     formState: { isSubmitting, isValid, isDirty },
     handleSubmit,
