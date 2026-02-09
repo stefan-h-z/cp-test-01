@@ -64,30 +64,6 @@ function InnerLayout() {
           >
             <Stack.Screen name="login" options={{ headerShown: false }} />
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen
-              name="add"
-              options={{
-                headerShown: false,
-                presentation: 'modal',
-                animation: 'slide_from_bottom',
-              }}
-            />
-            <Stack.Screen
-              name="settings"
-              options={{
-                headerShown: false,
-                presentation: 'modal',
-                animation: 'slide_from_right',
-              }}
-            />
-            <Stack.Screen
-              name="qr-scanner"
-              options={{
-                headerShown: false,
-                presentation: 'modal',
-                animation: 'slide_from_bottom',
-              }}
-            />
           </Stack>
           <StatusBar style="auto" />
         </AuthGuard>

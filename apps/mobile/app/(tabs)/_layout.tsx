@@ -11,8 +11,11 @@ import {
 } from '@tamagui/lucide-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Tabs, useRouter } from 'expo-router';
-import { TouchableOpacity, StyleSheet } from 'react-native';
+import { useState } from 'react';
+import { TouchableOpacity, StyleSheet, View } from 'react-native';
 import { useTheme } from 'tamagui';
+import { MobileHeader } from '../../components/MobileHeader';
+import { MobileSidebar } from '../../components/MobileSidebar';
 
 // Icon mapping for dynamic icons
 const IconComponents: Record<string, React.ComponentType<{ size: number; color: string }>> = {
@@ -44,9 +47,14 @@ function FABButton() {
 
   const handlePress = () => {
     if (fabRoute) {
-      router.push(fabRoute.path as Parameters<typeof router.push>[0]);
+      // Navigate within tabs group
+      const routeToPath: Record<string, string> = {
+        'add-transaction': '/(tabs)/add',
+      };
+      const path = routeToPath[fabRoute.id] || '/(tabs)/add';
+      router.push(path as Parameters<typeof router.push>[0]);
     } else {
-      router.push('/add');
+      router.push('/(tabs)/add' as Parameters<typeof router.push>[0]);
     }
   };
 
@@ -71,6 +79,7 @@ export default function TabLayout() {
   const { tabsConfig, routes } = useRemoteNavigation();
   const { isFeatureEnabled } = useRemoteConfig();
   const theme = useTheme();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Get route for a tab
   const getRouteForTab = (tab: TabDefinition): RouteDefinition | undefined => {
@@ -101,72 +110,35 @@ export default function TabLayout() {
   };
 
   return (
-    <Tabs
-      screenOptions={{
-        headerShown: false,
-        tabBarActiveTintColor: theme.blue9?.val ?? '#6366f1',
-        tabBarInactiveTintColor: theme.gray10?.val ?? '#64748b',
-        tabBarStyle: {
-          height: 70,
-          paddingBottom: 10,
-          paddingTop: 10,
-          backgroundColor: theme.background?.val ?? 'white',
-          borderTopWidth: 1,
-          borderTopColor: theme.borderColor?.val ?? '#e2e8f0',
-          elevation: 10,
-          shadowColor: '#000',
-          shadowOffset: { width: 0, height: -4 },
-          shadowOpacity: 0.08,
-          shadowRadius: 8,
-        },
-        tabBarLabelStyle: {
-          fontSize: 11,
-          fontWeight: '500',
-        },
-        tabBarShowLabel: tabsConfig?.showLabels !== false,
-      }}
-    >
-      {/* Render tabs before FAB */}
-      {visibleTabs.slice(0, fabIndex >= 0 ? fabIndex : visibleTabs.length).map((tab) => {
-        const route = getRouteForTab(tab);
-        if (!route) return null;
-
-        const screenName = getScreenName(tab.route);
-        const title = getTitle(tab.title, getTitle(route.title, route.id));
-        const icon = tab.icon || route.icon;
-        const IconComponent = getIcon(icon);
-
-        return (
-          <Tabs.Screen
-            key={tab.route}
-            name={screenName}
-            options={{
-              title,
-              tabBarIcon: ({ color, size }) => <IconComponent size={size} color={color} />,
-            }}
-          />
-        );
-      })}
-
-      {/* FAB placeholder in the middle */}
-      {tabsConfig?.fab && (
-        <Tabs.Screen
-          name="add"
-          options={{
-            title: '',
-            tabBarButton: () => <FABButton />,
-          }}
-          listeners={{
-            tabPress: (e) => {
-              e.preventDefault();
-            },
-          }}
-        />
-      )}
-
-      {/* Render tabs after FAB */}
-      {fabIndex >= 0 &&
-        visibleTabs.slice(fabIndex).map((tab) => {
+    <View style={{ flex: 1 }}>
+      <MobileHeader onMenuOpen={() => setSidebarOpen(true)} />
+      <Tabs
+        screenOptions={{
+          headerShown: false,
+          tabBarActiveTintColor: theme.blue9?.val ?? '#6366f1',
+          tabBarInactiveTintColor: theme.gray10?.val ?? '#64748b',
+          tabBarStyle: {
+            height: 70,
+            paddingBottom: 10,
+            paddingTop: 10,
+            backgroundColor: theme.background?.val ?? 'white',
+            borderTopWidth: 1,
+            borderTopColor: theme.borderColor?.val ?? '#e2e8f0',
+            elevation: 10,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: -4 },
+            shadowOpacity: 0.08,
+            shadowRadius: 8,
+          },
+          tabBarLabelStyle: {
+            fontSize: 11,
+            fontWeight: '500',
+          },
+          tabBarShowLabel: tabsConfig?.showLabels !== false,
+        }}
+      >
+        {/* Render tabs before FAB */}
+        {visibleTabs.slice(0, fabIndex >= 0 ? fabIndex : visibleTabs.length).map((tab) => {
           const route = getRouteForTab(tab);
           if (!route) return null;
 
@@ -187,20 +159,73 @@ export default function TabLayout() {
           );
         })}
 
-      {/* Hidden screens - still need to be registered for Expo Router */}
-      <Tabs.Screen
-        name="explore"
-        options={{
-          href: null,
-        }}
-      />
-      <Tabs.Screen
-        name="profile"
-        options={{
-          href: null,
-        }}
-      />
-    </Tabs>
+        {/* FAB placeholder in the middle */}
+        {tabsConfig?.fab && (
+          <Tabs.Screen
+            name="add"
+            options={{
+              title: '',
+              tabBarButton: () => <FABButton />,
+            }}
+            listeners={{
+              tabPress: (e) => {
+                e.preventDefault();
+              },
+            }}
+          />
+        )}
+
+        {/* Render tabs after FAB */}
+        {fabIndex >= 0 &&
+          visibleTabs.slice(fabIndex).map((tab) => {
+            const route = getRouteForTab(tab);
+            if (!route) return null;
+
+            const screenName = getScreenName(tab.route);
+            const title = getTitle(tab.title, getTitle(route.title, route.id));
+            const icon = tab.icon || route.icon;
+            const IconComponent = getIcon(icon);
+
+            return (
+              <Tabs.Screen
+                key={tab.route}
+                name={screenName}
+                options={{
+                  title,
+                  tabBarIcon: ({ color, size }) => <IconComponent size={size} color={color} />,
+                }}
+              />
+            );
+          })}
+
+        {/* Hidden screens - registered for Expo Router but not shown in tab bar */}
+        <Tabs.Screen
+          name="settings"
+          options={{
+            href: null,
+          }}
+        />
+        <Tabs.Screen
+          name="qr-scanner"
+          options={{
+            href: null,
+          }}
+        />
+        <Tabs.Screen
+          name="explore"
+          options={{
+            href: null,
+          }}
+        />
+        <Tabs.Screen
+          name="profile"
+          options={{
+            href: null,
+          }}
+        />
+      </Tabs>
+      <MobileSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+    </View>
   );
 }
 

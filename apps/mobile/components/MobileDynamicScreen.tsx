@@ -5,7 +5,7 @@ import * as Clipboard from 'expo-clipboard';
 import * as ExpoLinking from 'expo-linking';
 import { useRouter } from 'expo-router';
 import { useCallback, useMemo } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View } from 'react-native';
 import { useTheme } from 'tamagui';
 
 interface MobileDynamicScreenProps {
@@ -59,14 +59,14 @@ export function MobileDynamicScreen({ screenCode }: MobileDynamicScreenProps) {
 
   if (isLoading) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: bgColor }} edges={['top']}>
+      <View style={{ flex: 1, backgroundColor: bgColor }}>
         <YStack flex={1} alignItems="center" justifyContent="center">
           <Spinner size="large" />
           <BodyText muted marginTop="$2">
             Loading...
           </BodyText>
         </YStack>
-      </SafeAreaView>
+      </View>
     );
   }
 
@@ -74,14 +74,14 @@ export function MobileDynamicScreen({ screenCode }: MobileDynamicScreenProps) {
 
   if (!screenDef) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: bgColor }} edges={['top']}>
+      <View style={{ flex: 1, backgroundColor: bgColor }}>
         <ScreenNotFound screenCode={screenCode} />
-      </SafeAreaView>
+      </View>
     );
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: bgColor }} edges={['top']}>
+    <View style={{ flex: 1, backgroundColor: bgColor }}>
       <DynamicScreen
         screenDef={screenDef}
         config={config}
@@ -90,6 +90,6 @@ export function MobileDynamicScreen({ screenCode }: MobileDynamicScreenProps) {
         actionDeps={actionDeps}
         openUrl={openUrl}
       />
-    </SafeAreaView>
+    </View>
   );
 }

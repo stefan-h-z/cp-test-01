@@ -26,7 +26,10 @@
       "Bash(pnpm ls:*)",
       "Bash(findstr:*)",
       "Bash(pnpm --filter @app/ui exec node:*)",
-      "Bash(pnpm why:*)"
+      "Bash(pnpm why:*)",
+      "Bash(del \"D:\\\\Stefan\\\\Development\\\\Projects\\\\cp\\\\cp-test-01\\\\apps\\\\mobile\\\\app\\\\add.tsx\")",
+      "Bash(del \"D:\\\\Stefan\\\\Development\\\\Projects\\\\cp\\\\cp-test-01\\\\apps\\\\mobile\\\\app\\\\settings.tsx\")",
+      "Bash(del \"D:\\\\Stefan\\\\Development\\\\Projects\\\\cp\\\\cp-test-01\\\\apps\\\\mobile\\\\app\\\\qr-scanner.tsx\")"
     ]
   }
 }
