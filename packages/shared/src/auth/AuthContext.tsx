@@ -1,10 +1,19 @@
-import type { AuthState, AuthUser, AuthProviderType, AuthConfig, AuthProviderConfig } from '@app/types';
+import type {
+  AuthState,
+  AuthUser,
+  AuthProviderType,
+  AuthConfig,
+  AuthProviderConfig,
+} from '@app/types';
 import React, { createContext, useContext, useReducer, useCallback, type ReactNode } from 'react';
 
 // Auth Actions
 type AuthAction =
   | { type: 'AUTH_START' }
-  | { type: 'AUTH_SUCCESS'; payload: { user: AuthUser; accessToken: string; provider: AuthProviderType } }
+  | {
+      type: 'AUTH_SUCCESS';
+      payload: { user: AuthUser; accessToken: string; provider: AuthProviderType };
+    }
   | { type: 'AUTH_ERROR'; payload: string }
   | { type: 'AUTH_LOGOUT' }
   | { type: 'AUTH_CLEAR_ERROR' };
@@ -66,7 +75,10 @@ interface AuthContextValue extends AuthState {
   setLogoutHandler: (handler: LogoutHandler) => void;
 }
 
-type LoginHandler = (provider: AuthProviderType, config: AuthProviderConfig) => Promise<{ user: AuthUser; accessToken: string }>;
+type LoginHandler = (
+  provider: AuthProviderType,
+  config: AuthProviderConfig
+) => Promise<{ user: AuthUser; accessToken: string }>;
 type LogoutHandler = () => Promise<void>;
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -100,13 +112,30 @@ export function AuthProvider({ children, config }: AuthProviderProps) {
 
   const login = useCallback(
     async (providerType: AuthProviderType) => {
+      // Dev provider: only allow in development environments
+      if (providerType === 'dev') {
+        const isDev =
+          typeof __DEV__ !== 'undefined' ? __DEV__ : process.env.NODE_ENV !== 'production';
+        if (!isDev) {
+          dispatch({
+            type: 'AUTH_ERROR',
+            payload: 'Dev login is only available in development mode',
+          });
+          return;
+        }
+      }
+
       // Dev provider bypasses configuration check
-      const providerConfig = providerType === 'dev'
-        ? { type: 'dev' as const, enabled: true, clientId: '' }
-        : getProviderConfig(providerType);
+      const providerConfig =
+        providerType === 'dev'
+          ? { type: 'dev' as const, enabled: true, clientId: '' }
+          : getProviderConfig(providerType);
 
       if (!providerConfig) {
-        dispatch({ type: 'AUTH_ERROR', payload: `Provider ${providerType} is not configured or enabled` });
+        dispatch({
+          type: 'AUTH_ERROR',
+          payload: `Provider ${providerType} is not configured or enabled`,
+        });
         return;
       }
 

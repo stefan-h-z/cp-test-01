@@ -4,7 +4,7 @@ import type {
   WidgetRenderer as WidgetRendererType,
   VisibilityCondition,
 } from '@app/types';
-import React, { Component } from 'react';
+import React, { Component, useCallback } from 'react';
 import type { WidgetRegistry } from '../registry/WidgetRegistry';
 import { GridRow, GridColumn } from './GridLayout';
 
@@ -62,10 +62,13 @@ export function WidgetTreeRenderer({
   useGrid = true,
 }: WidgetTreeRendererProps) {
   // Simple feature flag check using screen context data
-  const isFeatureEnabled = (flag: string): boolean => {
-    const features = screenContext.data['__features'] as Record<string, boolean> | undefined;
-    return features ? features[flag] !== false : false;
-  };
+  const isFeatureEnabled = useCallback(
+    (flag: string): boolean => {
+      const features = screenContext.data['__features'] as Record<string, boolean> | undefined;
+      return features ? features[flag] !== false : false;
+    },
+    [screenContext.data]
+  );
 
   const renderedWidgets = widgets.map((widget, index) => {
     if (!checkVisibility(widget, isFeatureEnabled)) return null;

@@ -86,10 +86,12 @@ export function buildFieldSchema(field: WorkflowFieldConfig): z.ZodTypeAny {
         break;
       case 'pattern':
         if ('value' in rule) {
-          schema = (schema as z.ZodString).regex(
-            new RegExp(rule.value),
-            rule.message || 'Invalid format'
-          );
+          try {
+            const regex = new RegExp(rule.value);
+            schema = (schema as z.ZodString).regex(regex, rule.message || 'Invalid format');
+          } catch {
+            console.warn(`Invalid regex pattern: ${rule.value}`);
+          }
         }
         break;
     }

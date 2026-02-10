@@ -1,8 +1,4 @@
-import type {
-  RemoteAppConfig,
-  ConfigServiceOptions,
-  ConfigMeta,
-} from '@app/types';
+import type { RemoteAppConfig, ConfigServiceOptions, ConfigMeta } from '@app/types';
 
 const DEFAULT_CACHE_KEY = 'app_remote_config';
 const DEFAULT_CACHE_DURATION = 3600000; // 1 hour
@@ -29,6 +25,7 @@ export class ConfigService {
   private retryAttempts: number;
   private retryDelay: number;
   private storage: StorageLike | null = null;
+  private pendingFetch: Promise<RemoteAppConfig> | null = null;
 
   constructor(options: ConfigServiceOptions) {
     this.endpoint = options.endpoint;
@@ -93,7 +90,26 @@ export class ConfigService {
     } as RemoteAppConfig;
   }
 
+  private validateConfig(data: unknown): data is RemoteAppConfig {
+    if (!data || typeof data !== 'object') return false;
+    const config = data as Record<string, unknown>;
+    if (typeof config.name !== 'string') return false;
+    if (!config.navigation || typeof config.navigation !== 'object') return false;
+    const nav = config.navigation as Record<string, unknown>;
+    if (!Array.isArray(nav.routes)) return false;
+    return true;
+  }
+
   async fetchConfig(): Promise<RemoteAppConfig> {
+    if (this.pendingFetch) return this.pendingFetch;
+
+    this.pendingFetch = this._doFetch().finally(() => {
+      this.pendingFetch = null;
+    });
+    return this.pendingFetch;
+  }
+
+  private async _doFetch(): Promise<RemoteAppConfig> {
     let lastError: Error | null = null;
 
     for (let attempt = 0; attempt < this.retryAttempts; attempt++) {
@@ -111,6 +127,13 @@ export class ConfigService {
         }
 
         const data = await response.json();
+
+        if (!this.validateConfig(data)) {
+          throw new Error(
+            'Invalid config structure: missing required fields (name, navigation.routes)'
+          );
+        }
+
         const config = this.addMeta(data);
 
         // Update cache

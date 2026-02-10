@@ -1,28 +1,12 @@
 import { useAuth, useRemoteNavigation, useRemoteConfig, useThemeMode } from '@app/shared';
 import type { RouteDefinition, SidebarRouteItem, SidebarGroup, LocalizedString } from '@app/types';
 import { XStack, YStack, BodyText, Heading, Button } from '@app/ui';
-import { Activity, Calendar, List, CreditCard, Settings, QrCode, X } from '@tamagui/lucide-icons';
+import { X } from '@tamagui/lucide-icons';
 import { useRouter } from 'expo-router';
 import { Modal, Pressable, StyleSheet } from 'react-native';
 import { Switch } from 'tamagui';
-
-const IconComponents: Record<string, React.ComponentType<{ size: number; color: string }>> = {
-  Activity,
-  Calendar,
-  List,
-  CreditCard,
-  Settings,
-  QrCode,
-};
-
-function getIcon(iconName: string | undefined, color: string) {
-  if (!iconName) return null;
-  const IconComponent = IconComponents[iconName];
-  if (IconComponent) {
-    return <IconComponent size={20} color={color} />;
-  }
-  return null;
-}
+import { getIcon } from '../utils/iconRegistry';
+import { getExpoTabPath } from '../utils/routeMapping';
 
 function getTitle(title: string | LocalizedString | undefined, fallback: string): string {
   if (!title) return fallback;
@@ -35,18 +19,6 @@ interface MobileSidebarProps {
   onClose: () => void;
 }
 
-// Map route IDs to Expo Router paths
-const routeToPath: Record<string, string> = {
-  home: '/(tabs)',
-  dashboard: '/(tabs)',
-  budget: '/(tabs)/budget',
-  transactions: '/(tabs)/transactions',
-  accounts: '/(tabs)/accounts',
-  settings: '/(tabs)/settings',
-  'qr-scanner': '/(tabs)/qr-scanner',
-  'workflow-demo': '/(tabs)/workflow-demo',
-};
-
 export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
   const router = useRouter();
   const { user, logout } = useAuth();
@@ -56,7 +28,7 @@ export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
   const isDarkMode = resolvedMode === 'dark';
 
   const handleNavigation = (route: RouteDefinition) => {
-    const path = routeToPath[route.id] || route.path;
+    const path = getExpoTabPath(route);
     router.push(path as Parameters<typeof router.push>[0]);
     onClose();
   };

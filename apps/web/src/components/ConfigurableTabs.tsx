@@ -3,53 +3,7 @@ import type { RouteDefinition, TabDefinition, LocalizedString } from '@app/types
 import { XStack, YStack, BodyText } from '@app/ui';
 import type { CSSProperties } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-
-// Icon components
-const IconMap: Record<string, React.FC<{ active?: boolean }>> = {
-  Activity: ({ active }) => (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 2.5 : 2}>
-      <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-    </svg>
-  ),
-  Calendar: ({ active }) => (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 2.5 : 2}>
-      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-      <line x1="16" y1="2" x2="16" y2="6" />
-      <line x1="8" y1="2" x2="8" y2="6" />
-      <line x1="3" y1="10" x2="21" y2="10" />
-    </svg>
-  ),
-  List: ({ active }) => (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 2.5 : 2}>
-      <line x1="8" y1="6" x2="21" y2="6" />
-      <line x1="8" y1="12" x2="21" y2="12" />
-      <line x1="8" y1="18" x2="21" y2="18" />
-      <line x1="3" y1="6" x2="3.01" y2="6" />
-      <line x1="3" y1="12" x2="3.01" y2="12" />
-      <line x1="3" y1="18" x2="3.01" y2="18" />
-    </svg>
-  ),
-  CreditCard: ({ active }) => (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 2.5 : 2}>
-      <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
-      <line x1="1" y1="10" x2="23" y2="10" />
-    </svg>
-  ),
-  Plus: () => (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2.5}>
-      <line x1="12" y1="5" x2="12" y2="19" />
-      <line x1="5" y1="12" x2="19" y2="12" />
-    </svg>
-  ),
-};
-
-function getIcon(iconName: string, active: boolean = false) {
-  const IconComponent = IconMap[iconName];
-  if (IconComponent) {
-    return <IconComponent active={active} />;
-  }
-  return null;
-}
+import { getIcon } from '../utils/iconRegistry';
 
 function getTitle(title: string | LocalizedString | undefined, fallback: string): string {
   if (!title) return fallback;
@@ -111,9 +65,7 @@ export function ConfigurableTabs({ className }: ConfigurableTabsProps) {
         hoverStyle={{ opacity: 0.8 }}
         onPress={() => navigate(route.path)}
       >
-        <YStack>
-          {icon && getIcon(icon, active)}
-        </YStack>
+        <YStack>{icon && getIcon(icon, active)}</YStack>
         {tabsConfig.showLabels !== false && (
           <BodyText
             size="xs"
@@ -170,10 +122,12 @@ export function ConfigurableTabs({ className }: ConfigurableTabsProps) {
       alignItems="center"
       zIndex={100}
       className={className}
-      style={{
-        position: 'fixed',
-        boxShadow: '0 -4px 20px rgba(0, 0, 0, 0.08)',
-      } as CSSProperties}
+      style={
+        {
+          position: 'fixed',
+          boxShadow: '0 -4px 20px rgba(0, 0, 0, 0.08)',
+        } as CSSProperties
+      }
     >
       {leftTabs.map(renderTab)}
       {renderFab()}

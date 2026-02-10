@@ -8,6 +8,14 @@ import { MsalProvider, useMsal } from '@azure/msal-react';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { useEffect, useCallback, type ReactNode } from 'react';
 
+// Module-scope handler references (instead of window globals)
+type GoogleLoginHandler = (
+  config: AuthProviderConfig
+) => Promise<{ user: AuthUser; accessToken: string }>;
+let googleAuthHandler: GoogleLoginHandler | null = null;
+let entraAuthHandler: LoginHandler | null = null;
+let entraLogoutHandler: (() => Promise<void>) | null = null;
+
 // Create MSAL instance based on config
 function createMsalInstance(config: AuthProviderConfig): PublicClientApplication | null {
   if (config.type !== 'entra' || !config.clientId) return null;
@@ -124,9 +132,11 @@ function GoogleAuthHandler() {
   useEffect(() => {
     const googleConfig = getProviderConfig('google');
     if (googleConfig) {
-      // Store the handler reference
-      (window as unknown as Record<string, unknown>).__googleAuthHandler = handleGoogleLogin;
+      googleAuthHandler = handleGoogleLogin;
     }
+    return () => {
+      googleAuthHandler = null;
+    };
   }, [getProviderConfig, handleGoogleLogin]);
 
   return null;
@@ -166,9 +176,14 @@ function EntraAuthHandler({
       await instance.logoutPopup();
     };
 
-    // Store handlers
-    (window as unknown as Record<string, unknown>).__entraAuthHandler = loginHandler;
-    (window as unknown as Record<string, unknown>).__entraLogoutHandler = logoutHandler;
+    // Store handlers in module scope
+    entraAuthHandler = loginHandler;
+    entraLogoutHandler = logoutHandler;
+
+    return () => {
+      entraAuthHandler = null;
+      entraLogoutHandler = null;
+    };
   }, [instance, getProviderConfig, setLoginHandler, setLogoutHandler]);
 
   return null;
@@ -192,17 +207,13 @@ function CombinedAuthHandler() {
         };
         return { user, accessToken: 'dev-token-mock' };
       } else if (provider === 'google') {
-        const googleHandler = (window as unknown as Record<string, unknown>)
-          .__googleAuthHandler as typeof loginHandler;
-        if (googleHandler) {
-          return googleHandler(provider, config);
+        if (googleAuthHandler) {
+          return googleAuthHandler(config);
         }
         throw new Error('Google auth handler not initialized');
       } else if (provider === 'entra') {
-        const entraHandler = (window as unknown as Record<string, unknown>)
-          .__entraAuthHandler as typeof loginHandler;
-        if (entraHandler) {
-          return entraHandler(provider, config);
+        if (entraAuthHandler) {
+          return entraAuthHandler(provider, config);
         }
         throw new Error('Entra auth handler not initialized');
       }
@@ -210,11 +221,9 @@ function CombinedAuthHandler() {
     };
 
     const logoutHandler = async () => {
-      const entraLogout = (window as unknown as Record<string, unknown>)
-        .__entraLogoutHandler as () => Promise<void>;
-      if (entraLogout) {
+      if (entraLogoutHandler) {
         try {
-          await entraLogout();
+          await entraLogoutHandler();
         } catch {
           // Ignore logout errors
         }

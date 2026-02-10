@@ -13,7 +13,7 @@ const screens: Record<string, ScreenDefinition> = {
       {
         type: 'Header',
         width: 12,
-        label: 'Welcome to FinanceApp!',
+        label: 'Servus Stefan!',
         level: 1,
       },
       {
@@ -864,7 +864,7 @@ const screens: Record<string, ScreenDefinition> = {
  */
 export const fallbackConfig: RemoteAppConfig = {
   ...defaultAppConfig,
-  name: 'FinanceApp',
+  name: 'CrossPlatformApp',
   version: '1.0.0',
 
   navigation: {
@@ -951,6 +951,24 @@ export const fallbackConfig: RemoteAppConfig = {
         screenCode: 'workflow-demo',
         access: { type: 'authenticated' },
         visibility: { showInTabs: false, showInSidebar: true },
+      },
+      {
+        id: 'explore',
+        path: '/explore',
+        title: 'Explore',
+        icon: 'Search',
+        screen: 'ExploreScreen',
+        access: { type: 'authenticated' },
+        visibility: { showInTabs: false, showInSidebar: false },
+      },
+      {
+        id: 'profile',
+        path: '/profile',
+        title: 'Profile',
+        icon: 'User',
+        screen: 'ProfileScreen',
+        access: { type: 'authenticated' },
+        visibility: { showInTabs: false, showInSidebar: false },
       },
       {
         id: 'settings',

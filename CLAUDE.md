@@ -297,27 +297,30 @@ await login('google'); // or 'entra'
 
 ## Key Files Reference
 
-| File                                                | Purpose                                                              |
-| --------------------------------------------------- | -------------------------------------------------------------------- |
-| `packages/types/src/index.ts`                       | All shared TypeScript types (incl. RemoteAppConfig, RouteDefinition) |
-| `packages/config/src/index.ts`                      | App configuration (including auth)                                   |
-| `packages/shared/src/config/ConfigProvider.tsx`     | Remote config context & hooks                                        |
-| `packages/shared/src/config/ConfigService.ts`       | Config fetching, caching, validation                                 |
-| `packages/shared/src/config/fallbackConfig.ts`      | Local fallback when offline                                          |
-| `packages/shared/src/registry/ComponentRegistry.ts` | Dynamic screen/layout resolution                                     |
-| `packages/shared/src/theme/ThemeModeProvider.tsx`   | Theme mode (light/dark/system)                                       |
-| `packages/ui/src/tamagui.config.ts`                 | Tamagui theme configuration                                          |
-| `packages/shared/src/providers/AppProvider.tsx`     | Root provider component                                              |
-| `packages/shared/src/auth/AuthContext.tsx`          | Auth provider and hooks                                              |
-| `apps/web/src/App.tsx`                              | Web app entry point with registry setup                              |
-| `apps/web/src/navigation/ConfigurableRouter.tsx`    | Config-driven React Router                                           |
-| `apps/web/src/components/ConfigurableSidebar.tsx`   | Config-driven sidebar menu                                           |
-| `apps/web/src/components/ConfigurableTabs.tsx`      | Config-driven tab bar                                                |
-| `apps/web/src/auth/WebAuthProvider.tsx`             | Web-specific auth implementation                                     |
-| `apps/mobile/app/_layout.tsx`                       | Mobile app root layout                                               |
-| `apps/mobile/app/(tabs)/_layout.tsx`                | Mobile tabs with config metadata                                     |
-| `apps/mobile/auth/MobileAuthProvider.tsx`           | Mobile-specific auth implementation                                  |
-| `.env.example`                                      | Environment variables template                                       |
+| File                                                | Purpose                                                                   |
+| --------------------------------------------------- | ------------------------------------------------------------------------- |
+| `packages/types/src/index.ts`                       | All shared TypeScript types (incl. RemoteAppConfig, RouteDefinition)      |
+| `packages/config/src/index.ts`                      | App configuration (including auth)                                        |
+| `packages/shared/src/config/ConfigProvider.tsx`     | Remote config context & hooks                                             |
+| `packages/shared/src/config/ConfigService.ts`       | Config fetching, caching, validation                                      |
+| `packages/shared/src/config/fallbackConfig.ts`      | Local fallback when offline                                               |
+| `packages/shared/src/registry/ComponentRegistry.ts` | Dynamic screen/layout resolution                                          |
+| `packages/shared/src/theme/ThemeModeProvider.tsx`   | Theme mode (light/dark/system)                                            |
+| `packages/ui/src/tamagui.config.ts`                 | Tamagui theme configuration                                               |
+| `packages/shared/src/providers/AppProvider.tsx`     | Root provider component                                                   |
+| `packages/shared/src/auth/AuthContext.tsx`          | Auth provider and hooks                                                   |
+| `apps/web/src/App.tsx`                              | Web app entry point with registry setup                                   |
+| `apps/web/src/navigation/ConfigurableRouter.tsx`    | Config-driven React Router                                                |
+| `apps/web/src/components/ConfigurableSidebar.tsx`   | Config-driven sidebar menu                                                |
+| `apps/web/src/components/ConfigurableTabs.tsx`      | Config-driven tab bar                                                     |
+| `apps/web/src/utils/iconRegistry.tsx`               | Central web SVG icon registry                                             |
+| `apps/web/src/auth/WebAuthProvider.tsx`             | Web-specific auth implementation                                          |
+| `apps/mobile/utils/iconRegistry.tsx`                | Central mobile Lucide icon registry                                       |
+| `apps/mobile/utils/routeMapping.ts`                 | Config-to-Expo-Router path derivation (`getScreenName`, `getExpoTabPath`) |
+| `apps/mobile/app/_layout.tsx`                       | Mobile app root layout                                                    |
+| `apps/mobile/app/(tabs)/_layout.tsx`                | Mobile tabs with config metadata                                          |
+| `apps/mobile/auth/MobileAuthProvider.tsx`           | Mobile-specific auth implementation                                       |
+| `.env.example`                                      | Environment variables template                                            |
 
 ## Adding New Features
 
@@ -374,6 +377,52 @@ features: {
 }
 ```
 
+## Known Limitations
+
+### Mobile Config-Driven Constraints
+
+- **Expo Router file-based routing**: Screen files must still be created manually in `apps/mobile/app/(tabs)/`, but route-to-path mappings and hidden screen registration are derived automatically from the config via `getScreenName()` and `getExpoTabPath()` in `apps/mobile/utils/routeMapping.ts`.
+- **No server-side route protection**: Route access control (`access.type`, `access.roles`) is only enforced client-side. Server/API-level protection requires a backend layer.
+
+### Error Handling
+
+- **No error reporting service**: No Sentry/Bugsnag integration. Errors are only logged to console. Requires account setup and integration.
+
+## Security Considerations
+
+### Authentication
+
+- **Google OAuth Implicit Flow**: The web app uses the implicit grant flow (`response_type=token`), which is deprecated by Google. Migration to Authorization Code + PKCE requires a backend endpoint for token exchange.
+- **localStorage for auth tokens (Web)**: Tokens stored in `localStorage` are accessible to any script on the page (XSS risk). Migrating to `httpOnly` session cookies requires a backend session architecture.
+- **memoryStorage for auth tokens (Mobile)**: On mobile, tokens are stored in memory and lost on app restart. Migrating to `expo-secure-store` requires adding the dependency and updating the auth flow.
+- **Mobile logout does not revoke tokens**: The mobile logout handler clears local state but does not revoke the OAuth token with the provider. Requires `expo-auth-session` logout integration.
+- **Dev login environment guard**: `login('dev')` is restricted to development builds via `__DEV__` / `NODE_ENV` check in `AuthContext.tsx`.
+
+### Config Validation
+
+- **Remote config is validated structurally**: `ConfigService.ts` validates that the config has required fields (`name`, `navigation.routes`) before caching. However, deep validation of individual route definitions is not performed.
+- **Regex patterns from config are sandboxed**: `buildZodSchema.ts` wraps `new RegExp()` in try/catch to prevent invalid patterns from crashing the app. Note: complex patterns from untrusted config could still cause performance issues (ReDoS).
+
+## Web vs Mobile Differences
+
+| Aspect               | Web                                                         | Mobile                                                  |
+| -------------------- | ----------------------------------------------------------- | ------------------------------------------------------- |
+| **Routing**          | React Router (fully config-driven via `ConfigurableRouter`) | Expo Router (file-based, config used for metadata only) |
+| **Icons**            | SVG components (`apps/web/src/utils/iconRegistry.tsx`)      | Lucide icons (`apps/mobile/utils/iconRegistry.tsx`)     |
+| **Auth Provider**    | `WebAuthProvider` with popup-based OAuth                    | `MobileAuthProvider` with `expo-auth-session`           |
+| **Token Storage**    | `localStorage`                                              | In-memory (lost on restart)                             |
+| **Sidebar**          | CSS-based overlay with fixed positioning                    | React Native `Modal` component                          |
+| **Navigation**       | `useNavigate()` from react-router-dom                       | `useRouter()` from expo-router                          |
+| **Route Resolution** | Direct path from config (`route.path`)                      | Derived from `route.path` via `getExpoTabPath()`        |
+
+## Performance Notes
+
+- **`form.watch()` watches all fields**: In workflow forms, `useForm().watch()` is called without arguments, re-rendering the form on every field change. Optimization with the Controller pattern would be a larger refactor.
+- **ConfigProvider re-renders**: All consumers of `useRemoteConfig()` re-render when any config value changes. Context splitting would require API changes for all consumers.
+- **Request deduplication**: `ConfigService.fetchConfig()` deduplicates concurrent requests to prevent multiple HTTP calls during initial load.
+- **WidgetTreeRenderer**: `isFeatureEnabled` is memoized with `useCallback` to prevent unnecessary re-renders of child widgets.
+- **No code splitting**: All screens are bundled together. Route-based code splitting with `React.lazy()` would improve initial load time.
+
 ---
 
-_Last updated: 2026-02-07_
+_Last updated: 2026-02-09_
