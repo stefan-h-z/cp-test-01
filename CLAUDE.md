@@ -1,4 +1,4 @@
-# CLAUDE.md - AI Assistant Guidelines
+﻿# CLAUDE.md - AI Assistant Guidelines
 
 This file provides guidance for AI assistants working with this repository.
 
